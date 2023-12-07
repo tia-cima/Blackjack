@@ -21,7 +21,7 @@ int main()
 }
 
 void gioca(){
-    printf("Hai scelto gioca.");
+    printf("Distribuisco le carte.");
     int cartaUtente[10];
     int cartaComputer[10];
     cartaUtente[0] = daicarte(); 
@@ -31,12 +31,25 @@ void gioca(){
     int cartaComputer = daicarte();
     printf("Tu hai %d\n%d\n", cartaUtente[0], cartaUtente[1]);
     printf("\nL'avversario ha %d\n%d\n", cartaComputer[0], cartaComputer[1]);
-    if((cartaUtente[0] + cartaUtente[1]) > 21 || (cartaComputer[0] + cartaComputer[1]) > 21){
-
+    if((cartaComputer[0] + cartaComputer[1]) == 21){
+        printf("Il banco ha fatto blackjack, hai perso");
+        gioca();
+    } else if ((cartaUtente[0] + cartaUtente[1]) == 21){
+        printf("Hai fatto blackjack! Hai vinto");
+        gioca();       
     }
-
+    printf("Cosa vuoi fare?\n1 carta \n2 stai: ");
     int scelta;
     scanf("%d", &scelta);
+    switch (scelta)
+    {
+    case 1:
+        cartaUtente[2] = daicarte();
+        break;
+    
+    default:
+        break;
+    }
 }
 
 short daicarte(){
