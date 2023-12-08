@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h>
+#include <windows.h> // sleep
 
 
 const int ARRAY_DIMENSION = 10;
@@ -10,6 +11,7 @@ int daicarte();
 int nuovamossa(int counter);
 int controllo(int sommacarteutente);
 int scelta;
+int sommacarteutente;
 int counter = 2;
 int *counterPtr;
 int continua = 1;
@@ -18,24 +20,30 @@ int *cartaUtentePtr;
 int cartaComputer[10];
 int *cartaComputerPtr;
 
-int main()
-{
-    srand(time(NULL));
-    // int scelta;
-    // printf("BENVENUTO AL BLACKJACK! SELEZIONA UNA OPZIONE:\n1 PER INIZIARE UNA NUOVA PARTITA \n2 PER USCIRE \n");
-    // scanf("%d", &scelta);
-    // switch (scelta)
-    // {
-    // case 1:
-    //     gioca();
-    //     break;
-    // default:
-    //     break;
-    // }
-    // return 0;
-    gioca();
 
+int main() {
+    srand(time(NULL));
+    int scelta;
+    counter = 2;
+    continua = 1;
+    do {
+        printf("BENVENUTO AL BLACKJACK! SELEZIONA UNA OPZIONE:\n1 PER INIZIARE UNA NUOVA PARTITA\n2 PER USCIRE\n");
+        scanf("%d", &scelta);
+        switch (scelta) {
+        case 1:
+            gioca();
+            break;
+        case 2:
+            printf("Grazie per aver giocato!\n");
+            break;
+        default:
+            printf("Scelta non valida.\n");
+        }
+    } while (scelta != 2);
+
+    return 0;
 }
+
 int daicarte(){
     return (rand() % 11) + 1;
 }
@@ -46,8 +54,8 @@ int controllo(int sommacarte){
 } 
 void gioca(){   
     cartaUtentePtr = cartaUtente;
- 
     printf("Distribuisco le carte.\n\n");
+    Sleep(1000);
     cartaUtente[0] = daicarte(); 
     cartaUtente[1] = daicarte();
     cartaComputer[0] = daicarte(); 
@@ -55,14 +63,19 @@ void gioca(){
     printf("Tu hai %d e %d. In totale hai %d\n", cartaUtente[0], cartaUtente[1], cartaUtente[0] + cartaUtente[1]);
     printf("L'avversario ha %d e %d. In totale ha %d\n\n", cartaComputer[0], cartaComputer[1], cartaComputer[0] + cartaComputer[1]);
     if((cartaComputer[0] + cartaComputer[1]) == 21){
-        printf("Il banco ha fatto blackjack, hai perso");
-        gioca();
+        Sleep(1000);
+        printf("Il banco ha fatto blackjack, hai perso\n");
+        return;
     } else if ((cartaUtente[0] + cartaUtente[1]) == 21){
-        printf("Hai fatto blackjack! Hai vinto");
-        gioca();       
+        Sleep(1000);
+        printf("Hai fatto blackjack! Hai vinto\n");
+        return;       
     }
     do {
         continua = nuovamossa(counter);
+        if (continua < 0) { // Check if game should end
+            return; // Return to main
+        }
         counter++;
     }while(continua > 0);
 
@@ -83,21 +96,21 @@ int nuovamossa(int counter){
     {
     case 1:
         *(cartaUtentePtr + counter) = daicarte();
-        int sommacarteutente = 0;
+        sommacarteutente = 0;
         for(int j = 0; j < counter + 1; j++){
             sommacarteutente += cartaUtente[j];
         }
-        printf("Hai preso %d. La somma delle tue carte è %d\n", cartaUtente[counter], sommacarteutente);
+        printf("\nCarta %d. La somma delle tue carte è %d\n", cartaUtente[counter], sommacarteutente);
         switch (controllo(sommacarteutente))
         {
         case 0:{
-            printf("Hai sballato");
-            return 0;    
+            printf("Hai sballato\n");
+            return -1;    
             break;            
         }
         case 1:{
-            printf("Hai vinto");
-            return 0;    
+            printf("Hai vinto\n");
+            return -1;    
             break;            
         }
         case 2:{
