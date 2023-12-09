@@ -1,6 +1,7 @@
 //TODO array di 52 carte da usare al posto del rand. ogni volta che esce una carta, toglierla dal mazzo
-//TODO nascondere la seconda carta del banco
 //TODO algoritmo migliorato
+//TODO risolvere perche non restarta quando supero le carte dell'avversario
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -55,7 +56,7 @@ void gioca(){
     cartaComputer[1] = daicarte();
     sommacartecomputer += cartaComputer[1];
     printf("Tu hai %d e %d. In totale hai %d\n", cartaUtente[0], cartaUtente[1], cartaUtente[0] + cartaUtente[1]);
-    printf("L'avversario ha %d e %d. In totale ha %d\n\n", cartaComputer[0], cartaComputer[1], cartaComputer[0] + cartaComputer[1]);
+    printf("L'avversario ha pescato %d e l'altra carta nascosta.\n\n", cartaComputer[0]);
     if((cartaComputer[0] + cartaComputer[1]) == 21){
         Sleep(1000);
         printf("Il banco ha fatto blackjack, hai perso\n\n");
@@ -87,7 +88,7 @@ void gioca(){
                 }  
             } break;
             case 2: {
-                printf("Ti sei fermato. \n\n");
+                printf("\nTi sei fermato. \n\n");
                 continua = 0;
             } break;
             default:
@@ -97,12 +98,14 @@ void gioca(){
     }while(continua > 0);
     counter = 2;
     // algoritmo cpu
+    printf("\nIl banco scopre la sua carta nascosta: %d\n", cartaComputer[1]);
     while(sommacartecomputer < 16) {
         cartaComputer[counter] = daicarte();
         sommacartecomputer += cartaComputer[counter];
         printf("Cpu ha pescato %d. La somma delle sue carte è %d\n", cartaComputer[counter], sommacartecomputer);
         Sleep(500);
     }
+    printf("Cpu si ferma\n\n");
     if(sommacartecomputer > 21){
         printf("Cpu ha sballato\n");
         return;
