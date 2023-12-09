@@ -1,3 +1,7 @@
+//TODO array di 52 carte da usare al posto del rand. ogni volta che esce una carta, toglierla dal mazzo
+//TODO nascondere la seconda carta del banco
+//TODO algoritmo migliorato
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -47,18 +51,25 @@ void gioca(){
     cartaUtente[1] = daicarte();
     sommacarteutente += cartaUtente[1];
     cartaComputer[0] = daicarte(); 
-    sommacartecomputer += cartaUtente[0];
+    sommacartecomputer += cartaComputer[0];
     cartaComputer[1] = daicarte();
+    sommacartecomputer += cartaComputer[1];
     printf("Tu hai %d e %d. In totale hai %d\n", cartaUtente[0], cartaUtente[1], cartaUtente[0] + cartaUtente[1]);
     printf("L'avversario ha %d e %d. In totale ha %d\n\n", cartaComputer[0], cartaComputer[1], cartaComputer[0] + cartaComputer[1]);
     if((cartaComputer[0] + cartaComputer[1]) == 21){
         Sleep(1000);
         printf("Il banco ha fatto blackjack, hai perso\n\n");
         return;
-    } else if ((cartaUtente[0] + cartaUtente[1]) == 21){
+    } else if ((cartaUtente[0] + cartaUtente[1]) == 21){        
         Sleep(1000);
-        printf("Hai fatto blackjack! Hai vinto\n\n");
-        return;       
+        if((cartaComputer[0] + cartaComputer[1]) == 21){
+            printf("Cpu ha vinto, il banco vince in caso di pareggio\n");
+            return;
+        }
+        else{
+            printf("Hai fatto blackjack! Hai vinto\n\n");
+            return;   
+        }
     }
     do {
         printf("Cosa vuoi fare?\n1 carta \n2 stai\n-");
@@ -74,10 +85,6 @@ void gioca(){
                     printf("Hai sballato\n\n");
                     return;
                 }  
-                else if(sommacarteutente == 21){
-                    printf("Hai vinto!\n\n"); // il banco vince, modificare
-                    return;   
-                } 
             } break;
             case 2: {
                 printf("Ti sei fermato. \n\n");
@@ -90,21 +97,22 @@ void gioca(){
     }while(continua > 0);
     counter = 2;
     // algoritmo cpu
-    do {
+    while(sommacartecomputer < 16) {
         cartaComputer[counter] = daicarte();
         sommacartecomputer += cartaComputer[counter];
         printf("Cpu ha pescato %d. La somma delle sue carte è %d\n", cartaComputer[counter], sommacartecomputer);
         Sleep(500);
-    }while(sommacartecomputer < 16);
+    }
     if(sommacartecomputer > 21){
         printf("Cpu ha sballato\n");
         return;
     }  
     else if(sommacartecomputer == 21){
-        printf("Cpu ha vinto\n"); // il banco vince, modificare
+        printf("Cpu ha vinto\n");
         return;   
     } 
     printf("Somma carte user: %d\nSomma carte cpu: %d\n\n", sommacarteutente, sommacartecomputer);
+
     if(sommacartecomputer > sommacarteutente){
         printf("Cpu ha vinto\n");
         return;
