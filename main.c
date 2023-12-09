@@ -1,6 +1,7 @@
 //TODO array di 52 carte da usare al posto del rand. ogni volta che esce una carta, toglierla dal mazzo
 //TODO algoritmo migliorato
 //TODO risolvere perche non restarta quando supero le carte dell'avversario
+//TODO assi
 
 
 #include <stdio.h>
@@ -17,8 +18,16 @@ int sommacarteutente;
 int sommacartecomputer;
 int counter = 2;
 int continua = 1;
-int cartaUtente[10];
-int cartaComputer[10];
+typedef struct {
+    int valore;    
+    char tipo;      
+    bool isRegina;
+    bool isJack;
+    bool isRe;
+} Carta, carte[52];
+
+int cartaUtente[ARRAY_DIMENSION];
+int cartaComputer[ARRAY_DIMENSION];
 
 int main() {
     srand(time(NULL));
