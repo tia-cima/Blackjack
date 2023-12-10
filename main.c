@@ -9,8 +9,11 @@
 #include <time.h>
 #include <stdbool.h>
 #include <windows.h> // sleep
+#include "Carte.h"
+#define ARRAY_DIMENSION 10
 
-const int ARRAY_DIMENSION = 10;
+Carta carte[52];
+Carta* cartePtr = carte;
 void gioca();
 int daicarte();
 int scelta;
@@ -18,13 +21,6 @@ int sommacarteutente;
 int sommacartecomputer;
 int counter = 2;
 int continua = 1;
-typedef struct {
-    int valore;    
-    char tipo;      
-    bool isRegina;
-    bool isJack;
-    bool isRe;
-} Carta, carte[52];
 
 int cartaUtente[ARRAY_DIMENSION];
 int cartaComputer[ARRAY_DIMENSION];
@@ -33,25 +29,26 @@ int main() {
     srand(time(NULL));
     counter = 2;
     continua = 1;
-    do {
-        sommacarteutente = 0;
-        sommacartecomputer = 0;
-        printf("BENVENUTO AL BLACKJACK! SELEZIONA UNA OPZIONE:\n1 PER INIZIARE UNA NUOVA PARTITA\n2 PER USCIRE\n-");
-        scanf("%d", &scelta);
-        switch (scelta) {
-        case 1:
-            gioca();
-            break;
-        case 2:
-            printf("Grazie per aver giocato!\n");
-            break;
-        default:
-            printf("Scelta non valida.\n");
-        }
-    } while (scelta != 2);
-    return 0;
+    popolamazzo(carte);
+    stampamazzo(carte);
+    // do {
+    //     sommacarteutente = 0;
+    //     sommacartecomputer = 0;
+    //     printf("BENVENUTO AL BLACKJACK! SELEZIONA UNA OPZIONE:\n1 PER INIZIARE UNA NUOVA PARTITA\n2 PER USCIRE\n-");
+    //     scanf("%d", &scelta);
+    //     switch (scelta) {
+    //     case 1:
+    //         gioca();
+    //         break;
+    //     case 2:
+    //         printf("Grazie per aver giocato!\n");
+    //         break;
+    //     default:
+    //         printf("Scelta non valida.\n");
+    //     }
+    // } while (scelta != 2);
+    // return 0;
 }
-
 
 void gioca(){   
     printf("Distribuisco le carte.\n\n");

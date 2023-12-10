@@ -2,6 +2,7 @@
     "cmake.configureOnOpen": true,
     "files.associations": {
         "stdlib.h": "c",
-        "time.h": "c"
+        "time.h": "c",
+        "carte.h": "c"
     }
 }
