@@ -1,5 +1,7 @@
 #include "Carte.h"
 #include <stdio.h>
+#include <stdlib.h>
+
 
 void popolamazzo(Carta* array) {
     const char tipi[] = {'c', 'q', 'f', 'p'};
@@ -15,6 +17,7 @@ void popolamazzo(Carta* array) {
         }
     }
 }
+
 void stampamazzo(Carta* array){
     int counter = 0;
     for(int i = 0; i < 52; i++){
@@ -26,4 +29,19 @@ void stampamazzo(Carta* array){
         counter++;
     }
     printf("Counter: %d", counter);
+}
+
+Carta daicarte(Carta* array, int* dimensionedelmazzo){ 
+    if (*dimensionedelmazzo <= 0) {
+        printf("Non ci sono piu' carte. Rimescolo\n");
+        return (Carta){0, 0, false, false, false};
+    }
+    int randomint = rand() % *dimensionedelmazzo;
+    Carta cartaselezionata = array[randomint];
+    // printf("randomint: %d, cartaselezionata: %d\n", randomint, cartaselezionata.valore);
+    for (int i = randomint; i < *dimensionedelmazzo - 1; i++) {
+        array[i] = array[i + 1];
+    }
+    (*dimensionedelmazzo)--;
+    return cartaselezionata;
 }
