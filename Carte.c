@@ -19,9 +19,9 @@ void stampamazzo(Carta* array){
     int counter = 0;
     for(int i = 0; i < 52; i++){
         printf("Carta numero %d, di tipo %c. ", array[i].valore, array[i].tipo);
-        if(array[i].isJack) printf("Questa carta è un jack");
-        if(array[i].isRegina) printf("Questa carta è una regina");
-        if(array[i].isRe) printf("Questa carta è un re");
+        if(array[i].isJack) printf("Questa carta e' un jack");
+        if(array[i].isRegina) printf("Questa carta e' una regina");
+        if(array[i].isRe) printf("Questa carta e' un re");
         printf("\n");
         counter++;
     }

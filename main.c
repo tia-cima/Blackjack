@@ -87,7 +87,7 @@ void gioca(){
             {
                 cartaUtente[counter] = daicarte();
                 sommacarteutente += cartaUtente[counter];
-                printf("\nCarta %d. La somma delle tue carte è %d\n", cartaUtente[counter], sommacarteutente);
+                printf("\nCarta %d. La somma delle tue carte e' %d\n", cartaUtente[counter], sommacarteutente);
                 if(sommacarteutente > 21){
                     printf("Hai sballato\n\n");
                     return;
@@ -108,7 +108,7 @@ void gioca(){
     while(sommacartecomputer < 16) {
         cartaComputer[counter] = daicarte();
         sommacartecomputer += cartaComputer[counter];
-        printf("Cpu ha pescato %d. La somma delle sue carte è %d\n", cartaComputer[counter], sommacartecomputer);
+        printf("Cpu ha pescato %d. La somma delle sue carte e' %d\n", cartaComputer[counter], sommacartecomputer);
         Sleep(500);
     }
     printf("Cpu si ferma\n\n");
