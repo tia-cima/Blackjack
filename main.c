@@ -1,6 +1,4 @@
-//TODO array di 52 carte da usare al posto del rand. ogni volta che esce una carta, toglierla dal mazzo
 //TODO algoritmo migliorato
-//TODO risolvere perche non restarta quando supero le carte dell'avversario
 //TODO assi
 
 
@@ -14,7 +12,7 @@
 
 Carta carte[52];
 Carta* cartePtr = carte;
-void gioca();
+int gioca();
 int scelta;
 int sommacarteutente;
 int sommacartecomputer;
@@ -30,29 +28,32 @@ int main() {
     counter = 2;
     continua = 1;
     popolamazzo(carte);
+    int restart = 0;
     // stampamazzo(carte);
+    printf("\n\nBENVENUTO AL BLACKJACK!\nI CARATTERI 'q', 'p', 'c' e 'f' RAPPRESENTANO RISPETTIVAMENTE LE CARTE QUADRI, PICCHE, CUORI E FIORI");
     do {
         sommacarteutente = 0;
         sommacartecomputer = 0;
-        printf("BENVENUTO AL BLACKJACK!\nI CARATTERI 'q', 'p', 'c' e 'f' RAPPRESENTANO RISPETTIVAMENTE LE CARTE QUADRI, PICCHE, CUORI E FIORI\nSELEZIONA UNA OPZIONE:\n1 PER INIZIARE UNA NUOVA PARTITA\n2 PER USCIRE\n-");
+        printf("\nPer giocare premi 1, se vuoi uscire premi 2\n-");
         scanf("%d", &scelta);
         switch (scelta) {
         case 1:
-            gioca();
+            restart = gioca();
             break;
         case 2:
             printf("Grazie per aver giocato!\n");
+            restart = 0;
             break;
         default:
             printf("Scelta non valida.\n");
         }
-    } while (scelta != 2);
+        Sleep(1500);
+    } while (scelta != 2 || restart > 0);
     return 0;
 }
 
-void gioca(){   
-
-    printf("Distribuisco le carte.\n\n");
+int gioca(){   
+    printf("\nDistribuisco le carte.\n\n");
     Sleep(1000);
     cartaUtente[0] = daicarte(carte, &dimensionedelmazzo); 
     sommacarteutente += cartaUtente[0].valore;
@@ -67,16 +68,16 @@ void gioca(){
     if((cartaComputer[0].valore + cartaComputer[1].valore) == 21){
         Sleep(1000);
         printf("Il banco ha fatto blackjack, hai perso\n\n");
-        return;
+        return 1 ;
     } else if ((cartaUtente[0].valore + cartaUtente[1].valore) == 21){        
         Sleep(1000);
         if((cartaComputer[0].valore + cartaComputer[1].valore) == 21){
             printf("Cpu ha vinto, il banco vince in caso di pareggio\n");
-            return;
+            return 1;
         }
         else{
             printf("Hai fatto blackjack! Hai vinto\n\n");
-            return;   
+            return 1;   
         }
     }
     do {
@@ -91,7 +92,7 @@ void gioca(){
                 printf("\nCarta %d. La somma delle tue carte e' %d\n", cartaUtente[counter].valore, sommacarteutente);
                 if(sommacarteutente > 21){
                     printf("Hai sballato\n\n");
-                    return;
+                    return 1;
                 }  
             } break;
             case 2: {
@@ -115,22 +116,22 @@ void gioca(){
     printf("Cpu si ferma\n\n");
     if(sommacartecomputer > 21){
         printf("Cpu ha sballato\n");
-        return;
+        return 1;
     }  
     else if(sommacartecomputer == 21){
         printf("Cpu ha vinto\n");
-        return;   
+        return 1;   
     } 
     printf("Somma carte user: %d\nSomma carte cpu: %d\n\n", sommacarteutente, sommacartecomputer);
 
     if(sommacartecomputer > sommacarteutente){
         printf("Cpu ha vinto\n");
-        return;
+        return 1;
     } else if (sommacarteutente > sommacartecomputer){
         printf("Hai vinto!\n");
-        return;
+        return 1;
     } else if (sommacartecomputer == sommacarteutente){
         printf("Cpu ha vinto, il banco vince in caso di pareggio\n");
-        return;
+        return 1;
     }
 }
