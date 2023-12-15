@@ -10,4 +10,4 @@ typedef struct {
 
 void popolamazzo(Carta* array);
 void stampamazzo(Carta* array);
-Carta daicarte(Carta* array, int* dimensionedelmazzo);
+Carta daicarte(Carta* array, int* dimensionedelmazzo, bool isutente);
