@@ -5,6 +5,7 @@
         "time.h": "c",
         "carte.h": "c",
         "type_traits": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "stdbool.h": "c"
     }
 }
