@@ -41,7 +41,6 @@ Carta daicarte(Carta* array, int* dimensionedelmazzo, bool isutente){
     }
     int randomint = rand() % *dimensionedelmazzo;
     Carta cartaselezionata = array[randomint];
-    // printf("randomint: %d, cartaselezionata: %d", randomint, cartaselezionata.valore);
     for (int i = randomint; i < *dimensionedelmazzo - 1; i++) {
         array[i] = array[i + 1];
     }
