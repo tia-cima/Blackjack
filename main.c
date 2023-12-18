@@ -1,5 +1,4 @@
-//TODO algoritmo migliorato
-//TODO erogazione carte con nuovo metodo per avversario
+//TODO algoritmo migliorato sia in fase di erogazione delle carte sia per stabilire se è meglio prendere 1 o 11 se esce l'asso
 //TODO ALLA FINE pulire il codice, astrazioni, ottimizzarlo
 //TODO risolvere asso che viene chiesto subito
 
