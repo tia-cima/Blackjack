@@ -37,7 +37,8 @@ void stampamazzo(Carta* array){
 Carta daicarte(Carta* array, int* dimensionedelmazzo, bool isutente){ 
     if (*dimensionedelmazzo <= 0) {
         printf(ANSI_COLOR_YELLOW "\n\nNon ci sono piu' carte. Rimescolo" ANSI_COLOR_RESET);
-        return (Carta){0, 0, false, false, false};
+        popolamazzo(array);
+        *dimensionedelmazzo = sizeof(array);
     }
     int randomint = rand() % *dimensionedelmazzo;
     Carta cartaselezionata = array[randomint];
@@ -45,23 +46,7 @@ Carta daicarte(Carta* array, int* dimensionedelmazzo, bool isutente){
         array[i] = array[i + 1];
     }
     (*dimensionedelmazzo)--;
-    if (cartaselezionata.valore == 1 && isutente){
-        printf(ANSI_COLOR_CYAN "\n\nE' uscito un asso. Vuoi scegliere di usarlo come 1 o come 11?\n1) 1\n2) 11\n-" ANSI_COLOR_RESET);
-        int sceltaAsso = 0; 
-        scanf("%d", &sceltaAsso);
-        switch (sceltaAsso)
-        {
-        case 1:
-            cartaselezionata.valore = 1;
-            break;
-        case 2:
-            cartaselezionata.valore = 11;
-            break;
-        default:
-            break;
-        }
-    }
-    else if (cartaselezionata.valore == 1 && !isutente){ // migliorare
+    if (cartaselezionata.valore == 1 && !isutente){ // migliorare
         int randomintcpu = rand() % 2;
         if(randomintcpu > 1) cartaselezionata.valore = 1;
         else cartaselezionata.valore = 11;

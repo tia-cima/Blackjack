@@ -1,6 +1,8 @@
 //TODO algoritmo migliorato sia in fase di erogazione delle carte sia per stabilire se è meglio prendere 1 o 11 se esce l'asso
 //TODO ALLA FINE pulire il codice, astrazioni, ottimizzarlo
 //TODO risolvere asso che viene chiesto subito
+//TODO dopo aver scelto 11, non posso chiedere piu carta
+//TODO counter partite vinte e perse
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,7 +26,7 @@ int sommacarteutente;
 int sommacartecomputer;
 int continua;
 int counter;
-int dimensionedelmazzo = 52;
+int dimensionedelmazzo = 6;
 
 Carta cartaUtente[ARRAY_DIMENSION];
 Carta cartaComputer[ARRAY_DIMENSION];
@@ -34,7 +36,13 @@ int main() {
     popolamazzo(carte);
     continua = 0; 
     counter = 2;
-    printf(ANSI_COLOR_GREEN "\n\n#########################\nBENVENUTO AL BLACKJACK!\n-'q' rappresenta le carte quadri\n-'p' rappresenta le carte picche\n-'c' rappresenta le carte cuori\n-'f' rappresenta le carte fiori\nBuon divertimento!\n#########################" ANSI_COLOR_RESET);
+    printf("\n\n#########################\nBENVENUTO AL BLACKJACK!\n-'q' rappresenta le carte quadri\n-'p' rappresenta le carte picche\n-'c' rappresenta le carte cuori\n-'f' rappresenta le carte fiori");
+    printf(ANSI_COLOR_GREEN "\nIl colore verde rappresenta i messaggi di vittoria" ANSI_COLOR_RESET);
+    printf(ANSI_COLOR_RED "\nIl colore rosso rappresenta i messaggi di sconfitta" ANSI_COLOR_RESET);
+    printf(ANSI_COLOR_YELLOW "\nIl colore giallo rappresenta i messaggi di info" ANSI_COLOR_RESET);
+    printf(ANSI_COLOR_CYAN "\nIl colore azzurro rappresenta le tue mosse" ANSI_COLOR_RESET);
+    printf(ANSI_COLOR_MAGENTA "\nIl colore magenta rappresenta le mosse del banco" ANSI_COLOR_RESET);
+    printf("\nBuon divertimento!\n#########################");
     while(1){
         gioca();
         Sleep(1500);
@@ -43,7 +51,7 @@ int main() {
 }
 
 int gioca(){   
-    printf(ANSI_COLOR_YELLOW "\n\nComincio una nuova partita\nDistribuisco le carte" ANSI_COLOR_RESET);
+    printf(ANSI_COLOR_YELLOW "\n\n#########################\nComincio una nuova partita\nDistribuisco le carte\n#########################" ANSI_COLOR_RESET);
     sommacarteutente = 0;
     sommacartecomputer = 0;
     Sleep(1000);
@@ -76,22 +84,27 @@ int gioca(){
         }
     }
     do {
-        printf(ANSI_COLOR_YELLOW "\n\nCosa vuoi fare?\n1 chiedi carta\n2 fermati\n-" ANSI_COLOR_RESET);
+        printf(ANSI_COLOR_CYAN "\n\nCosa vuoi fare?\n1 chiedi carta\n2 fermati\n-" ANSI_COLOR_RESET);
         scanf("%d", &scelta);
         switch (scelta)
         {
             case 1:
             {
+                continua = 1;
                 cartaUtente[counter] = daicarte(carte, &dimensionedelmazzo, true);
                 sommacarteutente += cartaUtente[counter].valore;
                 printf(ANSI_COLOR_CYAN "\nCarta %d.\nLa somma delle tue carte e' %d" ANSI_COLOR_RESET, cartaUtente[counter].valore, sommacarteutente);
                 if(sommacarteutente > 21){
                     printf(ANSI_COLOR_RED "\n\nHai sballato, hai perso" ANSI_COLOR_RESET);
                     return 1;
-                }  
+                } else if(sommacarteutente == 21){
+                    printf(ANSI_COLOR_CYAN "\nHai fatto blackjack. Attendi il risultato del banco per vedere se hai vinto" ANSI_COLOR_MAGENTA);
+                    continua = 0;
+                }
             } break;
             case 2: {
-                printf(ANSI_COLOR_YELLOW "\n\nTi sei fermato" ANSI_COLOR_RESET);
+                printf(ANSI_COLOR_YELLOW "\nTi sei fermato" ANSI_COLOR_RESET);
+                Sleep(1500);
                 continua = 0;
             } break;
             default:
