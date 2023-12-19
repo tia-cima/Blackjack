@@ -9,8 +9,8 @@
 void popolamazzo(Carta* array) {
     const char tipi[] = {'c', 'q', 'f', 'p'};
     int index = 0;
-    for (int i = 0; i < 4; i++) { // For each suit
-        for (int j = 1; j <= 13; j++) { // For each card value
+    for (int i = 0; i < 4; i++) { 
+        for (int j = 1; j <= 13; j++) { 
             array[index].valore = (j > 10) ? 10 : j; // if c > 0 assegna 10, senno 10
             array[index].tipo = tipi[i];
             array[index].isJack = (j == 11);
@@ -31,10 +31,9 @@ void stampamazzo(Carta* array){
         if(array[i].isRe) printf(ANSI_COLOR_YELLOW "Questa carta e' un re" ANSI_COLOR_RESET);
         counter++;
     }
-    // printf(ANSI_COLOR_YELLOW "\n\nNumero di carte rimaste: %d" ANSI_COLOR_RESET, counter);
 }
 
-Carta daicarte(Carta* array, int* dimensionedelmazzo, bool isutente){ 
+Carta daicarte(Carta* array, int* dimensionedelmazzo, bool isutente){ // dimensionedelmazzo per riferimento dato che devo accedere al valore direttamente e non alla copia, avere il valore 52 come copia non mi serve a niente
     if (*dimensionedelmazzo <= 0) {
         printf(ANSI_COLOR_YELLOW "\n\nNon ci sono piu' carte. Rimescolo" ANSI_COLOR_RESET);
         popolamazzo(array);
