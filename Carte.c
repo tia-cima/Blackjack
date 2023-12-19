@@ -31,7 +31,7 @@ void stampamazzo(Carta* array){
         if(array[i].isRe) printf(ANSI_COLOR_YELLOW "Questa carta e' un re" ANSI_COLOR_RESET);
         counter++;
     }
-    printf(ANSI_COLOR_YELLOW "\n\nNumero di carte rimaste: %d" ANSI_COLOR_RESET, counter);
+    // printf(ANSI_COLOR_YELLOW "\n\nNumero di carte rimaste: %d" ANSI_COLOR_RESET, counter);
 }
 
 Carta daicarte(Carta* array, int* dimensionedelmazzo, bool isutente){ 
