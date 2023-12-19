@@ -1,8 +1,7 @@
 //TODO algoritmo migliorato sia in fase di erogazione delle carte sia per stabilire se è meglio prendere 1 o 11 se esce l'asso
 //TODO ALLA FINE pulire il codice, astrazioni, ottimizzarlo
-//TODO risolvere asso che viene chiesto subito
-//TODO dopo aver scelto 11, non posso chiedere piu carta
-//TODO counter partite vinte e perse
+//TODO nuovo sistema di gestione degli assi
+//TODO stampare anche se sono king, queen o jack
 
 #include <stdio.h>
 #include <stdlib.h>
