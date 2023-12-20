@@ -1,7 +1,6 @@
 //TODO algoritmo migliorato sia in fase di erogazione delle carte sia per stabilire se è meglio prendere 1 o 11 se esce l'asso
 //TODO ALLA FINE pulire il codice, astrazioni, ottimizzarlo
 //TODO dopo aver rimescolato il mazzo, riappare dopo poco il messaggio che mazzo rimescolato
-//TODO stampare anche se sono king, queen o jack
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,7 +24,7 @@ int sommacarteutente;
 int sommacartecomputer;
 int continua;
 int counter;
-int dimensionedelmazzo = 52;
+int dimensionedelmazzo = 15;
 int partitevinte = 0; 
 int partiteperse = 0; 
 
@@ -87,15 +86,15 @@ int gioca(){
     } else {
         sommacartecomputer += cartaComputer[1].valore;
     }    
-    if((cartaComputer[0].valore + cartaComputer[1].valore) == 21){
+    if(sommacartecomputer == 21){
         Sleep(1000);
         printf(ANSI_COLOR_MAGENTA "\n\nIl banco scopre la sua carta nascosta: %d di %c.\nLa somma delle sue carte e' %d" ANSI_COLOR_RESET, cartaComputer[1].valore, cartaComputer[1].tipo, sommacartecomputer);
         printf(ANSI_COLOR_RED "\nIl banco ha fatto blackjack, hai perso" ANSI_COLOR_RESET);
         partiteperse++;
         return 1 ;
-    } else if ((cartaUtente[0].valore + cartaUtente[1].valore) == 21){        
+    } else if (sommacarteutente == 21){        
         Sleep(1000);
-        if((cartaComputer[0].valore + cartaComputer[1].valore) == 21){
+        if(sommacartecomputer == 21){
             printf(ANSI_COLOR_MAGENTA "\n\nIl banco scopre la sua carta nascosta: %d di %c.\nLa somma delle sue carte e' %d" ANSI_COLOR_RESET, cartaComputer[1].valore, cartaComputer[1].tipo, sommacartecomputer);
             printf(ANSI_COLOR_RED "\nIl banco ha fatto blackjack, hai perso" ANSI_COLOR_RESET);
             partiteperse++;
@@ -107,7 +106,7 @@ int gioca(){
             partitevinte++;
             return 1;   
         }
-    }
+    } 
     // terzo pezzo --> chiedi carte
     do {
         printf(ANSI_COLOR_CYAN "\n\nCosa vuoi fare?\n1 chiedi carta\n2 fermati\n-" ANSI_COLOR_RESET);
