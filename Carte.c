@@ -69,7 +69,8 @@ Carta daicarte(Carta* array, int* dimensionedelmazzo, bool isutente){ // dimensi
     if (*dimensionedelmazzo <= 0) {
         printf(ANSI_COLOR_YELLOW "\n\nNon ci sono piu' carte. Rimescolo" ANSI_COLOR_RESET);
         popolamazzo(array);
-        *dimensionedelmazzo = sizeof(array);
+        *dimensionedelmazzo = 52;
+        printf("DIMENSIONE DEL MAZZO %d", *dimensionedelmazzo);
     }
     int randomint = rand() % *dimensionedelmazzo;
     Carta cartaselezionata = array[randomint];
