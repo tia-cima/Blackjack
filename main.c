@@ -1,6 +1,7 @@
 //TODO algoritmo migliorato sia in fase di erogazione delle carte sia per stabilire se è meglio prendere 1 o 11 se esce l'asso
 //TODO ALLA FINE pulire il codice, astrazioni, ottimizzarlo
 //TODO nuovo sistema di gestione degli assi
+//TODO dopo aver rimescolato il mazzo, riappare dopo poco il messaggio che mazzo rimescolato
 //TODO stampare anche se sono king, queen o jack
 
 #include <stdio.h>
@@ -56,37 +57,57 @@ int gioca(){
     sommacarteutente = 0;
     sommacartecomputer = 0;
     Sleep(1000);
+    // primo pezzo --> carte utente
     cartaUtente[0] = daicarte(carte, &dimensionedelmazzo, true); 
-    sommacarteutente += cartaUtente[0].valore;
     cartaUtente[1] = daicarte(carte, &dimensionedelmazzo, true);
-    sommacarteutente += cartaUtente[1].valore;
+    printf(ANSI_COLOR_CYAN "\n\nTu hai %d di %c e %d di %c." ANSI_COLOR_RESET, cartaUtente[0].valore, cartaUtente[0].tipo, cartaUtente[1].valore, cartaUtente[1].tipo);
+    if (cartaUtente[0].valore == 1) {
+        sommacarteutente += sceglivaloreasso(cartaUtente[0], true);
+    } else {
+        sommacarteutente += cartaUtente[0].valore;
+    }
+    if (cartaUtente[1].valore == 1) {
+        sommacarteutente += sceglivaloreasso(cartaUtente[1], true);
+    } else {
+        sommacarteutente += cartaUtente[1].valore;
+    }    
+    printf(ANSI_COLOR_CYAN "\nIn totale hai %d" ANSI_COLOR_RESET, sommacarteutente);
+    // secondo pezzo --> carte banco
     cartaComputer[0] = daicarte(carte, &dimensionedelmazzo, false); 
-    sommacartecomputer += cartaComputer[0].valore;
     cartaComputer[1] = daicarte(carte, &dimensionedelmazzo, false);
-    sommacartecomputer += cartaComputer[1].valore;
-    printf(ANSI_COLOR_CYAN "\n\nTu hai il %d di %c e il %d di %c.\nIn totale hai %d" ANSI_COLOR_RESET, cartaUtente[0].valore, cartaUtente[0].tipo, cartaUtente[1].valore, cartaUtente[1].tipo, cartaUtente[0].valore + cartaUtente[1].valore );
-    printf(ANSI_COLOR_MAGENTA "\n\nIl banco ha pescato %d e l'altra carta nascosta" ANSI_COLOR_RESET, cartaComputer[0]);
+    printf(ANSI_COLOR_MAGENTA "\n\nIl banco ha pescato %d di %c e l'altra carta nascosta" ANSI_COLOR_RESET, cartaComputer[0].valore, cartaComputer[0].tipo);
+    if (cartaComputer[0].valore == 1) {
+        sommacartecomputer += sceglivaloreasso(cartaComputer[0], false);
+    } else {
+        sommacartecomputer += cartaComputer[0].valore;
+    }
+    if (cartaComputer[1].valore == 1) {
+        sommacartecomputer += sceglivaloreasso(cartaComputer[1], false);
+    } else {
+        sommacartecomputer += cartaComputer[1].valore;
+    }    
     if((cartaComputer[0].valore + cartaComputer[1].valore) == 21){
         Sleep(1000);
-        printf(ANSI_COLOR_MAGENTA "\n\nIl banco scopre la sua carta nascosta: %d" ANSI_COLOR_RESET, cartaComputer[1]);
+        printf(ANSI_COLOR_MAGENTA "\n\nIl banco scopre la sua carta nascosta: %d di %c.\nLa somma delle sue carte e' %d" ANSI_COLOR_RESET, cartaComputer[1].valore, cartaComputer[1].tipo, sommacartecomputer);
         printf(ANSI_COLOR_RED "\nIl banco ha fatto blackjack, hai perso" ANSI_COLOR_RESET);
         partiteperse++;
         return 1 ;
     } else if ((cartaUtente[0].valore + cartaUtente[1].valore) == 21){        
         Sleep(1000);
         if((cartaComputer[0].valore + cartaComputer[1].valore) == 21){
-            printf(ANSI_COLOR_MAGENTA "\n\nIl banco scopre la sua carta nascosta: %d" ANSI_COLOR_RESET, cartaComputer[1]);
-            printf(ANSI_COLOR_RED "\nIl banco ha vinto, dato che vince anche in caso di pareggio" ANSI_COLOR_RESET);
+            printf(ANSI_COLOR_MAGENTA "\n\nIl banco scopre la sua carta nascosta: %d di %c.\nLa somma delle sue carte e' %d" ANSI_COLOR_RESET, cartaComputer[1].valore, cartaComputer[1].tipo, sommacartecomputer);
+            printf(ANSI_COLOR_RED "\nIl banco ha fatto blackjack, hai perso" ANSI_COLOR_RESET);
             partiteperse++;
             return 1;
         }
         else{
-            printf(ANSI_COLOR_MAGENTA "\n\nIl banco scopre la sua carta nascosta: %d" ANSI_COLOR_RESET, cartaComputer[1]);
+            printf(ANSI_COLOR_MAGENTA "\n\nIl banco scopre la sua carta nascosta: %d di %c.\nLa somma delle sue carte e' %d" ANSI_COLOR_RESET, cartaComputer[1].valore, cartaComputer[1].tipo, sommacartecomputer);
             printf(ANSI_COLOR_GREEN "\nHai fatto blackjack, hai vinto!" ANSI_COLOR_RESET);
             partitevinte++;
             return 1;   
         }
     }
+    // terzo pezzo --> chiedi carte
     do {
         printf(ANSI_COLOR_CYAN "\n\nCosa vuoi fare?\n1 chiedi carta\n2 fermati\n-" ANSI_COLOR_RESET);
         scanf("%d", &scelta);
@@ -94,8 +115,13 @@ int gioca(){
             case 1: {
                 continua = 1;
                 cartaUtente[counter] = daicarte(carte, &dimensionedelmazzo, true);
-                sommacarteutente += cartaUtente[counter].valore;
-                printf(ANSI_COLOR_CYAN "\nCarta %d.\nLa somma delle tue carte e' %d" ANSI_COLOR_RESET, cartaUtente[counter].valore, sommacarteutente);
+                printf(ANSI_COLOR_CYAN "\nCarta %d di %c.\n" ANSI_COLOR_RESET, cartaUtente[counter].valore, cartaUtente[counter].tipo);
+                if (cartaUtente[counter].valore == 1) {
+                    sommacarteutente += sceglivaloreasso(cartaUtente[counter], true);
+                } else {
+                    sommacarteutente += cartaUtente[counter].valore;
+                }
+                printf(ANSI_COLOR_CYAN "\nLa somma delle tue carte e' %d" ANSI_COLOR_RESET, sommacarteutente);
                 if(sommacarteutente > 21){
                     printf(ANSI_COLOR_RED "\n\nHai sballato, hai perso" ANSI_COLOR_RESET);
                     partiteperse++;
@@ -116,16 +142,14 @@ int gioca(){
         counter++;
     }while(continua > 0);
     counter = 2;
-
-    // algoritmo cpu migliorare
-    printf(ANSI_COLOR_MAGENTA "\n\nIl banco scopre la sua carta nascosta: %d" ANSI_COLOR_RESET, cartaComputer[1]);
+    // quarto pezzo --> chiedi carte banco (da migliorare)
+    printf(ANSI_COLOR_MAGENTA "\n\nIl banco scopre la sua carta nascosta: %d di %c.\nLa somma delle sue carte e' %d" ANSI_COLOR_RESET, cartaComputer[1].valore, cartaComputer[1].tipo, sommacartecomputer);
     while(sommacartecomputer < 16) {
         cartaComputer[counter] = daicarte(carte, &dimensionedelmazzo, false);
         sommacartecomputer += cartaComputer[counter].valore;
-        printf(ANSI_COLOR_MAGENTA "\n\nIl banco ha pescato %d.\nLa somma delle sue carte e' %d" ANSI_COLOR_RESET, cartaComputer[counter].valore, sommacartecomputer);
+        printf(ANSI_COLOR_MAGENTA "\n\nIl banco ha pescato %d di %c.\nLa somma delle sue carte e' %d" ANSI_COLOR_RESET, cartaComputer[counter].valore, cartaComputer[counter].tipo ,sommacartecomputer);
         Sleep(500);
     }
-
     printf(ANSI_COLOR_MAGENTA "\n\nIl banco si ferma" ANSI_COLOR_RESET);
     if(sommacartecomputer > 21){
         printf(ANSI_COLOR_GREEN"\n\nIl banco ha sballato, hai vinto!" ANSI_COLOR_RESET);
@@ -137,8 +161,8 @@ int gioca(){
         partiteperse++;
         return 1;   
     } 
+    // quinto pezzo --> tirare le somme e vedere chi ha vinto
     printf(ANSI_COLOR_YELLOW "\n\nSomma delle tue carte: %d\nSomma delle carte del banco: %d" ANSI_COLOR_RESET, sommacarteutente, sommacartecomputer);
-
     if(sommacartecomputer > sommacarteutente){
         printf(ANSI_COLOR_RED "\n\nIl banco ha vinto" ANSI_COLOR_RESET);
         partiteperse++;
