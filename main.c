@@ -1,4 +1,5 @@
 //TODO algoritmo migliorato sia in fase di erogazione delle carte sia per stabilire se è meglio prendere 1 o 11 se esce l'asso
+//TODO aggiungere pause con Sleep(1000);
 //TODO ALLA FINE pulire il codice, astrazioni, ottimizzarlo
 
 #include <stdio.h>
@@ -43,8 +44,7 @@ int main() {
     printf(ANSI_COLOR_MAGENTA "\nIl colore magenta rappresenta le mosse del banco" ANSI_COLOR_RESET);
     printf("\nBuon divertimento!\n#########################");
     while(1){
-        gioca();
-        
+        gioca();   
     }
     return 0;
 }
