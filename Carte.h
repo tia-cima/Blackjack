@@ -10,5 +10,6 @@ typedef struct {
 
 void popolamazzo(Carta* array);
 void stampamazzo(Carta* array);
+void stampacarta(Carta valore, bool isutente);
 Carta daicarte(Carta* array, int* dimensionedelmazzo, bool isutente);
 int sceglivaloreasso(Carta valore, bool isutente);

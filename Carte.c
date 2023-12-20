@@ -1,10 +1,11 @@
 #include "Carte.h"
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
 #define ANSI_COLOR_YELLOW  "\x1b[33m" // info
 #define ANSI_COLOR_CYAN    "\x1b[36m" // utente
 #define ANSI_COLOR_RESET   "\x1b[0m" // reset
+#define ANSI_COLOR_MAGENTA "\x1b[35m" // banco
 
 void popolamazzo(Carta* array) {
     const char tipi[] = {'c', 'q', 'f', 'p'};
@@ -30,6 +31,37 @@ void stampamazzo(Carta* array){
         if(array[i].isRegina) printf(ANSI_COLOR_YELLOW "Questa carta e' una regina" ANSI_COLOR_RESET);
         if(array[i].isRe) printf(ANSI_COLOR_YELLOW "Questa carta e' un re" ANSI_COLOR_RESET);
         counter++;
+    }
+}
+
+void stampacarta(Carta valore, bool isutente){
+    char tipo[7]; 
+    char figura[30]; 
+    switch (valore.tipo)
+    {
+    case 'c':
+        strcpy(tipo, "cuori");
+        break;
+    case 'q':
+        strcpy(tipo, "quadri");
+        break;
+    case 'f':
+        strcpy(tipo, "fiori");
+        break;
+    case 'p':
+        strcpy(tipo, "picche");
+        break;
+    default:
+        break;
+    }
+    if(valore.isJack) {strcpy(figura, "Questa carta e' un jack. ");}
+    else if(valore.isRegina) {strcpy(figura, "Questa carta e' una regina. ");}
+    else if(valore.isRe) {strcpy(figura, "Questa carta e' un re. ");}
+    else {strcpy(figura, "");}
+    if(isutente){
+        printf(ANSI_COLOR_CYAN "\n%d di %s. %s" ANSI_COLOR_RESET, valore.valore, tipo, figura);
+    } else {
+        printf(ANSI_COLOR_MAGENTA "\n\nIl banco ha pescato %d di %s. %s" ANSI_COLOR_RESET, valore.valore, tipo, figura);
     }
 }
 
