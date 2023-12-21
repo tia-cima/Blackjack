@@ -81,22 +81,23 @@ Carta daicarte(Carta* array, int* dimensionedelmazzo, bool isutente){ // dimensi
     return cartaselezionata;
 }
 
-int sceglivaloreasso(Carta valore, bool isutente){
-    if(isutente){
-        printf(ANSI_COLOR_CYAN "\nE' uscito un asso. Vuoi scegliere di usarlo come 1 o come 11?\n1) 1\n2) 11\n-" ANSI_COLOR_RESET);
-        int sceltaasso = 0; 
-        scanf("%d", &sceltaasso);
-        switch (sceltaasso) {
-            case 1:
-                return 1;
-            case 2:
-                return 11;
-            default:
-                return 1;
-        }        
-    } else { // migliorare
-        int randomintcpu = rand() % 2;
-        if(randomintcpu > 1) return 1;
-        else return 11;
+int sceglivaloreassoutente(Carta valore){
+    printf(ANSI_COLOR_CYAN "\nE' uscito un asso. Vuoi scegliere di usarlo come 1 o come 11?\n1) 1\n2) 11\n-" ANSI_COLOR_RESET);
+    int sceltaasso = 0; 
+    scanf("%d", &sceltaasso);
+    switch (sceltaasso) {
+        case 1:
+            return 1;
+        case 2:
+            return 11;
+        default:
+            return 1;
+    }   
+}
+
+int sceglivaloreassobanco(int sommacartecomputer){
+    if (sommacartecomputer + 11 <= 21) {
+        return 11;
     }
+    return 1;
 }
