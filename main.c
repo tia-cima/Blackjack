@@ -119,7 +119,6 @@ int gioca(){
             } break;
             case 2: {
                 printf(ANSI_COLOR_YELLOW "\nTi sei fermato" ANSI_COLOR_RESET);
-                printf("COUNTER %d", counterassiutente);
                 if(counterassiutente > 0){
                     int valoretemp = 0; 
                     printf(ANSI_COLOR_YELLOW "\nHai degli assi da gestire" ANSI_COLOR_RESET);
