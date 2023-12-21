@@ -1,6 +1,5 @@
 //TODO ALLA FINE pulire il codice, astrazioni, ottimizzarlo
 //TODO asso non per forza devo scegliere il valore all'inizio. mettere la possibilià di scegliere cosa farci dopo essermi fermato
-//TODO se premo carattere diverso vado in loop
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -121,7 +120,7 @@ int gioca(){
                 printf(ANSI_COLOR_YELLOW "\nTi sei fermato" ANSI_COLOR_RESET);
                 continua = 0;
             } break;
-            default:
+            default: continua = 1;
                 break;
         }
         counter++;
