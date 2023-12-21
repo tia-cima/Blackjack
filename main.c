@@ -54,6 +54,7 @@ int gioca(){
     else sommacarteutente += cartaUtente[0].valore;
     if (cartaUtente[1].valore == 1) sommacarteutente += sceglivaloreasso(cartaUtente[1], true);
     else sommacarteutente += cartaUtente[1].valore;    
+    if(sommacarteutente == 21) printf(ANSI_COLOR_CYAN "\nHai fatto blackjack. Attendi il risultato del banco per vedere se hai vinto" ANSI_COLOR_MAGENTA);
     printf(ANSI_COLOR_CYAN "\nIn totale hai %d" ANSI_COLOR_RESET, sommacarteutente);
     // secondo pezzo --> carte banco
     Sleep(1000);
@@ -83,7 +84,6 @@ int gioca(){
         }
         else{
             Sleep(1000);
-            printf(ANSI_COLOR_CYAN "\nHai fatto blackjack. Attendi il risultato del banco per vedere se hai vinto" ANSI_COLOR_MAGENTA);
             stampacarta(cartaComputer[1], false);
             printf(ANSI_COLOR_MAGENTA "Era la sua carta nascosta" ANSI_COLOR_RESET);
             printf(ANSI_COLOR_GREEN "\n\nHai fatto blackjack, hai vinto!" ANSI_COLOR_RESET);
@@ -130,12 +130,38 @@ int gioca(){
     stampacarta(cartaComputer[1], false);
     printf(ANSI_COLOR_MAGENTA "Era la sua carta nascosta" ANSI_COLOR_RESET);
     printf(ANSI_COLOR_MAGENTA "\nLa somma delle sue carte e' %d" ANSI_COLOR_RESET, sommacartecomputer);
-    while(sommacartecomputer < 16) {
+
+    while(sommacartecomputer < 17 && sommacartecomputer < sommacarteutente) {
+        printf("entro nel ciclo | ");
         Sleep(1000);
-        cartaComputer[counter] = daicarte(carte, &dimensionedelmazzo, false);
-        sommacartecomputer += cartaComputer[counter].valore;
-        stampacarta(cartaComputer[counter], false);
-    }
+        if(sommacartecomputer <= 11){
+                    printf("primo if | ");
+
+            cartaComputer[counter] = daicarte(carte, &dimensionedelmazzo, false);
+            if (cartaComputer[counter].valore == 1) sommacartecomputer += sceglivaloreasso(cartaComputer[counter], false);
+            else sommacartecomputer += cartaComputer[counter].valore;    
+        } 
+        else if (sommacartecomputer > 12 && sommacartecomputer < 16){
+                                printf("2 if | ");
+
+            if(sommacarteutente > sommacartecomputer){
+                                    printf("3 if | ");
+
+                cartaComputer[counter] = daicarte(carte, &dimensionedelmazzo, false);
+                if (cartaComputer[counter].valore == 1) sommacartecomputer += sceglivaloreasso(cartaComputer[counter], false);
+                else sommacartecomputer += cartaComputer[counter].valore;    
+            }
+        }
+    } 
+
+
+    // while(sommacartecomputer < 16) {
+    //     Sleep(1000);
+    //     cartaComputer[counter] = daicarte(carte, &dimensionedelmazzo, false);
+    //     stampacarta(cartaComputer[counter], false);
+    //     if (cartaComputer[counter].valore == 1) sommacartecomputer += sceglivaloreasso(cartaComputer[counter], false);
+    //     else sommacartecomputer += cartaComputer[counter].valore;    
+    // }
     Sleep(1000);
     printf(ANSI_COLOR_MAGENTA "\n\nIl banco si ferma" ANSI_COLOR_RESET);
     if(sommacartecomputer > 21){
