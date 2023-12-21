@@ -81,8 +81,8 @@ Carta daicarte(Carta* array, int* dimensionedelmazzo, bool isutente){ // dimensi
     return cartaselezionata;
 }
 
-int sceglivaloreassoutente(Carta valore){
-    printf(ANSI_COLOR_CYAN "\nE' uscito un asso. Vuoi scegliere di usarlo come 1 o come 11?\n1) 1\n2) 11\n-" ANSI_COLOR_RESET);
+int sceglivaloreassoutente(Carta valore, int* counterassiutente){
+    printf(ANSI_COLOR_CYAN "\nE' uscito un asso. Vuoi scegliere di usarlo come 1, come 11 o decidere dopo?\n1) 1\n2) 11\n3) decidi dopo\n-" ANSI_COLOR_RESET);
     int sceltaasso = 0; 
     scanf("%d", &sceltaasso);
     switch (sceltaasso) {
@@ -90,6 +90,10 @@ int sceglivaloreassoutente(Carta valore){
             return 1;
         case 2:
             return 11;
+        case 3: {
+            (*counterassiutente)++;
+            return 1;
+        }
         default:
             return 1;
     }   

@@ -12,5 +12,5 @@ void popolamazzo(Carta* array);
 void stampamazzo(Carta* array);
 void stampacarta(Carta valore, bool isutente);
 Carta daicarte(Carta* array, int* dimensionedelmazzo, bool isutente);
-int sceglivaloreassoutente(Carta valore);
+int sceglivaloreassoutente(Carta valore, int* counterassiutente);
 int sceglivaloreassobanco(int sommacartecomputer);
