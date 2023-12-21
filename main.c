@@ -1,5 +1,6 @@
 //TODO ALLA FINE pulire il codice, astrazioni, ottimizzarlo
 //TODO asso non per forza devo scegliere il valore all'inizio. mettere la possibilià di scegliere cosa farci dopo essermi fermato
+//TODO se premo carattere diverso vado in loop
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -44,6 +45,7 @@ int gioca(){
     printf(ANSI_COLOR_YELLOW "\n\n#########################\nComincio una nuova partita\nBilancio attuale: %d partite vinte, %d partite perse\nDistribuisco le carte\n#########################\n" ANSI_COLOR_RESET, partitevinte, partiteperse);
     sommacarteutente = 0;
     sommacartecomputer = 0;
+    continua = 1;
     // primo pezzo --> carte utente
     cartaUtente[0] = daicarte(carte, &dimensionedelmazzo, true); 
     cartaUtente[1] = daicarte(carte, &dimensionedelmazzo, true);
@@ -88,13 +90,11 @@ int gioca(){
             stampacarta(cartaComputer[1], false);
             printf(ANSI_COLOR_MAGENTA "Era la sua carta nascosta" ANSI_COLOR_RESET);
             printf(ANSI_COLOR_MAGENTA "\nLa somma delle sue carte e' %d" ANSI_COLOR_RESET, sommacartecomputer);
-            printf(ANSI_COLOR_GREEN "\n\nHai fatto blackjack, hai vinto!" ANSI_COLOR_RESET);
-            partitevinte++;
-            return 1;   
+            continua = 0; 
         }
     } 
     // terzo pezzo --> chiedi carte
-    do {
+    while(continua > 0) {
         Sleep(1000);
         printf(ANSI_COLOR_CYAN "\n\nCosa vuoi fare?\n1 chiedi carta\n2 fermati\n-" ANSI_COLOR_RESET);
         scanf("%d", &scelta);
@@ -125,7 +125,7 @@ int gioca(){
                 break;
         }
         counter++;
-    }while(continua > 0);
+    }
     counter = 2;
     // quarto pezzo --> chiedi carte banco (da migliorare)
     Sleep(1000);
