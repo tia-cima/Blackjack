@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <windows.h>
 #include "Carte.h"
+#include "Conto.h"
 #define ARRAY_DIMENSION 10
 #define ANSI_COLOR_RED     "\x1b[31m" // sconfitta
 #define ANSI_COLOR_GREEN   "\x1b[32m" // vittoria
@@ -28,14 +29,29 @@ Carta carte[52];
 Carta cartaUtente[ARRAY_DIMENSION];
 Carta cartaComputer[ARRAY_DIMENSION];
 Carta* cartePtr = carte;
+Conto contogiocatore;
 
 int main() {
     srand(time(NULL));
     popolamazzo(carte);
     continua = 0; 
     counter = 2;
-    printf("\n\n#########################\nBENVENUTO AL BLACKJACK!\n-'q' rappresenta le carte quadri\n-'p' rappresenta le carte picche\n-'c' rappresenta le carte cuori\n-'f' rappresenta le carte fiori" ANSI_COLOR_GREEN "\nIl colore verde rappresenta i messaggi di vittoria" ANSI_COLOR_RESET ANSI_COLOR_RED "\nIl colore rosso rappresenta i messaggi di sconfitta" ANSI_COLOR_RESET ANSI_COLOR_YELLOW "\nIl colore giallo rappresenta i messaggi di info" ANSI_COLOR_RESET ANSI_COLOR_CYAN "\nIl colore azzurro rappresenta le tue mosse" ANSI_COLOR_RESET ANSI_COLOR_MAGENTA "\nIl colore magenta rappresenta le mosse del banco" ANSI_COLOR_RESET "\nBuon divertimento!\n#########################");
-    while(1) gioca();   
+    printf("\n\n#########################\nBENVENUTO AL BLACKJACK!\n-'q' rappresenta le carte quadri\n-'p' rappresenta le carte picche\n-'c' rappresenta le carte cuori\n-'f' rappresenta le carte fiori" ANSI_COLOR_GREEN "\nIl colore verde rappresenta i messaggi di vittoria" ANSI_COLOR_RESET ANSI_COLOR_RED "\nIl colore rosso rappresenta i messaggi di sconfitta" ANSI_COLOR_RESET ANSI_COLOR_YELLOW "\nIl colore giallo rappresenta i messaggi di info" ANSI_COLOR_RESET ANSI_COLOR_CYAN "\nIl colore azzurro rappresenta le tue mosse" ANSI_COLOR_RESET ANSI_COLOR_MAGENTA "\nIl colore magenta rappresenta le mosse del banco" ANSI_COLOR_RESET "\nBuon divertimento!\n#########################\n");
+    printf(ANSI_COLOR_YELLOW "\nPrima di cominciare, hai gia' un account o vuoi crearne uno nuovo? Ti servirà per riaccedere ai tuoi crediti anche in futuro\n1) Crea account\n2) Accedi ad account esistente (ID richiesto)\n-");
+    int sceltaccount;
+    scanf("%d", &sceltaccount);
+    switch (sceltaccount) {
+        case 1:{
+            impostaconto(&contogiocatore); 
+        } break;
+        case 2:{
+            recuperaconto(&contogiocatore); 
+        } break;
+        
+        default:
+            break;
+    }
+    // while(1) gioca();   
     return 0;
 }
 

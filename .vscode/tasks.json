@@ -8,6 +8,7 @@
                 "-fdiagnostics-color=always",
                 "-g",
                 "${fileDirname}\\Carte.c",
+                "${fileDirname}\\Conto.c",
                 "${fileDirname}\\main.c",
                 "-o",
                 "${fileDirname}\\blackjack.exe"
