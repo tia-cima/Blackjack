@@ -18,7 +18,6 @@ void impostaconto(Conto* contopersona){
     FILE *file = fopen(nomefile, "w");
     fprintf(file, "%d", contopersona->ammontare);
     fclose(file);
-    printf(ANSI_COLOR_YELLOW "\nBenvenuto giocatore %d, hai caricato %d euro. Buona fortuna!" ANSI_COLOR_RESET, contopersona->id, contopersona->ammontare);
 }
 
 void recuperaconto(Conto* contopersona){
@@ -31,14 +30,10 @@ void recuperaconto(Conto* contopersona){
     FILE *file = fopen(nomefile, "r");
     fscanf(file, "%d", &contopersona->ammontare);
     fclose(file);
-    printf(ANSI_COLOR_YELLOW "\nBentornato %d! Il tuo conto e' di %d. Buona fortuna!" ANSI_COLOR_RESET, contopersona->id, contopersona->ammontare);
 }
 
-void aggiornaammontare(Conto* contopersona){
-    printf(ANSI_COLOR_YELLOW "\nQuanto vuoi caricare sul tuo conto? Solo cifre intere\n-" ANSI_COLOR_RESET);
-    int valore;
-    scanf("%d", &valore);
-    contopersona->ammontare = valore;
+void aggiornaammontare(Conto* contopersona, int nuovovalore){
+    contopersona->ammontare = nuovovalore;
     char nomefile[20]; //20 utenti
     sprintf(nomefile, "data/%d.txt", contopersona->id);
     FILE *file = fopen(nomefile, "w");

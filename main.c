@@ -16,6 +16,7 @@
 #define ANSI_COLOR_RESET   "\x1b[0m" // reset
 
 int gioca();
+int sceglipuntata();
 int scelta;
 int sommacarteutente;
 int sommacartecomputer;
@@ -25,6 +26,8 @@ int dimensionedelmazzo = 52;
 int partitevinte = 0; 
 int partiteperse = 0; 
 int counterassiutente = 0; 
+int puntate[5] = {10, 20, 50, 100, 200};
+int sceltapuntata = 0;
 Carta carte[52];
 Carta cartaUtente[ARRAY_DIMENSION];
 Carta cartaComputer[ARRAY_DIMENSION];
@@ -43,26 +46,35 @@ int main() {
     switch (sceltaccount) {
         case 1:{
             impostaconto(&contogiocatore); 
+            printf(ANSI_COLOR_YELLOW "\nBenvenuto giocatore %d, hai caricato %d euro. Buona fortuna!" ANSI_COLOR_RESET, contogiocatore.id, contogiocatore.ammontare);
         } break;
         case 2:{
             recuperaconto(&contogiocatore); 
+            printf(ANSI_COLOR_YELLOW "\nBentornato %d! Il tuo conto e' di %d. Buona fortuna!" ANSI_COLOR_RESET, contogiocatore.id, contogiocatore.ammontare);
         } break;
-        
         default:
             break;
     }
-    // while(1) gioca();   
+    while(1) gioca();   
     return 0;
 }
 
-int gioca(){   
-    Sleep(2000);
-    printf(ANSI_COLOR_YELLOW "\n\n#########################\nComincio una nuova partita\nBilancio attuale: %d partite vinte, %d partite perse\nDistribuisco le carte\n#########################\n" ANSI_COLOR_RESET, partitevinte, partiteperse);
+int gioca(){       
     sommacarteutente = 0;
     sommacartecomputer = 0;
     counterassiutente = 0; 
     continua = 1;
-    // primo pezzo --> carte utente
+    Sleep(2000);
+    printf(ANSI_COLOR_YELLOW "\n\n#########################\nComincio una nuova partita\nBilancio attuale: %d partite vinte, %d partite perse\n#########################\n" ANSI_COLOR_RESET, partitevinte, partiteperse);
+    // primo pezzo --> scelta puntata
+    sceltapuntata = sceglipuntata();
+    if(sceltapuntata != -1){
+        printf(ANSI_COLOR_CYAN "\nHai scelto di puntare %d euro\n" ANSI_COLOR_RESET, sceltapuntata);
+    } else {
+        printf(ANSI_COLOR_RED "\nScelta non valida" ANSI_COLOR_RESET);
+        return 1;
+    }
+    // secondo pezzo --> carte utente
     cartaUtente[0] = daicarte(carte, &dimensionedelmazzo, true); 
     cartaUtente[1] = daicarte(carte, &dimensionedelmazzo, true);
     stampacarta(cartaUtente[0], true);
@@ -73,7 +85,7 @@ int gioca(){
     else sommacarteutente += cartaUtente[1].valore;    
     if(sommacarteutente == 21) printf(ANSI_COLOR_CYAN "\nHai fatto blackjack. Attendi il risultato del banco per vedere se hai vinto" ANSI_COLOR_MAGENTA);
     printf(ANSI_COLOR_CYAN "\nIn totale hai %d" ANSI_COLOR_RESET, sommacarteutente);
-    // secondo pezzo --> carte banco
+    // terzo pezzo --> carte banco
     Sleep(1000);
     cartaComputer[0] = daicarte(carte, &dimensionedelmazzo, false); 
     cartaComputer[1] = daicarte(carte, &dimensionedelmazzo, false);
@@ -109,7 +121,7 @@ int gioca(){
             continua = 0; 
         }
     } 
-    // terzo pezzo --> chiedi carte
+    // quarto pezzo --> chiedi carte
     while(continua > 0) {
         Sleep(1000);
         printf(ANSI_COLOR_CYAN "\n\nCosa vuoi fare?\n1 chiedi carta\n2 fermati\n-" ANSI_COLOR_RESET);
@@ -162,7 +174,7 @@ int gioca(){
         counter++;
     }
     counter = 2;
-    // quarto pezzo --> chiedi carte banco (da migliorare)
+    // quinto pezzo --> chiedi carte banco (da migliorare)
     Sleep(1000);
     stampacarta(cartaComputer[1], false);
     printf(ANSI_COLOR_MAGENTA "Era la sua carta nascosta" ANSI_COLOR_RESET);
@@ -189,7 +201,7 @@ int gioca(){
         partiteperse++;
         return 1;   
     } 
-    // quinto pezzo --> tirare le somme e vedere chi ha vinto
+    // sesto pezzo --> tirare le somme e vedere chi ha vinto
     Sleep(1000);
     printf(ANSI_COLOR_YELLOW "\n\nSomma delle tue carte: %d\nSomma delle carte del banco: %d" ANSI_COLOR_RESET, sommacarteutente, sommacartecomputer);
     if(sommacartecomputer > sommacarteutente){
@@ -208,4 +220,20 @@ int gioca(){
         partiteperse++;
         return 1;
     }
+}
+
+int sceglipuntata(){
+    printf(ANSI_COLOR_YELLOW "\nQuanto vuoi puntare?\n" ANSI_COLOR_RESET);
+    for (int i = 0; i < sizeof(puntate) / sizeof(puntate[0]); i++){
+        printf(ANSI_COLOR_YELLOW "\n%d) %d" ANSI_COLOR_RESET, i, puntate[i]);
+    }
+    printf("\n-");
+    int puntatagiocatore;
+    scanf("%d", &puntatagiocatore);
+    for (int i = 0; i < sizeof(puntate) / sizeof(puntate[0]); i++) {
+        if (puntatagiocatore == i) {
+            return puntate[i];
+        }
+    }
+    return -1;
 }
