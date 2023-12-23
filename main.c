@@ -1,7 +1,6 @@
 //TODO ALLA FINE pulire il codice, astrazioni, ottimizzarlo
 //TODO regola blackjack, la casa deve puntare minimo fino a quando non arriva a 17
 //TODO controllo puntata
-//TODO caricare conto
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,7 +28,7 @@ int dimensionedelmazzo = 52;
 int partitevinte = 0; 
 int partiteperse = 0; 
 int counterassiutente = 0; 
-int puntate[5] = {10, 20, 50, 100, 200};
+int puntate[] = {10, 20, 50, 100, 200, 500};
 int puntata = 0;
 Carta carte[52];
 Carta cartaUtente[ARRAY_DIMENSION];
@@ -53,7 +52,25 @@ int main() {
         } break;
         case 2:{
             recuperaconto(&contogiocatore); 
-            printf(ANSI_COLOR_YELLOW "\nBentornato %d! Il tuo conto e' di %d. Buona fortuna!" ANSI_COLOR_RESET, contogiocatore.id, contogiocatore.ammontare);
+            printf(ANSI_COLOR_YELLOW "\nBentornato %d! Il tuo conto e' di %d. Vuoi ricaricarlo o procedere con questo quantitativo?\n1) Ricarica\n2) Non ricaricare\n-" ANSI_COLOR_RESET, contogiocatore.id, contogiocatore.ammontare);
+            int procedi;
+            scanf("%d", &procedi);
+            switch (procedi)
+            {
+            case 1:{
+                printf(ANSI_COLOR_YELLOW "\nQuanto vuoi caricare sul tuo conto? Solo cifre intere\n-" ANSI_COLOR_RESET);
+                int valore;
+                scanf("%d", &valore);
+                aggiornaammontare(&contogiocatore, valore);
+                printf(ANSI_COLOR_YELLOW "\nRicarica effettuata con successo, nuovo ammontare pari a %d euro. Buona fortuna!" ANSI_COLOR_RESET, contogiocatore.ammontare);
+            }            
+                break;
+            case 2:{
+                printf(ANSI_COLOR_YELLOW "\nBuona fortuna!" ANSI_COLOR_RESET);
+            }
+            default:
+                break;
+            }
         } break;
         default:
             break;
@@ -148,7 +165,7 @@ int gioca(){
                 } else if(sommacarteutente == 21){
                     Sleep(1000);
                     printf(ANSI_COLOR_CYAN "\nHai fatto blackjack. Attendi il risultato del banco per vedere se hai vinto" ANSI_COLOR_MAGENTA);
-                    puntata = puntata * 1,5;
+                    puntata = puntata + (puntata * 1,5);
                     continua = 0;
                 }
             } break;
@@ -171,7 +188,7 @@ int gioca(){
                     } else if(sommacarteutente == 21){
                         Sleep(1000);
                         printf(ANSI_COLOR_CYAN "\nHai fatto blackjack. Attendi il risultato del banco per vedere se hai vinto" ANSI_COLOR_MAGENTA);
-                        puntata = puntata * 1,5;
+                        puntata = puntata + (puntata * 1,5);
                         continua = 0;
                     }
                 }
@@ -201,6 +218,7 @@ int gioca(){
     if(sommacartecomputer > 21){
         Sleep(1000);
         printf(ANSI_COLOR_GREEN"\n\nIl banco ha sballato, hai vinto!" ANSI_COLOR_RESET);
+        puntata = puntata * 2;
         aggiornaammontare(&contogiocatore, puntata);
         partitevinte++;
         return 1;
@@ -224,6 +242,7 @@ int gioca(){
     } else if (sommacarteutente > sommacartecomputer){
         Sleep(1000);
         printf(ANSI_COLOR_GREEN "\n\nHai vinto!" ANSI_COLOR_RESET);
+        puntata = puntata * 2;
         aggiornaammontare(&contogiocatore, puntata);
         partitevinte++;
         return 1;

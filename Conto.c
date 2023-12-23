@@ -40,7 +40,7 @@ void aggiornaammontare(Conto* contopersona, int nuovovalore){
     fscanf(fileleggi, "%d", &ammontarevecchio);
     fclose(fileleggi);
     contopersona->ammontare = (ammontarevecchio + nuovovalore);
-    FILE *filescrivi = fopen(nomefile, "r");
+    FILE *filescrivi = fopen(nomefile, "w");
     fprintf(filescrivi, "%d", contopersona->ammontare);
     fclose(filescrivi);
 }
