@@ -33,14 +33,18 @@ void recuperaconto(Conto* contopersona){
 }
 
 void aggiornaammontare(Conto* contopersona, int nuovovalore){
-    contopersona->ammontare = nuovovalore;
     char nomefile[20]; //20 utenti
+    int ammontarevecchio;
     sprintf(nomefile, "data/%d.txt", contopersona->id);
-    FILE *file = fopen(nomefile, "w");
-    fprintf(file, "%d", contopersona->ammontare);
-    fclose(file);
-    printf(ANSI_COLOR_YELLOW "\nHai con successo aggiornato il conto" ANSI_COLOR_RESET);
+    FILE *fileleggi = fopen(nomefile, "r");
+    fscanf(fileleggi, "%d", &ammontarevecchio);
+    fclose(fileleggi);
+    contopersona->ammontare = (ammontarevecchio + nuovovalore);
+    FILE *filescrivi = fopen(nomefile, "r");
+    fprintf(filescrivi, "%d", contopersona->ammontare);
+    fclose(filescrivi);
 }
+
 int ottieniid(Conto* contopersona){
     return contopersona->id;
 }
