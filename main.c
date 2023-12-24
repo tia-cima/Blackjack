@@ -86,12 +86,19 @@ int gioca(){
     continua = 1;
     Sleep(2000);
     printf(ANSI_COLOR_YELLOW "\n\n#########################\nComincio una nuova partita\nBilancio attuale: %d partite vinte, %d partite perse\nCrediti rimasti: %d\n#########################\n" ANSI_COLOR_RESET, partitevinte, partiteperse, contogiocatore.ammontare);
+    if(contogiocatore.ammontare <= 0) {
+        printf(ANSI_COLOR_YELLOW "\nHai terminato i crediti. Aggiorna il tuo conto.\nQuanto vuoi caricare?\n-" ANSI_COLOR_RESET);
+        int valorefinito;
+        scanf("%d", &valorefinito);
+        aggiornaammontare(&contogiocatore, valorefinito);
+        printf(ANSI_COLOR_YELLOW "\nHai con successo aggiornato il conto" ANSI_COLOR_RESET);
+    }
     // primo pezzo --> scelta puntata
     puntata = sceglipuntata();
     if(puntata != -1){
         printf(ANSI_COLOR_CYAN "\nHai scelto di puntare %d euro\n" ANSI_COLOR_RESET, puntata);
     } else {
-        printf(ANSI_COLOR_RED "\nScelta non valida" ANSI_COLOR_RESET);
+        printf(ANSI_COLOR_RED "\nScelta non valida. \nHai selezionato un valore non valido oppure hai finito i crediti" ANSI_COLOR_RESET);
         return 1;
     }
     // secondo pezzo --> carte utente
@@ -218,7 +225,6 @@ int gioca(){
     if(sommacartecomputer > 21){
         Sleep(1000);
         printf(ANSI_COLOR_GREEN"\n\nIl banco ha sballato, hai vinto!" ANSI_COLOR_RESET);
-        puntata = puntata * 2;
         aggiornaammontare(&contogiocatore, puntata);
         partitevinte++;
         return 1;
@@ -242,7 +248,6 @@ int gioca(){
     } else if (sommacarteutente > sommacartecomputer){
         Sleep(1000);
         printf(ANSI_COLOR_GREEN "\n\nHai vinto!" ANSI_COLOR_RESET);
-        puntata = puntata * 2;
         aggiornaammontare(&contogiocatore, puntata);
         partitevinte++;
         return 1;
@@ -262,11 +267,14 @@ int sceglipuntata(){
     }
     printf("\n-");
     int puntatagiocatore;
+    int puntatatemp;
     scanf("%d", &puntatagiocatore);
     for (int i = 0; i < sizeof(puntate) / sizeof(puntate[0]); i++) {
         if (puntatagiocatore == i) {
-            return puntate[i];
+            puntatatemp = puntate[i];
         }
     }
-    return -1;
+    if (puntatatemp < 0) return -1;
+    else if(puntatatemp > contogiocatore.ammontare) return -1;
+    else return puntatatemp;
 }
