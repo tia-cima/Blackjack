@@ -7,6 +7,8 @@
 #define ANSI_COLOR_RESET   "\x1b[0m" // reset
 #define ANSI_COLOR_MAGENTA "\x1b[35m" // banco
 
+int creaidgiocatore();
+
 void impostaconto(Conto* contopersona){
     printf(ANSI_COLOR_YELLOW "\nQuanto vuoi caricare sul tuo conto? Solo cifre intere\n-" ANSI_COLOR_RESET);
     int valore;
