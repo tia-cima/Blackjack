@@ -1,4 +1,5 @@
 //TODO ALLA FINE pulire il codice, astrazioni, ottimizzarlo
+//TODO readme e relazione su scelte implementative
 
 #include <stdio.h>
 #include <stdlib.h>
