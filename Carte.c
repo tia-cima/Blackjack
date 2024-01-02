@@ -65,7 +65,7 @@ void stampacarta(Carta valore, bool isutente){
     }
 }
 
-Carta daicarte(Carta* array, int* dimensionedelmazzo, bool isutente){ // dimensionedelmazzo per riferimento dato che devo accedere al valore direttamente e non alla copia, avere il valore 52 come copia non mi serve a niente
+Carta daicarte(Carta* array, int* dimensionedelmazzo, bool isutente){
     if (*dimensionedelmazzo <= 0) {
         printf(ANSI_COLOR_YELLOW "\n\nNon ci sono piu' carte. Rimescolo" ANSI_COLOR_RESET);
         popolamazzo(array);
