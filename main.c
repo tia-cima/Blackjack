@@ -1,5 +1,6 @@
 //TODO ALLA FINE pulire il codice, astrazioni, ottimizzarlo
 //TODO readme e relazione su scelte implementative
+//TODO indipendizzare i tipi rendendoli versatili per altri giochi (spostare funzioni inutili nel main)
 
 #include <stdio.h>
 #include <stdlib.h>
