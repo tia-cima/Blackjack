@@ -1,3 +1,8 @@
+//TODO split
+//TODO even money
+//TODO double
+//TODO insurance
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
