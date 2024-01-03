@@ -61,15 +61,17 @@ void stampacarta(Carta valore, bool isutente){
     else if(valore.isRe) {strcpy(figura, "Questa carta e' un re. ");}
     else {strcpy(figura, "");}
     if(isutente){
-        printf(ANSI_COLOR_CYAN "\n%d di %s. %s" ANSI_COLOR_RESET, valore.valore, tipo, figura);
+        if(valore.valore == 1) printf(ANSI_COLOR_CYAN "\nAsso di %s. %s" ANSI_COLOR_RESET, tipo, figura);
+        else printf(ANSI_COLOR_CYAN "\n%d di %s. %s" ANSI_COLOR_RESET, valore.valore, tipo, figura);
     } else {
-        printf(ANSI_COLOR_MAGENTA "\n\nIl banco ha pescato %d di %s. %s" ANSI_COLOR_RESET, valore.valore, tipo, figura);
+        if(valore.valore == 1) printf(ANSI_COLOR_MAGENTA "\n\nIl banco ha pescato asso di %s. %s" ANSI_COLOR_RESET, tipo, figura);
+        else printf(ANSI_COLOR_MAGENTA "\n\nIl banco ha pescato %d di %s. %s" ANSI_COLOR_RESET, valore.valore, tipo, figura);
     }
 }
 
 Carta daicarte(Carta* array, int* dimensionedelmazzo, bool isutente){
     if (*dimensionedelmazzo <= 0) {
-        printf(ANSI_COLOR_YELLOW "\n\nNon ci sono piu' carte. Rimescolo" ANSI_COLOR_RESET);
+        printf(ANSI_COLOR_YELLOW "\n\nNon ci sono piu' carte. Rimescolo\n" ANSI_COLOR_RESET);
         popolamazzo(array);
         *dimensionedelmazzo = 52;
     }

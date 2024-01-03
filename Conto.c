@@ -1,7 +1,6 @@
 #include "Conto.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #define ANSI_COLOR_RED     "\x1b[31m" // sconfitta
 #define ANSI_COLOR_GREEN   "\x1b[32m" // vittoria
 #define ANSI_COLOR_YELLOW  "\x1b[33m" // info

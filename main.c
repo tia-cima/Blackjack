@@ -1,6 +1,3 @@
-//TODO ALLA FINE pulire il codice, astrazioni, ottimizzarlo
-//TODO indipendizzare i tipi rendendoli versatili per altri giochi (spostare funzioni inutili nel main)
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -223,6 +220,14 @@ int gioca(){
         printf(ANSI_COLOR_MAGENTA "\nLa somma delle sue carte e' %d" ANSI_COLOR_RESET, sommacartecomputer);
     } 
     Sleep(1000);
+    while (sommacartecomputer < sommacarteutente){
+        Sleep(1000);
+        cartaComputer[counter] = daicarte(carte, &dimensionedelmazzo, false);
+        stampacarta(cartaComputer[counter], false);
+        if (cartaComputer[counter].valore == 1) sommacartecomputer += sceglivaloreassobanco(sommacartecomputer);
+        else sommacartecomputer += cartaComputer[counter].valore;    
+        printf(ANSI_COLOR_MAGENTA "\nLa somma delle sue carte e' %d" ANSI_COLOR_RESET, sommacartecomputer);
+    }
     if(sommacartecomputer > 21){
         Sleep(1000);
         printf(ANSI_COLOR_GREEN"\n\nIl banco ha sballato, hai vinto!" ANSI_COLOR_RESET);
@@ -238,14 +243,6 @@ int gioca(){
         partiteperse++;
         return 1;   
     } 
-    while (sommacartecomputer < sommacarteutente){
-        Sleep(1000);
-        cartaComputer[counter] = daicarte(carte, &dimensionedelmazzo, false);
-        stampacarta(cartaComputer[counter], false);
-        if (cartaComputer[counter].valore == 1) sommacartecomputer += sceglivaloreassobanco(sommacartecomputer);
-        else sommacartecomputer += cartaComputer[counter].valore;    
-        printf(ANSI_COLOR_MAGENTA "\nLa somma delle sue carte e' %d" ANSI_COLOR_RESET, sommacartecomputer);
-    }
     printf(ANSI_COLOR_MAGENTA "\n\nIl banco si ferma" ANSI_COLOR_RESET);
     // sesto pezzo --> tirare le somme e vedere chi ha vinto
     Sleep(1000);
