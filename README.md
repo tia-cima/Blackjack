@@ -53,7 +53,7 @@ Dopo la fine di ogni partita viene aggiornato il counter di partite vinte/perse 
 La funzione `gioca()`, come già detto, racchiude tutta la logica del blackjack. 
 
 
-Viene chieso innanzitutto quanto si vuole puntare usando la funzione `sceglipuntata()`, che restituisce il valore da puntare (la puntata non viene scalata subito, ovvero appena si decide quanto puntare l'ammontare del file dell'utente rimane invariato. In caso di vincita, verrà poi aggiunta la somma vinta e in caso di perdità allora si che verranno sottratti i soldi dal file con l'ammontare. Ho deciso di fare così perché notavo un rallentamento minimo nella fase di aggiornamento dell'ammontare nel momento in cui andavo a puntare).
+Viene chieso innanzitutto quanto si vuole puntare usando la funzione `sceglipuntata()`, che restituisce il valore da puntare (la puntata non viene scalata subito, ovvero appena si decide quanto puntare l'ammontare del file dell'utente rimane invariato. In caso di vincita, verrà poi aggiunta la somma vinta e in caso di perdità allora si che verranno sottratti i soldi dal file con l'ammontare. Ho deciso di fare così perché non mi andava di far perdere soldi all'utente in caso di crash del programma).
 
 Dopodiché, si procede con la logica pari passo del blackjack: 
 1. Vengono date all'utente le prime due carte tramite la funzione `daicarte()`. Stesso discorso per il banco, però una rimane nascosta.<br>Queste due carte finiscono nei rispettivi vettori.
@@ -68,7 +68,7 @@ Dopodiché, si procede con la logica pari passo del blackjack:
 ### Aspetti Logici
 - Il banco non è ne intelligenza artificiale ne un'altra persona. Segue semplicemente la regola base che il banco deve chiedere carta minimo fino a 17, e se il totale delle sue carte è inferiore a quello dell'utente, chiede ancora carte, altrimenti si ferma. 
 
-- Il conto funziona attraverso i file. Su di essi, chiamati come l'id del giocatore che inserisce in fase di creazione, verrà immagazzinato l'ammontare di euro caricati dal giocatore. 
+- Il conto funziona attraverso i file. Su di essi, chiamati come l'id del giocatore che inserisce in fase di creazione, verrà immagazzinato l'ammontare di euro caricati dal giocatore. Per tener traccia dell'id da usare per il prossimo account da creare, esiste un file `id.txt` che contiene una serie di caratteri *1*. Questi caratteri servono per contare il numero di id, e quindi di account, creati fin ora. Ogni volta che creo un utente, un carattere *1* viene aggiunto al file e l'utente prende l'id calcolato come quantità di *1* + 1.
 
 - L'asso del banco è determinato in base alle carte dell'utente. In base alla situazione, viene deciso qual è il valore corretto da assegnare.
 
@@ -81,6 +81,8 @@ Dopodiché, si procede con la logica pari passo del blackjack:
 - Viene usato un menu a scelta per ogni tipo di interazione con il programma. La scelta è gestita usando non i valori direttamente da usare ma scegliendo, fra un range di risposte, quella desiderata. 
 
 - Dopo ogni interazione con l'utente, il programma si riserva un secondo di sleep in modo tale da non confondere l'utente andando troppo veloce. Le varie funzioni `sleep()`, che vanno dai 1 ai 2 secondi massimo, servono proprio per questo, per limitare la velocità del programma e non farlo risultare troppo incomprensibile all'utente, che non riuscirebbe sennò a stare al passo con la frequenza di stampa delle istruzioni.
+
+- Per rendere più versatili le funzioni, ho adottato delle variabili booleane che mi aiutavano a differenziare la funzione per due casi distinti dello stesso tipo. Per esempio, la scelta del valore dell'asso è stata differenziata in scelta durante la partita e scelta dopo essersi fermati. Ciò è stato possibile con il parametro `isfermato`, che come dice il nome riusciva a far capire al programma quando l'utente si è fermato.
 
 - Ogni output è caratterizzato da un colore diverso tramite le costanti del tipo `ANSI_COLOR...`, con l'obiettivo di dare una maggiore leggibilità al programma. Ogni colore ha un significato: 
   - **Rosso**: messaggi di sconfitta.

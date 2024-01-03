@@ -2,10 +2,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#define ANSI_COLOR_RED     "\x1b[31m" // sconfitta
+#define ANSI_COLOR_GREEN   "\x1b[32m" // vittoria
 #define ANSI_COLOR_YELLOW  "\x1b[33m" // info
+#define ANSI_COLOR_MAGENTA "\x1b[35m" // banco
 #define ANSI_COLOR_CYAN    "\x1b[36m" // utente
 #define ANSI_COLOR_RESET   "\x1b[0m" // reset
-#define ANSI_COLOR_MAGENTA "\x1b[35m" // banco
 
 void popolamazzo(Carta* array) {
     const char tipi[] = {'c', 'q', 'f', 'p'};
@@ -78,29 +80,4 @@ Carta daicarte(Carta* array, int* dimensionedelmazzo, bool isutente){
     }
     (*dimensionedelmazzo)--;
     return cartaselezionata;
-}
-
-int sceglivaloreassoutente(Carta valore, int* counterassiutente){
-    printf(ANSI_COLOR_CYAN "\nE' uscito un asso. Vuoi scegliere di usarlo come 1, come 11 o decidere dopo?\n1) 1\n2) 11\n3) decidi dopo\n-" ANSI_COLOR_RESET);
-    int sceltaasso = 0; 
-    scanf("%d", &sceltaasso);
-    switch (sceltaasso) {
-        case 1:
-            return 1;
-        case 2:
-            return 11;
-        case 3: {
-            (*counterassiutente)++;
-            return 1;
-        }
-        default:
-            return 1;
-    }   
-}
-
-int sceglivaloreassobanco(int sommacartecomputer){
-    if (sommacartecomputer + 11 <= 21) {
-        return 11;
-    }
-    return 1;
 }
