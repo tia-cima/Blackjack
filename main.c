@@ -2,6 +2,7 @@
 //TODO even money
 //TODO double
 //TODO insurance
+//TODO CARTE UGUALI COL BANCO PAREGGIA NON PERDE
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -35,12 +36,13 @@ int puntate[] = {10, 20, 50, 100, 200, 500};
 int puntata = 0;
 int sommacarteutentesplit = 0;
 int counterassiutentesplit = 0; 
+int righecartegiocatore = 1;
 bool isblackjack;
-            // contogiocatore.ammontare = 1200;
 bool isblackjacksplit;
 bool issplit = false;
 Carta carte[52];
-Carta cartegiocatori[2][ARRAY_DIMENSION];
+// Carta cartegiocatori[2][ARRAY_DIMENSION];
+Carta** cartegiocatori;
 Carta* cartePtr = carte;
 Conto contogiocatore;
 
@@ -90,6 +92,8 @@ int main() {
 }
 
 int gioca(){       
+    cartegiocatori = (Carta **)malloc((righecartegiocatore + 1) * sizeof(Carta *));
+    for (int i = 0; i < (righecartegiocatore + 1); i++) cartegiocatori[i] = (Carta *)malloc(ARRAY_DIMENSION * sizeof(Carta));    
     sommacarteutente = 0;
     sommacartecomputer = 0;
     counterassiutente = 0; 
@@ -117,74 +121,23 @@ int gioca(){
         printf(ANSI_COLOR_RED "\nScelta non valida. \nHai selezionato un valore non valido oppure hai finito i crediti" ANSI_COLOR_RESET);
         return 1;
     }
-    // secondo pezzo --> carte utente
-    cartegiocatori[0][0] = daicarte(carte, &dimensionedelmazzo, true); 
-    cartegiocatori[0][1] = daicarte(carte, &dimensionedelmazzo, true);
-    stampacarta(cartegiocatori[0][0], true);
-    stampacarta(cartegiocatori[0][1], true);    
-    if(cartegiocatori[0][0].valore == cartegiocatori[0][1].valore && contogiocatore.ammontare >= puntata * 2){
-        printf(ANSI_COLOR_CYAN "\nHai la possibilita' di splittare. Vuoi splittare le tue carte? Dovrai puntare la stessa puntata iniziale.\n1) Si\n2) No\n-" ANSI_COLOR_RESET);
-        int sceltasplit = 1;
-        // scanf("%d", &sceltasplit);
-        switch (sceltasplit)
-        {
-            case 1:{
-                aggiornaammontare(&contogiocatore, -puntata);
-                issplit = true;
-                if (cartegiocatori[0][0].valore == 1 && cartegiocatori[0][1].valore == 1) {
-                    sommacarteutente += sceglivaloreassoutente(cartegiocatori[0][0], &counterassiutente, false);
-                    cartegiocatori[0][1] = daicarte(carte, &dimensionedelmazzo, true);
-                    if (cartegiocatori[0][1].valore == 1) sommacarteutente += sceglivaloreassoutente(cartegiocatori[0][1], &counterassiutente, false);
-                    else sommacarteutente += cartegiocatori[0][1].valore;  
-                    stampacarta(cartegiocatori[0][0], true);
-                    stampacarta(cartegiocatori[0][1], true);    
-                    printf(ANSI_COLOR_CYAN "\nSomma primo mazzo: %d" ANSI_COLOR_RESET, sommacarteutente);
-                    printf(ANSI_COLOR_CYAN "\nSomma secondo mazzo: %d" ANSI_COLOR_RESET, sommacarteutentesplit);                   
-                } else {
-                    sommacarteutente = cartegiocatori[0][0].valore;                    
-                    cartegiocatori[0][1] = daicarte(carte, &dimensionedelmazzo, true);
-                    if (cartegiocatori[0][1].valore == 1) sommacarteutente += sceglivaloreassoutente(cartegiocatori[0][1], &counterassiutente, false);
-                    else sommacarteutente += cartegiocatori[0][1].valore;    
-                    stampacarta(cartegiocatori[0][0], true);
-                    stampacarta(cartegiocatori[0][1], true);    
-                    printf(ANSI_COLOR_CYAN "\nSomma primo mazzo: %d" ANSI_COLOR_RESET, sommacarteutente);
-                    printf(ANSI_COLOR_CYAN "\nSomma secondo mazzo: %d" ANSI_COLOR_RESET, sommacarteutentesplit);                   
-                }
-            }
-            break;
-            case 2: {
-                if (cartegiocatori[0][0].valore == 1) sommacarteutente += sceglivaloreassoutente(cartegiocatori[0][0], &counterassiutente, false);
-                else sommacarteutente += cartegiocatori[0][0].valore;
-                if (cartegiocatori[0][1].valore == 1) sommacarteutente += sceglivaloreassoutente(cartegiocatori[0][1], &counterassiutente, false);
-                else sommacarteutente += cartegiocatori[0][1].valore;    
-                if(sommacarteutente == 21) printf(ANSI_COLOR_CYAN "\nHai fatto blackjack. Attendi il risultato del banco per vedere se hai vinto" ANSI_COLOR_MAGENTA);
-                printf(ANSI_COLOR_CYAN "\nIn totale hai %d" ANSI_COLOR_RESET, sommacarteutente);
-            }
-            break;
-            default:
-            break;
-        }
-    } else {
-        if (cartegiocatori[0][0].valore == 1) sommacarteutente += sceglivaloreassoutente(cartegiocatori[0][0], &counterassiutente, false);
-        else sommacarteutente += cartegiocatori[0][0].valore;
-        if (cartegiocatori[0][1].valore == 1) sommacarteutente += sceglivaloreassoutente(cartegiocatori[0][1], &counterassiutente, false);
-        else sommacarteutente += cartegiocatori[0][1].valore;    
-        if(sommacarteutente == 21) printf(ANSI_COLOR_CYAN "\nHai fatto blackjack. Attendi il risultato del banco per vedere se hai vinto" ANSI_COLOR_MAGENTA);
-        printf(ANSI_COLOR_CYAN "\nIn totale hai %d" ANSI_COLOR_RESET, sommacarteutente);
-    }
-    // terzo pezzo --> carte banco
+    // secondo pezzo --> distribuzione delle carte
+    cartegiocatori[1][0] = daicarte(carte, &dimensionedelmazzo, true); 
+    cartegiocatori[1][1] = daicarte(carte, &dimensionedelmazzo, true);
+    stampacarta(cartegiocatori[1][0], true);
+    stampacarta(cartegiocatori[1][1], true);    
     Sleep(1000);
-    cartegiocatori[1][0] = daicarte(carte, &dimensionedelmazzo, false); 
-    cartegiocatori[1][0] = daicarte(carte, &dimensionedelmazzo, false);
-    stampacarta(cartegiocatori[1][0], false);
+    cartegiocatori[0][0] = daicarte(carte, &dimensionedelmazzo, false); 
+    cartegiocatori[0][1] = daicarte(carte, &dimensionedelmazzo, false);
+    stampacarta(cartegiocatori[0][0], false);
     printf(ANSI_COLOR_MAGENTA "\nL'altra carta rimane nascosta." ANSI_COLOR_RESET);
-    if (cartegiocatori[1][0].valore == 1) sommacartecomputer += sceglivaloreassobanco(sommacartecomputer);
-    else sommacartecomputer += cartegiocatori[1][0].valore;
-    if (cartegiocatori[1][0].valore == 1) sommacartecomputer += sceglivaloreassobanco(sommacartecomputer);
-    else sommacartecomputer += cartegiocatori[1][0].valore;    
+    if (cartegiocatori[0][1].valore == 1) sommacartecomputer += sceglivaloreassobanco(sommacartecomputer);
+    else sommacartecomputer += cartegiocatori[0][1].valore;
+    if (cartegiocatori[0][1].valore == 1) sommacartecomputer += sceglivaloreassobanco(sommacartecomputer);
+    else sommacartecomputer += cartegiocatori[0][1].valore;    
     if(sommacartecomputer == 21){
         Sleep(1000);
-        stampacarta(cartegiocatori[1][0], false);
+        stampacarta(cartegiocatori[0][1], false);
         printf(ANSI_COLOR_MAGENTA "Era la sua carta nascosta" ANSI_COLOR_RESET);
         printf(ANSI_COLOR_MAGENTA "\nLa somma delle sue carte e' %d" ANSI_COLOR_RESET, sommacartecomputer);
         printf(ANSI_COLOR_RED "\n\nIl banco ha fatto blackjack, hai perso" ANSI_COLOR_RESET);
@@ -194,7 +147,7 @@ int gioca(){
     } else if (sommacarteutente == 21){        
         if(sommacartecomputer == 21){
             Sleep(1000);
-            stampacarta(cartegiocatori[1][0], false);
+            stampacarta(cartegiocatori[0][1], false);
             printf(ANSI_COLOR_MAGENTA "Era la sua carta nascosta" ANSI_COLOR_RESET);
             printf(ANSI_COLOR_MAGENTA "\nLa somma delle sue carte e' %d" ANSI_COLOR_RESET, sommacartecomputer);
             printf(ANSI_COLOR_RED "\n\nIl banco ha fatto blackjack, hai perso" ANSI_COLOR_RESET);
@@ -207,90 +160,101 @@ int gioca(){
             isblackjack = true;
             continua = 0; 
         }
-    } 
-    // quarto pezzo --> chiedi carte
-    if(issplit){
-        printf(ANSI_COLOR_YELLOW "\n\nMAZZO 1" ANSI_COLOR_RESET);
-        while(continua > 0) {
-            Sleep(1000);
-            printf(ANSI_COLOR_CYAN "\n\nCosa vuoi fare?\n1) Chiedi carta\n2) Fermati\n-" ANSI_COLOR_RESET);
-            scanf("%d", &scelta);
-            switch (scelta) {
-                case 1: {
-                    continua = 1;
-                    cartegiocatori[0][counter] = daicarte(carte, &dimensionedelmazzo, true);
-                    stampacarta(cartegiocatori[0][counter], true);
-                    if (cartegiocatori[0][counter].valore == 1) sommacarteutente += sceglivaloreassoutente(cartegiocatori[0][counter], &counterassiutente, false);
-                    else sommacarteutente += cartegiocatori[0][counter].valore;
-                    printf(ANSI_COLOR_CYAN "\nLa somma delle tue carte e' %d" ANSI_COLOR_RESET, sommacarteutente);
-                    if(sommacarteutente > 21){
-                        Sleep(1000);
-                        printf(ANSI_COLOR_RED "\n\nIl primo mazzo ha sballato, perdi la puntata" ANSI_COLOR_RESET);
-                        aggiornaammontare(&contogiocatore, -puntata);
-                        continua = 0;                   
-                    } else if(sommacarteutente == 21){
-                        Sleep(1000);
-                        printf(ANSI_COLOR_CYAN "\nHai fatto blackjack sul primo mazzo. Attendi il risultato del banco per vedere se hai vinto" ANSI_COLOR_RESET);
-                        isblackjack = true;     
-                        continua = 0;
-                    }
-                } break;
-                case 2: {
-                    printf(ANSI_COLOR_YELLOW "\nTi sei fermato" ANSI_COLOR_RESET);
-                    if(counterassiutente > 0){
-                        int valoretemp = 0; 
-                        printf(ANSI_COLOR_YELLOW "\nHai degli assi da gestire" ANSI_COLOR_RESET);
-                        for (int i = 0; i < counterassiutente; i++) {
-                            valoretemp = sceglivaloreassoutente(cartegiocatori[0][0], &counterassiutente, true);
-                            if (valoretemp == 11) sommacarteutente += 10;
-                            printf(ANSI_COLOR_CYAN "\nLa somma delle tue carte e' %d" ANSI_COLOR_RESET, sommacarteutente);                        
-                        }
-                        if(sommacarteutente > 21){
-                            Sleep(1000);
-                            printf(ANSI_COLOR_RED "\n\nIl primo mazzo ha sballato, perdi la puntata" ANSI_COLOR_RESET);
-                            aggiornaammontare(&contogiocatore, -puntata);
-                            continua = 0;
-                        } else if(sommacarteutente == 21){
-                            Sleep(1000);
-                            printf(ANSI_COLOR_CYAN "\nHai fatto blackjack sul primo mazzo. Attendi il risultato del banco per vedere se hai vinto" ANSI_COLOR_RESET);
-                            isblackjack = true;     
-                            continua = 0;
-                        }
-                    }
-                    continua = 0;
-                } break;
-                default: continua = 1;
-                    break;
+    }    
+    //terzo step --> split
+    if(cartegiocatori[1][0].valore == cartegiocatori[1][1].valore && contogiocatore.ammontare >= puntata * 2){
+        printf(ANSI_COLOR_CYAN "\nHai la possibilita' di splittare. Vuoi splittare le tue carte? Dovrai puntare la stessa puntata iniziale.\n1) Si\n2) No\n-" ANSI_COLOR_RESET);
+        int sceltasplit = 1;
+        // scanf("%d", &sceltasplit);
+        switch (sceltasplit)
+        {
+            case 1:{
+                aggiornaammontare(&contogiocatore, -puntata);
+                issplit = true;
+                righecartegiocatore++;               
+                cartegiocatori = (Carta **)realloc(cartegiocatori, (righecartegiocatore + 1) * sizeof(Carta *));
+                cartegiocatori[righecartegiocatore] = (Carta *)malloc(ARRAY_DIMENSION * sizeof(Carta));
+                cartegiocatori[righecartegiocatore][0] = cartegiocatori[1][1];
+                if (cartegiocatori[1][0].valore == 1 && cartegiocatori[1][1].valore == 1) {
+                    sommacarteutente += sceglivaloreassoutente(cartegiocatori[1][0], &counterassiutente, false);
+                    cartegiocatori[1][1] = daicarte(carte, &dimensionedelmazzo, true);
+                    if (cartegiocatori[1][1].valore == 1) sommacarteutente += sceglivaloreassoutente(cartegiocatori[1][1], &counterassiutente, false);
+                    else sommacarteutente += cartegiocatori[0][1].valore;  
+                    stampacarta(cartegiocatori[1][0], true);
+                    stampacarta(cartegiocatori[1][1], true);    
+                    printf(ANSI_COLOR_CYAN "\nSomma primo mazzo: %d\n" ANSI_COLOR_RESET, sommacarteutente);
+                    sommacarteutentesplit += sceglivaloreassoutente(cartegiocatori[righecartegiocatore][0], &counterassiutentesplit, false);
+                    cartegiocatori[righecartegiocatore][1] = daicarte(carte, &dimensionedelmazzo, true);
+                    if (cartegiocatori[righecartegiocatore][1].valore == 1) sommacarteutentesplit += sceglivaloreassoutente(cartegiocatori[righecartegiocatore][1], &counterassiutentesplit, false);
+                    else sommacarteutentesplit += cartegiocatori[righecartegiocatore][1].valore;  
+                    stampacarta(cartegiocatori[righecartegiocatore][0], true);
+                    stampacarta(cartegiocatori[righecartegiocatore][1], true);    
+                    printf(ANSI_COLOR_CYAN "\nSomma secondo mazzo: %d" ANSI_COLOR_RESET, sommacarteutentesplit);                   
+                } else {
+                    sommacarteutente += cartegiocatori[1][0].valore;                    
+                    cartegiocatori[1][1] = daicarte(carte, &dimensionedelmazzo, true);
+                    if (cartegiocatori[1][1].valore == 1) sommacarteutente += sceglivaloreassoutente(cartegiocatori[1][1], &counterassiutente, false);
+                    else sommacarteutente += cartegiocatori[1][1].valore;    
+                    stampacarta(cartegiocatori[1][0], true);
+                    stampacarta(cartegiocatori[1][1], true);    
+                    printf(ANSI_COLOR_CYAN "\nSomma primo mazzo: %d\n" ANSI_COLOR_RESET, sommacarteutente);
+                    sommacarteutentesplit += cartegiocatori[righecartegiocatore][0].valore;
+                    cartegiocatori[righecartegiocatore][1] = daicarte(carte, &dimensionedelmazzo, true);
+                    if (cartegiocatori[righecartegiocatore][1].valore == 1) sommacarteutentesplit += sceglivaloreassoutente(cartegiocatori[righecartegiocatore][1], &counterassiutentesplit, false);
+                    else sommacarteutentesplit += cartegiocatori[righecartegiocatore][1].valore;  
+                    stampacarta(cartegiocatori[righecartegiocatore][0], true);
+                    stampacarta(cartegiocatori[righecartegiocatore][1], true);    
+                    printf(ANSI_COLOR_CYAN "\nSomma secondo mazzo: %d" ANSI_COLOR_RESET, sommacarteutentesplit);   
+                }
             }
-            counter++;
+            break;
+            case 2: {
+                if (cartegiocatori[1][0].valore == 1) sommacarteutente += sceglivaloreassoutente(cartegiocatori[1][0], &counterassiutente, false);
+                else sommacarteutente += cartegiocatori[1][0].valore;
+                if (cartegiocatori[1][1].valore == 1) sommacarteutente += sceglivaloreassoutente(cartegiocatori[1][1], &counterassiutente, false);
+                else sommacarteutente += cartegiocatori[1][1].valore;    
+                if(sommacarteutente == 21) printf(ANSI_COLOR_CYAN "\nHai fatto blackjack. Attendi il risultato del banco per vedere se hai vinto" ANSI_COLOR_MAGENTA);
+                printf(ANSI_COLOR_CYAN "\n\nIn totale hai %d" ANSI_COLOR_RESET, sommacarteutente);
+            }
+            break;
+            default:
+            break;
         }
-        counter = 2;
-        continua = 1;
-        printf(ANSI_COLOR_YELLOW "\n\nMAZZO 2" ANSI_COLOR_RESET);
     } else {
-        while(continua > 0) {
+        if (cartegiocatori[1][0].valore == 1) sommacarteutente += sceglivaloreassoutente(cartegiocatori[1][0], &counterassiutente, false);
+        else sommacarteutente += cartegiocatori[1][0].valore;
+        if (cartegiocatori[1][1].valore == 1) sommacarteutente += sceglivaloreassoutente(cartegiocatori[1][1], &counterassiutente, false);
+        else sommacarteutente += cartegiocatori[1][1].valore;    
+        if(sommacarteutente == 21) printf(ANSI_COLOR_CYAN "\nHai fatto blackjack. Attendi il risultato del banco per vedere se hai vinto" ANSI_COLOR_MAGENTA);
+        printf(ANSI_COLOR_CYAN "\n\nIn totale hai %d" ANSI_COLOR_RESET, sommacarteutente);
+    }
+    // quarto pezzo --> chiedi carte
+
+    for (int i = 1; i <= righecartegiocatore; i++){
+        for (int j = 0; j < ARRAY_DIMENSION; j++){
+            if(issplit) printf(ANSI_COLOR_YELLOW "\nMazzo numero %d" ANSI_COLOR_RESET, i);
             Sleep(1000);
             printf(ANSI_COLOR_CYAN "\n\nCosa vuoi fare?\n1) Chiedi carta\n2) Fermati\n-" ANSI_COLOR_RESET);
             scanf("%d", &scelta);
             switch (scelta) {
                 case 1: {
                     continua = 1;
-                    cartegiocatori[0][counter] = daicarte(carte, &dimensionedelmazzo, true);
-                    stampacarta(cartegiocatori[0][counter], true);
-                    if (cartegiocatori[0][counter].valore == 1) sommacarteutente += sceglivaloreassoutente(cartegiocatori[0][counter], &counterassiutente, false);
-                    else sommacarteutente += cartegiocatori[0][counter].valore;
+                    cartegiocatori[i][j] = daicarte(carte, &dimensionedelmazzo, true);
+                    stampacarta(cartegiocatori[i][j], true);
+                    if (cartegiocatori[0][j].valore == 1) sommacarteutente += sceglivaloreassoutente(cartegiocatori[i][j], &counterassiutente, false);
+                    else sommacarteutente += cartegiocatori[i][j].valore;
                     printf(ANSI_COLOR_CYAN "\nLa somma delle tue carte e' %d" ANSI_COLOR_RESET, sommacarteutente);
                     if(sommacarteutente > 21){
                         Sleep(1000);
                         printf(ANSI_COLOR_RED "\n\nHai sballato, hai perso" ANSI_COLOR_RESET);
                         aggiornaammontare(&contogiocatore, -puntata);
                         partiteperse++;
-                        return 1;
+                        break;
                     } else if(sommacarteutente == 21){
                         Sleep(1000);
                         printf(ANSI_COLOR_CYAN "\nHai fatto blackjack. Attendi il risultato del banco per vedere se hai vinto" ANSI_COLOR_RESET);
                         isblackjack = true;
-                        continua = 0;
+                        break;
                     }
                 } break;
                 case 2: {
@@ -298,7 +262,7 @@ int gioca(){
                     if(counterassiutente > 0){
                         int valoretemp = 0; 
                         printf(ANSI_COLOR_YELLOW "\nHai degli assi da gestire" ANSI_COLOR_RESET);
-                        for (int i = 0; i < counterassiutente; i++) {
+                        for (int a = 0; a < counterassiutente; a++) {
                             valoretemp = sceglivaloreassoutente(cartegiocatori[0][0], &counterassiutente, true);
                             if (valoretemp == 11) sommacarteutente += 10;
                             printf(ANSI_COLOR_CYAN "\nLa somma delle tue carte e' %d" ANSI_COLOR_RESET, sommacarteutente);                        
@@ -308,53 +272,50 @@ int gioca(){
                             printf(ANSI_COLOR_RED "\n\nHai sballato, hai perso" ANSI_COLOR_RESET);
                             aggiornaammontare(&contogiocatore, -puntata);
                             partiteperse++;
-                            return 1;
+                            break;
                         } else if(sommacarteutente == 21){
                             Sleep(1000);
                             printf(ANSI_COLOR_CYAN "\nHai fatto blackjack. Attendi il risultato del banco per vedere se hai vinto" ANSI_COLOR_RESET);
                             isblackjack = true;     
-                            continua = 0;
+                            break;
                         }
                     }
-                    continua = 0;
                 } break;
-                default: continua = 1;
+                default:
                     break;
-            }
-            counter++;
+            }               
         }
     }
-    counter = 2;
     // quinto pezzo --> chiedi carte banco
     Sleep(1000);
-    stampacarta(cartegiocatori[1][0], false);
+    stampacarta(cartegiocatori[0][1], false);
     printf(ANSI_COLOR_MAGENTA "Era la sua carta nascosta" ANSI_COLOR_RESET);
     printf(ANSI_COLOR_MAGENTA "\nLa somma delle sue carte e' %d" ANSI_COLOR_RESET, sommacartecomputer);
     while(sommacartecomputer < 17) {
         Sleep(1000);
-        cartegiocatori[1][counter] = daicarte(carte, &dimensionedelmazzo, false);
-        stampacarta(cartegiocatori[1][counter], false);
-        if (cartegiocatori[1][counter].valore == 1) sommacartecomputer += sceglivaloreassobanco(sommacartecomputer);
-        else sommacartecomputer += cartegiocatori[1][counter].valore;    
+        cartegiocatori[0][counter] = daicarte(carte, &dimensionedelmazzo, false);
+        stampacarta(cartegiocatori[0][counter], false);
+        if (cartegiocatori[0][counter].valore == 1) sommacartecomputer += sceglivaloreassobanco(sommacartecomputer);
+        else sommacartecomputer += cartegiocatori[0][counter].valore;    
         printf(ANSI_COLOR_MAGENTA "\nLa somma delle sue carte e' %d" ANSI_COLOR_RESET, sommacartecomputer);
     } 
     Sleep(1000);
     if(issplit){
         while (sommacartecomputer < sommacarteutente || sommacartecomputer < sommacarteutentesplit){
             Sleep(1000);
-            cartegiocatori[1][counter] = daicarte(carte, &dimensionedelmazzo, false);
-            stampacarta(cartegiocatori[1][counter], false);
-            if (cartegiocatori[1][counter].valore == 1) sommacartecomputer += sceglivaloreassobanco(sommacartecomputer);
-            else sommacartecomputer += cartegiocatori[1][counter].valore;    
+            cartegiocatori[0][counter] = daicarte(carte, &dimensionedelmazzo, false);
+            stampacarta(cartegiocatori[0][counter], false);
+            if (cartegiocatori[0][counter].valore == 1) sommacartecomputer += sceglivaloreassobanco(sommacartecomputer);
+            else sommacartecomputer += cartegiocatori[0][counter].valore;    
             printf(ANSI_COLOR_MAGENTA "\nLa somma delle sue carte e' %d" ANSI_COLOR_RESET, sommacartecomputer);
         }
     } else{
         while (sommacartecomputer < sommacarteutente){
             Sleep(1000);
-            cartegiocatori[1][counter] = daicarte(carte, &dimensionedelmazzo, false);
-            stampacarta(cartegiocatori[1][counter], false);
-            if (cartegiocatori[1][counter].valore == 1) sommacartecomputer += sceglivaloreassobanco(sommacartecomputer);
-            else sommacartecomputer += cartegiocatori[1][counter].valore;    
+            cartegiocatori[0][counter] = daicarte(carte, &dimensionedelmazzo, false);
+            stampacarta(cartegiocatori[0][counter], false);
+            if (cartegiocatori[0][counter].valore == 1) sommacartecomputer += sceglivaloreassobanco(sommacartecomputer);
+            else sommacartecomputer += cartegiocatori[0][counter].valore;    
             printf(ANSI_COLOR_MAGENTA "\nLa somma delle sue carte e' %d" ANSI_COLOR_RESET, sommacartecomputer);
         }
     }
@@ -447,6 +408,7 @@ int gioca(){
             return 1;
         }
     }
+    free(cartegiocatori);
 }
 
 int sceglipuntata(){

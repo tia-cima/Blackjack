@@ -75,11 +75,22 @@ Carta daicarte(Carta* array, int* dimensionedelmazzo, bool isutente){
         popolamazzo(array);
         *dimensionedelmazzo = 52;
     }
-    int randomint = rand() % *dimensionedelmazzo;
+    int randomint = 4;
     Carta cartaselezionata = array[randomint];
-    for (int i = randomint; i < *dimensionedelmazzo - 1; i++) {
-        array[i] = array[i + 1];
-    }
-    (*dimensionedelmazzo)--;
+    // for (int i = randomint; i < *dimensionedelmazzo - 1; i++) {
+    //     array[i] = array[i + 1];
+    // }
     return cartaselezionata;
+    // if (*dimensionedelmazzo <= 0) {
+    //     printf(ANSI_COLOR_YELLOW "\n\nNon ci sono piu' carte. Rimescolo\n" ANSI_COLOR_RESET);
+    //     popolamazzo(array);
+    //     *dimensionedelmazzo = 52;
+    // }
+    // int randomint = rand() % *dimensionedelmazzo;
+    // Carta cartaselezionata = array[randomint];
+    // for (int i = randomint; i < *dimensionedelmazzo - 1; i++) {
+    //     array[i] = array[i + 1];
+    // }
+    // (*dimensionedelmazzo)--;
+    // return cartaselezionata;
 }
