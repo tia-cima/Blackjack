@@ -14,7 +14,8 @@ void popolamazzo(Carta* array) {
     int index = 0;
     for (int i = 0; i < 4; i++) { 
         for (int j = 1; j <= 13; j++) { 
-            array[index].valore = (j > 10) ? 10 : j; // if c > 0 assegna 10, senno 10
+            // array[index].valore = (j > 10) ? 10 : j; // if c > 0 assegna 10, senno 10
+            array[index].valore = 4; // if c > 0 assegna 10, senno 10
             array[index].tipo = tipi[i];
             array[index].isJack = (j == 11);
             array[index].isRegina = (j == 12);
@@ -70,17 +71,6 @@ void stampacarta(Carta valore, bool isutente){
 }
 
 Carta daicarte(Carta* array, int* dimensionedelmazzo, bool isutente){
-    // if (*dimensionedelmazzo <= 0) {
-    //     printf(ANSI_COLOR_YELLOW "\n\nNon ci sono piu' carte. Rimescolo\n" ANSI_COLOR_RESET);
-    //     popolamazzo(array);
-    //     *dimensionedelmazzo = 52;
-    // }
-    // int randomint = 4;
-    // Carta cartaselezionata = array[randomint];
-    // // for (int i = randomint; i < *dimensionedelmazzo - 1; i++) {
-    // //     array[i] = array[i + 1];
-    // // }
-    // return cartaselezionata;
     if (*dimensionedelmazzo <= 0) {
         printf(ANSI_COLOR_YELLOW "\n\nNon ci sono piu' carte. Rimescolo\n" ANSI_COLOR_RESET);
         popolamazzo(array);
