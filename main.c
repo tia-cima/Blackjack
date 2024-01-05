@@ -3,7 +3,6 @@
 //TODO double
 //TODO insurance
 //TODO CARTE UGUALI COL BANCO PAREGGIA NON PERDE
-//TODO GESTIRE BLACKJACK CON NUOVA LOGICA
 //TODO pure blackjack
 
 #include <stdio.h>
@@ -280,6 +279,8 @@ int gioca(){
             }               
         }
     }
+    printf(ANSI_COLOR_CYAN "\n\nI tuoi mazzi:\n" ANSI_COLOR_RESET);
+    for (int i = 1; i <= righecartegiocatore; i++) printf(ANSI_COLOR_CYAN "-Numero %d: %d\n" ANSI_COLOR_RESET, i, somme[i]);
     // quinto pezzo --> chiedi carte banco
     Sleep(1000);
     stampacarta(cartegiocatori[0][1], false);
@@ -338,19 +339,17 @@ int gioca(){
             Sleep(1000);
             if(blackjack[i]) {
                 printf(ANSI_COLOR_GREEN "\n\nMazzo %d ha fatto blackjack!" ANSI_COLOR_RESET, i);
-                aggiornaammontare(&contogiocatore, (puntata * 1.5)); // Blackjack payout
+                aggiornaammontare(&contogiocatore, (puntata * 1.5));
             } else {
                 printf(ANSI_COLOR_GREEN "\n\nMazzo %d ha vinto!" ANSI_COLOR_RESET, i);
-                aggiornaammontare(&contogiocatore, puntata); // Regular win payout
+                aggiornaammontare(&contogiocatore, puntata); 
             }
         } else if(somme[0] > somme[i] || somme[i] > 21){
             Sleep(1000);
             printf(ANSI_COLOR_RED "\n\nMazzo %d ha perso" ANSI_COLOR_RESET, i);
-            // Loss already accounted for when the bet was placed
         } else if(somme[0] == somme[i]){
             Sleep(1000);
             printf(ANSI_COLOR_YELLOW "\n\nMazzo %d ha pareggiato" ANSI_COLOR_RESET, i);
-            // Return the bet to the player in case of a push
             aggiornaammontare(&contogiocatore, puntata);
         }
     }
@@ -394,7 +393,7 @@ int sceglivaloreassoutente(Carta valore, int* counterassiutente, bool isfermato)
                 return 1;
         }      
     } else {
-        printf(ANSI_COLOR_CYAN "\n\nE' uscito un asso. Vuoi scegliere di usarlo come 1, come 11 o decidere dopo?\n1) 1\n2) 11\n3) decidi dopo\n-" ANSI_COLOR_RESET);
+        printf(ANSI_COLOR_CYAN "\n\nE' uscito un asso. Vuoi scegliere di usarlo come 1, come 11 o decidere dopo?\n1) 1\n2) 11\n3) Decidi dopo (il valore 1 è aggiunto a prescindere)\n-" ANSI_COLOR_RESET);
         int sceltaasso = 0; 
         scanf("%d", &sceltaasso);
         switch (sceltaasso) {
