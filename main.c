@@ -2,7 +2,6 @@
 //TODO even money
 //TODO double testare 
 //TODO insurance
-//TODO pure blackjack SENNO LA PUNTATA 3 a 2 NON FUNZIONA PER I BLACKJACK NORMALI 
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -135,21 +134,25 @@ int gioca(){
     else somme[0] += cartegiocatori[0][0].valore;
     if (cartegiocatori[0][1].valore == 1) somme[0] += sceglivaloreassobanco(somme[0]);
     else somme[0] += cartegiocatori[0][1].valore;    
-    if(cartegiocatori[0][0].valore == 1 || cartegiocatori[0][0].valore == 10 && cartegiocatori[0][1].valore == 1 || cartegiocatori[0][1].valore == 10 && cartegiocatori[1][0].valore == 1 || cartegiocatori[1][0].valore == 10 && cartegiocatori[1][1].valore == 1 || cartegiocatori[1][1].valore == 10){
-        Sleep(1000);
-        stampacarta(cartegiocatori[0][1], false);
-        printf(ANSI_COLOR_MAGENTA "Era la sua carta nascosta" ANSI_COLOR_RESET);
-        printf(ANSI_COLOR_YELLOW "\nAvete entrambi fatto blackjack, la partita finisce qui" ANSI_COLOR_RESET);
-        aggiornaammontare(&contogiocatore, puntata);
-        return 1;
-    } else if (cartegiocatori[0][0].valore == 1 || cartegiocatori[0][0].valore == 10 && cartegiocatori[0][1].valore == 1 || cartegiocatori[0][1].valore == 10 && cartegiocatori[1][0].valore != 1 || cartegiocatori[1][0].valore != 10 && cartegiocatori[1][1].valore != 1 || cartegiocatori[1][1].valore != 10){        
+    if ((cartegiocatori[0][0].valore == 1 && cartegiocatori[0][1].valore == 10) || (cartegiocatori[0][0].valore == 10 && cartegiocatori[0][1].valore == 1)) {
+        if ((cartegiocatori[1][0].valore == 1 && cartegiocatori[1][1].valore == 10) || (cartegiocatori[1][0].valore == 10 && cartegiocatori[1][1].valore == 1)) {
+            Sleep(1000);
+            stampacarta(cartegiocatori[0][1], false);
+            printf(ANSI_COLOR_MAGENTA "Era la sua carta nascosta" ANSI_COLOR_RESET);
+            printf(ANSI_COLOR_YELLOW "\nAvete entrambi fatto blackjack, la partita finisce qui" ANSI_COLOR_RESET);
+            aggiornaammontare(&contogiocatore, puntata);
+            return 1;
+        }
+    } 
+    if ((cartegiocatori[0][0].valore == 1 && cartegiocatori[0][1].valore == 10) || (cartegiocatori[0][0].valore == 10 && cartegiocatori[0][1].valore == 1)) {
         Sleep(1000);
         stampacarta(cartegiocatori[0][1], false);
         printf(ANSI_COLOR_MAGENTA "Era la sua carta nascosta" ANSI_COLOR_RESET);
         printf(ANSI_COLOR_RED "\nIl banco ha fatto blackjack, la partita finisce qui" ANSI_COLOR_RESET);
         aggiornaammontare(&contogiocatore, -puntata);
         return 1;
-    } else if(cartegiocatori[0][0].valore != 1 || cartegiocatori[0][0].valore != 10 && cartegiocatori[0][1].valore != 1 || cartegiocatori[0][1].valore != 10 && cartegiocatori[1][0].valore == 1 || cartegiocatori[1][0].valore == 10 && cartegiocatori[1][1].valore == 1 || cartegiocatori[1][1].valore == 10){
+    } 
+    if ((cartegiocatori[1][0].valore == 1 && cartegiocatori[1][1].valore == 10) || (cartegiocatori[1][0].valore == 10 && cartegiocatori[1][1].valore == 1)) {
         Sleep(1000);
         stampacarta(cartegiocatori[0][1], false);
         printf(ANSI_COLOR_MAGENTA "Era la sua carta nascosta" ANSI_COLOR_RESET);
@@ -233,7 +236,7 @@ int gioca(){
         for (int j = 0; j < ARRAY_DIMENSION && continua; j++){
             if(issplit) printf(ANSI_COLOR_YELLOW "\n\nMazzo numero %d" ANSI_COLOR_RESET, i);
             Sleep(1000);
-            printf(ANSI_COLOR_CYAN "\n\nCosa vuoi fare?\n1) Chiedi carta\n2) Fermati 3) Raddoppia\n-" ANSI_COLOR_RESET);
+            printf(ANSI_COLOR_CYAN "\n\nCosa vuoi fare?\n1) Chiedi carta\n2) Fermati\n3) Raddoppia\n-" ANSI_COLOR_RESET);
             scanf("%d", &scelta);
             switch (scelta) {
                 case 1: {

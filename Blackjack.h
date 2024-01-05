@@ -1,5 +1,3 @@
-#include "Carte.h"
-#include "Conto.h"
 
 int sceglipuntata(Conto* contopersona);
 int sceglivaloreassoutente(Carta valore, int* counterassiutente, bool isfermato);
