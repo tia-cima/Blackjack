@@ -9,6 +9,7 @@
                 "-g",
                 "${fileDirname}\\Carte.c",
                 "${fileDirname}\\Conto.c",
+                "${fileDirname}\\Blackjack.c",
                 "${fileDirname}\\main.c",
                 "-o",
                 "${fileDirname}\\blackjack.exe"

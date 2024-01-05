@@ -6,6 +6,8 @@
         "carte.h": "c",
         "type_traits": "c",
         "stdio.h": "c",
-        "stdbool.h": "c"
+        "stdbool.h": "c",
+        "blackjack.h": "c",
+        "conto.h" : "c"
     }
 }
