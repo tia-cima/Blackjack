@@ -26,7 +26,6 @@ int sceglipuntata();
 int sceglivaloreassoutente(Carta valore, int* counterassiutente, bool isfermato);
 int sceglivaloreassobanco(int sommacartecomputer);
 int puntate[] = {10, 20, 50, 100, 200, 500};
-int risultati[3];
 int* somme;
 int* assi;
 bool* blackjack;
@@ -46,42 +45,42 @@ Conto contogiocatore;
 int main() {
     srand(time(NULL));
     popolamazzo(carte);
-    printf("\n\n#########################\nBENVENUTO AL BLACKJACK!\n-'q' rappresenta le carte quadri\n-'p' rappresenta le carte picche\n-'c' rappresenta le carte cuori\n-'f' rappresenta le carte fiori" ANSI_COLOR_GREEN "\nIl colore verde rappresenta i messaggi di vittoria" ANSI_COLOR_RESET ANSI_COLOR_RED "\nIl colore rosso rappresenta i messaggi di sconfitta" ANSI_COLOR_RESET ANSI_COLOR_YELLOW "\nIl colore giallo rappresenta i messaggi di info" ANSI_COLOR_RESET ANSI_COLOR_CYAN "\nIl colore azzurro rappresenta le tue mosse" ANSI_COLOR_RESET ANSI_COLOR_MAGENTA "\nIl colore magenta rappresenta le mosse del banco" ANSI_COLOR_RESET "\nBuon divertimento!\n#########################\n");
-    printf(ANSI_COLOR_YELLOW "\nPrima di cominciare, hai gia' un account o vuoi crearne uno nuovo? Ti servirà per riaccedere ai tuoi crediti anche in futuro\n1) Crea account\n2) Accedi ad account esistente (ID richiesto)\n-");
-    int sceltaccount = 2;
+    // printf("\n\n#########################\nBENVENUTO AL BLACKJACK!\n-'q' rappresenta le carte quadri\n-'p' rappresenta le carte picche\n-'c' rappresenta le carte cuori\n-'f' rappresenta le carte fiori" ANSI_COLOR_GREEN "\nIl colore verde rappresenta i messaggi di vittoria" ANSI_COLOR_RESET ANSI_COLOR_RED "\nIl colore rosso rappresenta i messaggi di sconfitta" ANSI_COLOR_RESET ANSI_COLOR_YELLOW "\nIl colore giallo rappresenta i messaggi di info" ANSI_COLOR_RESET ANSI_COLOR_CYAN "\nIl colore azzurro rappresenta le tue mosse" ANSI_COLOR_RESET ANSI_COLOR_MAGENTA "\nIl colore magenta rappresenta le mosse del banco" ANSI_COLOR_RESET "\nBuon divertimento!\n#########################\n");
+    // printf(ANSI_COLOR_YELLOW "\nPrima di cominciare, hai gia' un account o vuoi crearne uno nuovo? Ti servirà per riaccedere ai tuoi crediti anche in futuro\n1) Crea account\n2) Accedi ad account esistente (ID richiesto)\n-");
+    // int sceltaccount = 0;
     // scanf("%d", &sceltaccount);
-    switch (sceltaccount) {
-        case 1:{
-            impostaconto(&contogiocatore); 
-            printf(ANSI_COLOR_YELLOW "\nBenvenuto giocatore %d, hai caricato %d euro. Buona fortuna!" ANSI_COLOR_RESET, contogiocatore.id, contogiocatore.ammontare);
-        } break;
-        case 2:{
-            // recuperaconto(&contogiocatore); 
-            contogiocatore.id = 1;
-            contogiocatore.ammontare = 1500;
-            printf(ANSI_COLOR_YELLOW "\nBentornato %d! Il tuo conto e' di %d. Vuoi ricaricarlo o procedere con questo quantitativo?\n1) Ricarica\n2) Non ricaricare\n-" ANSI_COLOR_RESET, contogiocatore.id, contogiocatore.ammontare);
-            int procedi = 2;
-            // scanf("%d", &procedi);
-            switch (procedi)
-            {
-            case 1:{
-                printf(ANSI_COLOR_YELLOW "\nQuanto vuoi caricare sul tuo conto? Solo cifre intere\n-" ANSI_COLOR_RESET);
-                int valore;
-                scanf("%d", &valore);
-                aggiornaammontare(&contogiocatore, valore);
-                printf(ANSI_COLOR_YELLOW "\nRicarica effettuata con successo, nuovo ammontare pari a %d euro. Buona fortuna!" ANSI_COLOR_RESET, contogiocatore.ammontare);
-            }            
-                break;
-            case 2:{
-                printf(ANSI_COLOR_YELLOW "\nBuona fortuna!" ANSI_COLOR_RESET);
-            }
-            default:
-                break;
-            }
-        } break;
-        default:
-            break;
-    }
+    // switch (sceltaccount) {
+    //     case 1:{
+    //         impostaconto(&contogiocatore); 
+    //         printf(ANSI_COLOR_YELLOW "\nBenvenuto giocatore %d, hai caricato %d euro. Buona fortuna!" ANSI_COLOR_RESET, contogiocatore.id, contogiocatore.ammontare);
+    //     } break;
+    //     case 2:{
+    //         recuperaconto(&contogiocatore); 
+    //         printf(ANSI_COLOR_YELLOW "\nBentornato %d! Il tuo conto e' di %d. Vuoi ricaricarlo o procedere con questo quantitativo?\n1) Ricarica\n2) Non ricaricare\n-" ANSI_COLOR_RESET, contogiocatore.id, contogiocatore.ammontare);
+    //         int procedi = 0;
+    //         scanf("%d", &procedi);
+    //         switch (procedi)
+    //         {
+    //         case 1:{
+    //             printf(ANSI_COLOR_YELLOW "\nQuanto vuoi caricare sul tuo conto? Solo cifre intere\n-" ANSI_COLOR_RESET);
+    //             int valore;
+    //             scanf("%d", &valore);
+    //             aggiornaammontare(&contogiocatore, valore);
+    //             printf(ANSI_COLOR_YELLOW "\nRicarica effettuata con successo, nuovo ammontare pari a %d euro. Buona fortuna!" ANSI_COLOR_RESET, contogiocatore.ammontare);
+    //         }            
+    //             break;
+    //         case 2:{
+    //             printf(ANSI_COLOR_YELLOW "\nBuona fortuna!" ANSI_COLOR_RESET);
+    //         }
+    //         default:
+    //             break;
+    //         }
+    //     } break;
+    //     default:
+    //         break;
+    // }            
+    contogiocatore.id = 1;
+    contogiocatore.ammontare = 1500;
     free(cartegiocatori);
     free(somme);
     free(assi);
@@ -106,7 +105,7 @@ int gioca(){
     isblackjacksplit = false;
     issplit = false; 
     Sleep(2000);
-    printf(ANSI_COLOR_YELLOW "\n\n#########################\nComincio una nuova partita\nBilancio attuale: %d partite vinte, %d partite perse\nCrediti rimasti: %d\n#########################\n" ANSI_COLOR_RESET, risultati[0], risultati[1], contogiocatore.ammontare);
+    printf(ANSI_COLOR_YELLOW "\n\n#########################\nComincio una nuova partita\nCrediti rimasti: %d\n#########################\n" ANSI_COLOR_RESET, contogiocatore.ammontare);
     if(contogiocatore.ammontare <= 0) {
         printf(ANSI_COLOR_YELLOW "\nHai terminato i crediti. Aggiorna il tuo conto.\nQuanto vuoi caricare?\n-" ANSI_COLOR_RESET);
         int valorefinito;
@@ -145,7 +144,6 @@ int gioca(){
         printf(ANSI_COLOR_MAGENTA "\nLa somma delle sue carte e' %d" ANSI_COLOR_RESET, somme[0]);
         printf(ANSI_COLOR_RED "\n\nIl banco ha fatto blackjack, hai perso" ANSI_COLOR_RESET);
         aggiornaammontare(&contogiocatore, -puntata);
-        risultati[1]++;
         return 1;
     } else if (somme[0] == 21){        
         if(somme[0] == 21){
@@ -155,7 +153,6 @@ int gioca(){
             printf(ANSI_COLOR_MAGENTA "\nLa somma delle sue carte e' %d" ANSI_COLOR_RESET, somme[0]);
             printf(ANSI_COLOR_RED "\n\nIl banco ha fatto blackjack, hai perso" ANSI_COLOR_RESET);
             aggiornaammontare(&contogiocatore, -puntata);
-            risultati[1]++;
             return 1;
         }
         else{
@@ -252,7 +249,6 @@ int gioca(){
                         Sleep(1000);
                         printf(ANSI_COLOR_RED "\n\nHai sballato, hai perso" ANSI_COLOR_RESET);
                         aggiornaammontare(&contogiocatore, -puntata);
-                        risultati[1]++;
                         continua = false;
                     } else if(somme[i] == 21){
                         Sleep(1000);
@@ -332,7 +328,6 @@ int gioca(){
             if(isblackjack) aggiornaammontare(&contogiocatore, (puntata * 1.5));
             else aggiornaammontare(&contogiocatore, puntata);
         }
-        risultati[0]++;
         return 1;
     }  
     printf(ANSI_COLOR_MAGENTA "\n\nIl banco si ferma" ANSI_COLOR_RESET);
@@ -348,18 +343,15 @@ int gioca(){
                 printf(ANSI_COLOR_GREEN "\n\nMazzo %d ha vinto!" ANSI_COLOR_RESET, i);
                 aggiornaammontare(&contogiocatore, puntata); // Regular win payout
             }
-            risultati[0]++;
         } else if(somme[0] > somme[i] || somme[i] > 21){
             Sleep(1000);
             printf(ANSI_COLOR_RED "\n\nMazzo %d ha perso" ANSI_COLOR_RESET, i);
             // Loss already accounted for when the bet was placed
-            risultati[1]++;
         } else if(somme[0] == somme[i]){
             Sleep(1000);
             printf(ANSI_COLOR_YELLOW "\n\nMazzo %d ha pareggiato" ANSI_COLOR_RESET, i);
             // Return the bet to the player in case of a push
             aggiornaammontare(&contogiocatore, puntata);
-            risultati[2]++;
         }
     }
     free(cartegiocatori);
