@@ -25,18 +25,13 @@ int* assi;
 bool* raddoppia;
 int scelta;
 int dimensionedelmazzo = 52;
-int counterassiutente = 0; 
-int puntata = 0;
+int puntata;
 int righecartegiocatore = 1;
-bool isblackjack;
-bool isblackjacksplit;
 bool issplit = false;
 bool assisplit = false;
-bool israddoppia = false;
 bool continua = true;
 Carta carte[52];
 Carta** cartegiocatori;
-Carta* cartePtr = carte;
 Conto contogiocatore;
 
 int main() {
@@ -87,7 +82,6 @@ int main() {
 
 int gioca(){     
     righecartegiocatore = 1;
-    scelta = 0; 
     raddoppia = (bool *)malloc((righecartegiocatore + 1) * sizeof(bool));  
     for(int i = 0; i < (righecartegiocatore + 1); i++)    raddoppia[i] = false;
     somme = (int *)malloc((righecartegiocatore + 1) * sizeof(int));  
@@ -96,10 +90,7 @@ int gioca(){
     for(int i = 0; i < (righecartegiocatore + 1); i++)    assi[i] = 0;
     cartegiocatori = (Carta **)malloc((righecartegiocatore + 1) * sizeof(Carta *));
     for (int i = 0; i < (righecartegiocatore + 1); i++) cartegiocatori[i] = (Carta *)malloc(ARRAY_DIMENSION * sizeof(Carta));    
-    counterassiutente = 0; 
     puntata = 0;
-    isblackjack = false;
-    isblackjacksplit = false;
     issplit = false; 
     Sleep(2000);
     printf(ANSI_COLOR_YELLOW "\n\n#########################\nComincio una nuova partita\nCrediti rimasti: %d\n#########################\n" ANSI_COLOR_RESET, contogiocatore.ammontare);
@@ -382,7 +373,7 @@ int gioca(){
         Sleep(1000);
         printf(ANSI_COLOR_GREEN"\n\nIl banco ha sballato, hai vinto!" ANSI_COLOR_RESET);
         for(int i = 0; i < righecartegiocatore; i++){
-            if(raddoppia[i]) aggiornaammontare(&contogiocatore, (puntata * 4)); // DA TRACCIARE MAZZO PER MAZZO israddoppia
+            if(raddoppia[i]) aggiornaammontare(&contogiocatore, (puntata * 4));
             else aggiornaammontare(&contogiocatore, puntata);
         }
         return 1;
