@@ -1,7 +1,7 @@
 //TODO split finire di testare
-//TODO even money
 //TODO double testare 
-//TODO insurance
+//TODO insurance testare
+//TODO even money testare
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -129,6 +129,50 @@ int gioca(){
     cartegiocatori[0][0] = daicarte(carte, &dimensionedelmazzo, false); 
     cartegiocatori[0][1] = daicarte(carte, &dimensionedelmazzo, false);
     stampacarta(cartegiocatori[0][0], false);
+    if(cartegiocatori[0][0].valore == 1 && cartegiocatori[1][0].valore == 10 && cartegiocatori[1][1].valore == 11)    {
+        printf(ANSI_COLOR_YELLOW "\n\nHai fatto blackjack, mentre il banco ha un asso. Hai la possibilita' di interrompere ora la partita vincendo l'importo della tua puntata. Vuoi farlo?\n1) Si\n2) No\n-" ANSI_COLOR_RESET);
+        int sceltaeven;
+        scanf("%d", &sceltaeven);
+        switch (sceltaeven)
+        {
+            case 1:{                    
+                stampacarta(cartegiocatori[0][1], false);
+                printf(ANSI_COLOR_MAGENTA "Era la sua carta nascosta" ANSI_COLOR_RESET);
+                aggiornaammontare(&contogiocatore, (puntata * 2));
+                if(cartegiocatori[0][1].valore == 10) printf(ANSI_COLOR_GREEN "\nIl banco ha fatto blackjack, ma hai deciso di scegliere l'opzione even money. Hai vinto l'ammontare di una vincita normale" ANSI_COLOR_RESET);
+                else printf(ANSI_COLOR_GREEN "\nIl banco non ha fatto blackjack, ma hai deciso di scegliere l'opzione even money. Hai vinto l'ammontare di una vincita normale" ANSI_COLOR_RESET);
+                return 1;
+            }
+                break;
+            case 2:
+            default:
+                break;
+        }
+    } else if(cartegiocatori[0][0].valore == 1){
+        printf(ANSI_COLOR_YELLOW "\n\nAttenzione! Il banco ha un asso come prima carta. Vuoi procedere con l'assicurazione?\n1) Si\n2) No\n-" ANSI_COLOR_RESET);
+        int sceltassicurazione;
+        scanf("%d", &sceltassicurazione);
+        switch (sceltassicurazione)
+        {
+        case 1:{
+            aggiornaammontare(&contogiocatore, -(puntata / 2));
+            if(cartegiocatori[0][1].valore == 10){
+                stampacarta(cartegiocatori[0][1], false);
+                printf(ANSI_COLOR_MAGENTA "Era la sua carta nascosta" ANSI_COLOR_RESET);
+                printf(ANSI_COLOR_MAGENTA "\nIl banco ha fatto blackjack. Complimenti per aver acquistato l'assicurazione" ANSI_COLOR_RESET);
+                aggiornaammontare(&contogiocatore, puntata);
+                return 1;
+            } else {
+                printf(ANSI_COLOR_YELLOW "\nIl banco non ha un 10, percio' non potra' fare blackjack. Perdi i soldi dell'assicurazione");
+            }
+        }
+            break;
+        case 2: 
+            break;
+        default:
+            break;
+        }
+    }
     printf(ANSI_COLOR_MAGENTA "\nL'altra carta rimane nascosta." ANSI_COLOR_RESET);
     if (cartegiocatori[0][0].valore == 1) somme[0] += sceglivaloreassobanco(somme[0]);
     else somme[0] += cartegiocatori[0][0].valore;
@@ -351,14 +395,14 @@ int gioca(){
             Sleep(1000);
             printf(ANSI_COLOR_GREEN "\n\nMazzo %d ha vinto!" ANSI_COLOR_RESET, i);
             if(raddoppia[i]) aggiornaammontare(&contogiocatore, (puntata * 4));
-            else aggiornaammontare(&contogiocatore, puntata); 
+            else aggiornaammontare(&contogiocatore, (puntata * 2)); 
         } else if(somme[0] > somme[i] || somme[i] > 21){
             Sleep(1000);
             printf(ANSI_COLOR_RED "\n\nMazzo %d ha perso" ANSI_COLOR_RESET, i);
         } else if(somme[0] == somme[i]){
             Sleep(1000);
             printf(ANSI_COLOR_YELLOW "\n\nMazzo %d ha pareggiato" ANSI_COLOR_RESET, i);
-            if(raddoppia[i]) aggiornaammontare(&contogiocatore, (puntata * 2));
+            if(raddoppia[i]) aggiornaammontare(&contogiocatore, puntata);
             aggiornaammontare(&contogiocatore, puntata);
         }
     }
