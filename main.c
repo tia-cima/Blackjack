@@ -24,6 +24,7 @@ int* somme;
 int* assi;
 bool* raddoppia;
 int scelta;
+int sceltasplit = 1;
 int dimensionedelmazzo = 52;
 int puntata;
 int righecartegiocatore = 1;
@@ -174,14 +175,14 @@ int gioca(){
         stampacarta(cartegiocatori[0][1], false);
         printf(ANSI_COLOR_MAGENTA "Era la sua carta nascosta" ANSI_COLOR_RESET);
         printf(ANSI_COLOR_GREEN "\nHai fatto blackjack, la partita finisce qui" ANSI_COLOR_RESET);
-        aggiornaammontare(&contogiocatore, (puntata + (puntata * 1,5)));   
+        aggiornaammontare(&contogiocatore, (puntata + (puntata * 1.5)));   
         return 1;    
     } 
     //terzo step --> split
     for(int i = 1; i <= righecartegiocatore && continua; i++){
         if(cartegiocatori[i][0].valore == cartegiocatori[i][1].valore && contogiocatore.ammontare >= puntata * 2){
             printf(ANSI_COLOR_YELLOW "\n\nHai la possibilita' di splittare. Vuoi splittare le tue carte? Dovrai puntare la stessa puntata iniziale.\n1) Si\n2) No\n-" ANSI_COLOR_RESET);
-            int sceltasplit = 1;
+            sceltasplit = 1;
             // scanf("%d", &sceltasplit);
             if(sceltasplit == 1){
                 continua = true;
@@ -204,21 +205,30 @@ int gioca(){
                 stampacarta(cartegiocatori[righecartegiocatore][0], true);
                 stampacarta(cartegiocatori[righecartegiocatore][1], true);    
                 printf(ANSI_COLOR_CYAN "\nSomma mazzo numero %d: %d\n" ANSI_COLOR_RESET,i, somme[righecartegiocatore]);         
-            } else {
-                if (cartegiocatori[i][0].valore == 1) somme[i] += sceglivaloreassoutente(&cartegiocatori[i][0], &assi[i], false);
-                else somme[i] += cartegiocatori[1][0].valore;
-                if (cartegiocatori[i][1].valore == 1) somme[i] += sceglivaloreassoutente(&cartegiocatori[i][1], &assi[i], false);
-                else somme[i] += cartegiocatori[i][1].valore;    
-                printf(ANSI_COLOR_CYAN "\n\nIn totale hai %d" ANSI_COLOR_RESET, somme[i]);
-                continua = false;
             }
-        } else {
-                if (cartegiocatori[i][0].valore == 1) somme[i] += sceglivaloreassoutente(&cartegiocatori[i][0], &assi[i], false);
-                else somme[i] += cartegiocatori[1][0].valore;
-                if (cartegiocatori[i][1].valore == 1) somme[i] += sceglivaloreassoutente(&cartegiocatori[i][1], &assi[i], false);
-                else somme[i] += cartegiocatori[i][1].valore;    
-                printf(ANSI_COLOR_CYAN "\n\nIn totale hai %d" ANSI_COLOR_RESET, somme[i]);
-                continua = false;
+        //     } else {
+        //         if (cartegiocatori[i][0].valore == 1) somme[i] += sceglivaloreassoutente(&cartegiocatori[i][0], &assi[i], false);
+        //         else somme[i] += cartegiocatori[1][0].valore;
+        //         if (cartegiocatori[i][1].valore == 1) somme[i] += sceglivaloreassoutente(&cartegiocatori[i][1], &assi[i], false);
+        //         else somme[i] += cartegiocatori[i][1].valore;    
+        //         printf(ANSI_COLOR_CYAN "\n\nIn totale hai %d" ANSI_COLOR_RESET, somme[i]);
+        //         continua = false;
+        //     }
+        // } else {
+        //         if (cartegiocatori[i][0].valore == 1) somme[i] += sceglivaloreassoutente(&cartegiocatori[i][0], &assi[i], false);
+        //         else somme[i] += cartegiocatori[1][0].valore;
+        //         if (cartegiocatori[i][1].valore == 1) somme[i] += sceglivaloreassoutente(&cartegiocatori[i][1], &assi[i], false);
+        //         else somme[i] += cartegiocatori[i][1].valore;    
+        //         printf(ANSI_COLOR_CYAN "\n\nIn totale hai %d" ANSI_COLOR_RESET, somme[i]);
+        //         continua = false;
+        } 
+        if (!sceltasplit || sceltasplit > 1) {
+            if (cartegiocatori[i][0].valore == 1) somme[i] += sceglivaloreassoutente(&cartegiocatori[i][0], &assi[i], false);
+            else somme[i] += cartegiocatori[i][0].valore;
+            if (cartegiocatori[i][1].valore == 1) somme[i] += sceglivaloreassoutente(&cartegiocatori[i][1], &assi[i], false);
+            else somme[i] += cartegiocatori[i][1].valore;    
+            printf(ANSI_COLOR_CYAN "\n\nIn totale hai %d" ANSI_COLOR_RESET, somme[i]);
+            continua = false;
         }
     }      
     // quarto step-->chiedi carte
