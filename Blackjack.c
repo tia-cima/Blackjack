@@ -34,7 +34,7 @@ int sceglipuntata(Conto* contopersona){
     else return puntatatemp;
 }
 
-int sceglivaloreassoutente(Carta valore, int* counterassiutente, bool isfermato){
+int sceglivaloreassoutente(Carta* valore, int* counterassiutente, bool isfermato){
     if(isfermato){
          printf(ANSI_COLOR_CYAN "\n\nVuoi scegliere di usarlo come 1 o come 11?\n1) 1\n2) 11\n-" ANSI_COLOR_RESET);
         int sceltaasso = 0; 
@@ -43,7 +43,7 @@ int sceglivaloreassoutente(Carta valore, int* counterassiutente, bool isfermato)
             case 1:
                 return 1;
             case 2:{
-                valore.valore = 11;
+                valore->valore = 11;
                 return 11;
             }
             default:
@@ -57,7 +57,7 @@ int sceglivaloreassoutente(Carta valore, int* counterassiutente, bool isfermato)
             case 1:
                 return 1;
             case 2:{
-                valore.valore = 11;
+                valore->valore = 11;
                 return 11;
             }      
             case 3: {

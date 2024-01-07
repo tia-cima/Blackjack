@@ -195,18 +195,18 @@ int gioca(){
                 cartegiocatori[righecartegiocatore][0] = cartegiocatori[i][1];           
                 if (cartegiocatori[i][0].valore == 1 && cartegiocatori[i][1].valore == 1) {
                     assisplit++;
-                    somme[righecartegiocatore] += sceglivaloreassoutente(cartegiocatori[i][0], &assi[i], false);
+                    somme[righecartegiocatore] += sceglivaloreassoutente(&cartegiocatori[i][0], &assi[i], false);
                 } else somme[righecartegiocatore] += cartegiocatori[i][0].valore;                    
                 cartegiocatori[righecartegiocatore][1] = daicarte(carte, &dimensionedelmazzo, true);
-                if (cartegiocatori[righecartegiocatore][1].valore == 1) somme[righecartegiocatore] += sceglivaloreassoutente(cartegiocatori[righecartegiocatore][1], &assi[righecartegiocatore], false);
+                if (cartegiocatori[righecartegiocatore][1].valore == 1) somme[righecartegiocatore] += sceglivaloreassoutente(&cartegiocatori[righecartegiocatore][1], &assi[righecartegiocatore], false);
                 else somme[righecartegiocatore] += cartegiocatori[righecartegiocatore][1].valore;  
                 stampacarta(cartegiocatori[righecartegiocatore][0], true);
                 stampacarta(cartegiocatori[righecartegiocatore][1], true);    
                 printf(ANSI_COLOR_CYAN "\nSomma mazzo numero %d: %d\n" ANSI_COLOR_RESET,i, somme[righecartegiocatore]);         
             } else {
-                if (cartegiocatori[i][0].valore == 1) somme[i] += sceglivaloreassoutente(cartegiocatori[i][0], &assi[i], false);
+                if (cartegiocatori[i][0].valore == 1) somme[i] += sceglivaloreassoutente(&cartegiocatori[i][0], &assi[i], false);
                 else somme[i] += cartegiocatori[1][0].valore;
-                if (cartegiocatori[i][1].valore == 1) somme[i] += sceglivaloreassoutente(cartegiocatori[i][1], &assi[i], false);
+                if (cartegiocatori[i][1].valore == 1) somme[i] += sceglivaloreassoutente(&cartegiocatori[i][1], &assi[i], false);
                 else somme[i] += cartegiocatori[i][1].valore;    
                 printf(ANSI_COLOR_CYAN "\n\nIn totale hai %d" ANSI_COLOR_RESET, somme[i]);
                 continua = false;
@@ -225,7 +225,7 @@ int gioca(){
                 case 1: {
                     cartegiocatori[i][j] = daicarte(carte, &dimensionedelmazzo, true);
                     stampacarta(cartegiocatori[i][j], true);
-                    if (cartegiocatori[i][j].valore == 1) somme[i] += sceglivaloreassoutente(cartegiocatori[i][j], &assi[i], false);
+                    if (cartegiocatori[i][j].valore == 1) somme[i] += sceglivaloreassoutente(&cartegiocatori[i][j], &assi[i], false);
                     else somme[i] += cartegiocatori[i][j].valore;  
                     if(somme[i] > 21){                      
                         for(int k = 0; k < righecartegiocatore; k++){
@@ -249,7 +249,7 @@ int gioca(){
                         int valoretemp = 0; 
                         printf(ANSI_COLOR_YELLOW "\nHai degli assi da gestire" ANSI_COLOR_RESET);
                         for (int a = 0; a < assi[i]; a++) {
-                            valoretemp = sceglivaloreassoutente(cartegiocatori[i][j], &assi[i], true);
+                            valoretemp = sceglivaloreassoutente(&cartegiocatori[i][j], &assi[i], true);
                             if (valoretemp == 11) somme[i] += 10;
                             printf(ANSI_COLOR_CYAN "\nLa somma delle tue carte e' %d" ANSI_COLOR_RESET, somme[i]);                        
                         }
@@ -265,7 +265,7 @@ int gioca(){
                     raddoppia[i] = true;
                     cartegiocatori[i][j] = daicarte(carte, &dimensionedelmazzo, true);
                     stampacarta(cartegiocatori[i][j], true);
-                    if (cartegiocatori[i][j].valore == 1) somme[i] += sceglivaloreassoutente(cartegiocatori[i][j], &assi[i], false);
+                    if (cartegiocatori[i][j].valore == 1) somme[i] += sceglivaloreassoutente(&cartegiocatori[i][j], &assi[i], false);
                     else somme[i] += cartegiocatori[i][j].valore;
                     if(somme[i] > 21){                      
                         for(int k = 0; k < righecartegiocatore; k++){
