@@ -1,4 +1,4 @@
-//TODO split finire di testare
+//TODO split finire di testare SPLITTARE 3 VOLTE
 //TODO double testare 
 //TODO insurance testare
 //TODO even money testare

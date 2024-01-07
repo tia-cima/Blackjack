@@ -2,7 +2,14 @@
 
 ## Descrizione
 
-Il programma consiste in un blackjack a tutti gli effetti con tutti gli aspetti che caratterizzano questo gioco:
+Il programma consiste nella versione di blackjack giocata negli Stati Uniti, nei casinò online e in alcune navi da crociera. E' strutturato quindi in modo tale da garantire un'esperienza il quanto più realistica seguendo il regolamento di questa versione:
+
+- **Il banco ha inizialmente due carte, di cui una nascosta**
+- **Si può splittare in totale 3 volte, avendo un limite di 4 mazzi**
+- **Even money e assicurazioni consentite**
+- **Blackjack solo con asso + 10 e paga 3 a 2**
+
+Il gioco comprende tutti questi aspetti in aggiunta alle fondamentali strutture che compongono il gioco:
 
 - **Mazzo da 52 carte**
 - **Gestione degli assi**
