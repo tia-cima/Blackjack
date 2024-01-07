@@ -278,7 +278,15 @@ int gioca(){
                     cartegiocatori[i][j] = daicarte(carte, &dimensionedelmazzo, true);
                     stampacarta(cartegiocatori[i][j], true);
                     if (cartegiocatori[i][j].valore == 1) somme[i] += sceglivaloreassoutente(cartegiocatori[i][j], &assi[i], false);
-                    else somme[i] += cartegiocatori[i][j].valore;
+                    else somme[i] += cartegiocatori[i][j].valore;  
+                    if(somme[i] > 21){                      
+                        for(int k = 0; k < righecartegiocatore; k++){
+                            if(cartegiocatori[i][k].valore == 11){
+                                cartegiocatori[i][k].valore = 1;
+                                somme[i] -= 10;
+                            }
+                        }
+                    }
                     printf(ANSI_COLOR_CYAN "\nLa somma delle tue carte e' %d" ANSI_COLOR_RESET, somme[i]);
                     if(somme[i] > 21){
                         Sleep(1000);

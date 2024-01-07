@@ -42,8 +42,10 @@ int sceglivaloreassoutente(Carta valore, int* counterassiutente, bool isfermato)
         switch (sceltaasso) {
             case 1:
                 return 1;
-            case 2:
+            case 2:{
+                valore.valore = 11;
                 return 11;
+            }
             default:
                 return 1;
         }      
@@ -54,8 +56,10 @@ int sceglivaloreassoutente(Carta valore, int* counterassiutente, bool isfermato)
         switch (sceltaasso) {
             case 1:
                 return 1;
-            case 2:
+            case 2:{
+                valore.valore = 11;
                 return 11;
+            }      
             case 3: {
                 (*counterassiutente)++;
                 return 1;
