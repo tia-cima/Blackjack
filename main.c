@@ -80,6 +80,7 @@ int gioca(){
     righecartegiocatore = 1;    
     puntata = 0;
     assisplit = 0;
+    continua = true;
     raddoppia = (bool *)malloc((righecartegiocatore + 1) * sizeof(bool));  
     for(int i = 0; i < (righecartegiocatore + 1); i++)    raddoppia[i] = false;
     somme = (int *)malloc((righecartegiocatore + 1) * sizeof(int));  
@@ -211,10 +212,17 @@ int gioca(){
                 printf(ANSI_COLOR_CYAN "\n\nIn totale hai %d" ANSI_COLOR_RESET, somme[i]);
                 continua = false;
             }
-        }  
+        } else {
+                if (cartegiocatori[i][0].valore == 1) somme[i] += sceglivaloreassoutente(&cartegiocatori[i][0], &assi[i], false);
+                else somme[i] += cartegiocatori[1][0].valore;
+                if (cartegiocatori[i][1].valore == 1) somme[i] += sceglivaloreassoutente(&cartegiocatori[i][1], &assi[i], false);
+                else somme[i] += cartegiocatori[i][1].valore;    
+                printf(ANSI_COLOR_CYAN "\n\nIn totale hai %d" ANSI_COLOR_RESET, somme[i]);
+                continua = false;
+        }
     }      
     // quarto step-->chiedi carte
-    for (int i = 1; i <= righecartegiocatore && assisplit < 0; i++){
+    for (int i = 1; i <= righecartegiocatore && assisplit < 1; i++){
         continua = true; 
         for (int j = 0; j < ARRAY_DIMENSION && continua; j++){
             printf(ANSI_COLOR_YELLOW "\n\nMazzo numero %d" ANSI_COLOR_RESET, i);
