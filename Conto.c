@@ -24,9 +24,9 @@ void impostaconto(Conto* contopersona){
 }
 
 void recuperaconto(Conto* contopersona){
-    printf(ANSI_COLOR_YELLOW "\nInserisci l'ID\n-" ANSI_COLOR_RESET);
-    int recuperaid;
-    scanf("%d", &recuperaid);
+    // printf(ANSI_COLOR_YELLOW "\nInserisci l'ID\n-" ANSI_COLOR_RESET);
+    int recuperaid = 1;
+    // scanf("%d", &recuperaid);
     contopersona->id = recuperaid;
     char nomefile[20];
     sprintf(nomefile, "data/%d.txt", contopersona->id);
