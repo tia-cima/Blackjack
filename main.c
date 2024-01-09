@@ -1,5 +1,4 @@
 //TODO split finire di testare
-//TODO double testare
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,7 +19,6 @@
 int gioca();
 int* somme;
 int* assi;
-int raddoppia; 
 int scelta;
 int sceltasplit = 1;
 int dimensionedelmazzo = 52;
@@ -28,6 +26,7 @@ int puntata;
 int righecartegiocatore = 1;
 int assisplit = 0;
 bool continua = true;
+bool* raddoppia; 
 Carta carte[52];
 Carta** cartegiocatori;
 Conto contogiocatore;
@@ -81,10 +80,11 @@ int gioca(){
     righecartegiocatore = 1;    
     puntata = 0;
     assisplit = 0;
-    raddoppia = 0; 
     continua = true;
     somme = (int *)malloc((righecartegiocatore + 1) * sizeof(int));  
     for(int i = 0; i < (righecartegiocatore + 1); i++)    somme[i] = 0;
+    raddoppia = (bool *)malloc((righecartegiocatore + 1) * sizeof(bool));  
+    for(int i = 0; i < (righecartegiocatore + 1); i++)    raddoppia[i] = false;
     assi = (int *)malloc((righecartegiocatore + 1) * sizeof(int));  
     for(int i = 0; i < (righecartegiocatore + 1); i++)    assi[i] = 0;
     cartegiocatori = (Carta **)malloc((righecartegiocatore + 1) * sizeof(Carta *));
@@ -100,7 +100,7 @@ int gioca(){
     }
     // primo pezzo --> scelta puntata
     puntata = sceglipuntata(&contogiocatore);
-    puntata = 50;
+    // puntata = 50;
     if(puntata != -1){
         printf(ANSI_COLOR_YELLOW "\nHai scelto di puntare %d euro\n" ANSI_COLOR_RESET, puntata);
         aggiornaammontare(&contogiocatore, -puntata);
@@ -111,7 +111,7 @@ int gioca(){
     // secondo pezzo --> distribuzione delle carte
     cartegiocatori[1][0] = daicarte(carte, &dimensionedelmazzo, true); 
     cartegiocatori[1][1] = daicarte(carte, &dimensionedelmazzo, true);
-    // cartegiocatori[1][0].valore = 7;
+    // cartegiocatori[1][0].valore = 10;
     // cartegiocatori[1][1].valore = 10;
     stampacarta(cartegiocatori[1][0], true);
     stampacarta(cartegiocatori[1][1], true);    
@@ -181,7 +181,7 @@ int gioca(){
     //terzo step --> split
     sceltasplit = 3; 
     // for(int i = 1; i <= righecartegiocatore && continua; i++){
-        if(cartegiocatori[1][0].valore == cartegiocatori[1][1].valore && (puntata * 2) <= contogiocatore.ammontare){
+        if(cartegiocatori[1][0].valore == cartegiocatori[1][1].valore && (contogiocatore.ammontare >= puntata)){
             printf(ANSI_COLOR_YELLOW "\n\nHai la possibilita' di splittare. Vuoi splittare le tue carte? Dovrai puntare la stessa puntata iniziale.\n1) Si\n2) No\n-" ANSI_COLOR_RESET);
             sceltasplit = 0;
             // scanf("%d", &sceltasplit);
@@ -191,6 +191,7 @@ int gioca(){
                 righecartegiocatore++;               
                 somme = realloc(somme, (3) * sizeof(int));
                 assi = realloc(assi, (3) * sizeof(int));
+                raddoppia = realloc(raddoppia, (3) * sizeof(bool));
                 cartegiocatori = realloc(cartegiocatori, (3) * sizeof(Carta *));
                 cartegiocatori[2] = malloc(ARRAY_DIMENSION * sizeof(Carta));
                 cartegiocatori[2][0] = cartegiocatori[1][1]; 
@@ -229,7 +230,8 @@ int gioca(){
         for (int j = 0; j < ARRAY_DIMENSION && continua; j++){
             printf(ANSI_COLOR_YELLOW "\n\nMazzo numero %d" ANSI_COLOR_RESET, i);
             Sleep(1000);
-            printf(ANSI_COLOR_CYAN "\nCosa vuoi fare?\n1) Chiedi carta\n2) Fermati\n3) Raddoppia\n-" ANSI_COLOR_RESET);
+            if(contogiocatore.ammontare >= puntata) printf(ANSI_COLOR_CYAN "\nCosa vuoi fare?\n1) Chiedi carta\n2) Fermati\n3) Raddoppia\n-" ANSI_COLOR_RESET);
+            else printf(ANSI_COLOR_CYAN "\nCosa vuoi fare?\n1) Chiedi carta\n2) Fermati\n-" ANSI_COLOR_RESET);
             scanf("%d", &scelta);
             switch (scelta) {
                 case 1: {
@@ -280,7 +282,7 @@ int gioca(){
                     }
                 } break;
                 case 3: {
-                    if((puntata * 2) <= contogiocatore.ammontare){
+                    if(contogiocatore.ammontare >= puntata){
                         aggiornaammontare(&contogiocatore, -puntata);
                         cartegiocatori[i][j] = daicarte(carte, &dimensionedelmazzo, true);
                         stampacarta(cartegiocatori[i][j], true);
@@ -298,7 +300,7 @@ int gioca(){
                         if(somme[i] > 21){
                             Sleep(1000);
                             printf(ANSI_COLOR_RED "\n\nQuesto mazzo ha sballato" ANSI_COLOR_RESET);
-                        } else raddoppia++;
+                        } else raddoppia[i] = true;
                         continua = false;                        
                     } else printf(ANSI_COLOR_YELLOW "\nNon hai abbastanza soldi per raddoppiare" ANSI_COLOR_RESET);
                 }
@@ -349,7 +351,7 @@ int gioca(){
                 }
             }
         }
-        if (somme[0] > 21 || !continua) break;
+        if (somme[0] >= 21 || !continua) break;
     }    
     // sesto pezzo --> tirare le somme e vedere chi ha vinto
     int contatoreperse = 0;
@@ -365,9 +367,8 @@ int gioca(){
         Sleep(1000);
         printf(ANSI_COLOR_GREEN"\n\nIl banco ha sballato, hai vinto!" ANSI_COLOR_RESET);
         for(int i = 1; i <= righecartegiocatore; i++){
-            if(raddoppia > 0){
-                for(int j = 0; j < raddoppia; j++) aggiornaammontare(&contogiocatore, (puntata * 4));
-            } else aggiornaammontare(&contogiocatore, (puntata * 2));
+            if(raddoppia[i]) aggiornaammontare(&contogiocatore, (puntata * 4)); 
+            else aggiornaammontare(&contogiocatore, (puntata * 2));
         }
         return 1;
     }  
@@ -377,18 +378,16 @@ int gioca(){
         if(somme[0] < somme[i] && somme[i] <= 21){
             Sleep(1000);
             printf(ANSI_COLOR_GREEN "\n\nMazzo %d ha vinto!" ANSI_COLOR_RESET, i);
-            if(raddoppia > 0){
-                for(int j = 0; j < raddoppia; j++) aggiornaammontare(&contogiocatore, (puntata * 4));
-            } else aggiornaammontare(&contogiocatore, (puntata * 2));
+            if(raddoppia[i]) aggiornaammontare(&contogiocatore, (puntata * 4)); 
+            else aggiornaammontare(&contogiocatore, (puntata * 2));
         } else if(somme[0] > somme[i] || somme[i] > 21){
             Sleep(1000);
             printf(ANSI_COLOR_RED "\n\nMazzo %d ha perso" ANSI_COLOR_RESET, i);
         } else if(somme[0] == somme[i]){
             Sleep(1000);
             printf(ANSI_COLOR_YELLOW "\n\nMazzo %d ha pareggiato" ANSI_COLOR_RESET, i);
-            if(raddoppia > 0){
-                for(int j = 0; j < raddoppia; j++) aggiornaammontare(&contogiocatore, (puntata * 2));
-            } else aggiornaammontare(&contogiocatore, puntata);
+            if(raddoppia[i]) aggiornaammontare(&contogiocatore, (puntata * 2)); 
+            else aggiornaammontare(&contogiocatore, puntata);
         }
     }
 }
