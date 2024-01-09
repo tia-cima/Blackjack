@@ -1,8 +1,5 @@
 //TODO split finire di testare
 //TODO double testare
-//TODO condizione tutti i mazzi sballano TESTARE
-//TODO quando esce 21 smettere di far puntare
-//TODO le condizioni = 11 non funzionano TESTARE
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -114,8 +111,8 @@ int gioca(){
     // secondo pezzo --> distribuzione delle carte
     cartegiocatori[1][0] = daicarte(carte, &dimensionedelmazzo, true); 
     cartegiocatori[1][1] = daicarte(carte, &dimensionedelmazzo, true);
-    // cartegiocatori[1][0].valore = 3;
-    // cartegiocatori[1][1].valore = 1;
+    // cartegiocatori[1][0].valore = 7;
+    // cartegiocatori[1][1].valore = 10;
     stampacarta(cartegiocatori[1][0], true);
     stampacarta(cartegiocatori[1][1], true);    
     Sleep(1000);
@@ -124,7 +121,7 @@ int gioca(){
     // cartegiocatori[0][0].valore = 1;
     // cartegiocatori[0][1].valore = 10;
     stampacarta(cartegiocatori[0][0], false);
-    if(cartegiocatori[0][0].valore == 1 && (cartegiocatori[1][0].valore == 1 && cartegiocatori[1][1].valore == 10) || (cartegiocatori[1][0].valore == 10 && cartegiocatori[1][1].valore == 1))    {
+    if(cartegiocatori[0][0].valore == 1 && ((cartegiocatori[1][0].valore == 1 && cartegiocatori[1][1].valore == 10) || (cartegiocatori[1][0].valore == 10 && cartegiocatori[1][1].valore == 1)))    {
         printf(ANSI_COLOR_YELLOW "\n\nHai fatto blackjack, mentre il banco ha un asso. Hai la possibilita' di interrompere ora la partita vincendo l'importo della tua puntata. Vuoi farlo?\n1) Si\n2) No\n-" ANSI_COLOR_RESET);
         int sceltaeven;
         scanf("%d", &sceltaeven);
@@ -249,7 +246,8 @@ int gioca(){
                         }
                     }
                     printf(ANSI_COLOR_CYAN "\nLa somma delle tue carte e' %d" ANSI_COLOR_RESET, somme[i]);
-                    if(somme[i] > 21){
+                    if(somme[i] == 21) continua = false;
+                    else if(somme[i] > 21){
                         Sleep(1000);
                         printf(ANSI_COLOR_RED "\n\nQuesto mazzo ha sballato" ANSI_COLOR_RESET);
                         continua = false;
@@ -265,6 +263,14 @@ int gioca(){
                             valoretemp = sceglivaloreassoutente(&cartegiocatori[i][j], &assi[i], true);
                             if (valoretemp == 11) somme[i] += 10;
                             printf(ANSI_COLOR_CYAN "\nLa somma delle tue carte e' %d" ANSI_COLOR_RESET, somme[i]);                        
+                        }
+                        if(somme[i] > 21){                      
+                            for(int k = 0; k < righecartegiocatore; k++){
+                                if(cartegiocatori[i][k].valore == 11){
+                                    cartegiocatori[i][k].valore = 1;
+                                    somme[i] -= 10;
+                                }
+                            }
                         }
                         if(somme[i] > 21){
                             Sleep(1000);
