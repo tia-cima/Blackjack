@@ -1,4 +1,5 @@
 //TODO split finire di testare
+//TODO se banco sballa, vedere quali mazzi hanno sballato o no per capire quanto dare di vincita
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,6 +26,7 @@ int dimensionedelmazzo = 52;
 int puntata;
 int righecartegiocatore = 1;
 int assisplit = 0;
+int soldiiniziali = 0; 
 bool continua = true;
 bool* raddoppia; 
 Carta carte[52];
@@ -98,6 +100,7 @@ int gioca(){
         aggiornaammontare(&contogiocatore, valorefinito);
         printf(ANSI_COLOR_YELLOW "\nHai con successo aggiornato il conto" ANSI_COLOR_RESET);
     }
+    soldiiniziali = contogiocatore.ammontare;
     // primo pezzo --> scelta puntata
     puntata = sceglipuntata(&contogiocatore);
     // puntata = 50;
@@ -109,7 +112,7 @@ int gioca(){
         return 1;
     }
     printf(ANSI_COLOR_YELLOW "\n#########################\nSaldo aggiornato: %d euro" ANSI_COLOR_RESET, contogiocatore.ammontare);
-    printf(ANSI_COLOR_GREEN "\nPotenziali vincite:\nNormale: %d euro\nRaddoppio: %d euro\nSplit e vincita normale: %d euro\nSplit con un raddoppio: %d euro\nSplit con due raddoppi: %d euro" ANSI_COLOR_RESET, puntata * 2, puntata * 4, puntata * 4, puntata * 6, puntata * 8);
+    printf(ANSI_COLOR_GREEN "\nPotenziali vincite:\nNormale: %d euro\nRaddoppio: %d euro\nSplit e vincita normale: %d euro\nSplit e vincita di un solo mazzo: %d euro\nSplit con un raddoppio: %d euro\nSplit con due raddoppi: %d euro" ANSI_COLOR_RESET, puntata * 2, puntata * 4, puntata * 4, ((puntata * 2) + puntata), puntata * 6, puntata * 8);
     printf(ANSI_COLOR_YELLOW "\n#########################\n" ANSI_COLOR_RESET);
     // secondo pezzo --> distribuzione delle carte
     cartegiocatori[1][0] = daicarte(carte, &dimensionedelmazzo, true); 
@@ -143,6 +146,7 @@ int gioca(){
         if(sceltassicurazione == 1){
             int puntatatemp = puntata / 2;
             aggiornaammontare(&contogiocatore, -puntatatemp);
+            printf(ANSI_COLOR_YELLOW "\nSaldo aggiornato: %d euro \n" ANSI_COLOR_RESET, contogiocatore.ammontare);
             if(cartegiocatori[0][1].valore == 10){
                 stampacarta(cartegiocatori[0][1], false);
                 printf(ANSI_COLOR_MAGENTA "Era la sua carta nascosta" ANSI_COLOR_RESET);
@@ -192,6 +196,7 @@ int gioca(){
             if(sceltasplit == 1){
                 // printf("\n");
                 aggiornaammontare(&contogiocatore, -puntata);
+                printf(ANSI_COLOR_YELLOW "\nSaldo aggiornato: %d euro\n" ANSI_COLOR_RESET, contogiocatore.ammontare);
                 righecartegiocatore++;               
                 somme = realloc(somme, (3) * sizeof(int));
                 assi = realloc(assi, (3) * sizeof(int));
@@ -287,6 +292,7 @@ int gioca(){
                 case 3: {
                     if(contogiocatore.ammontare >= puntata){
                         aggiornaammontare(&contogiocatore, -puntata);
+                        printf(ANSI_COLOR_YELLOW "\nSaldo aggiornato: %d euro\n" ANSI_COLOR_RESET, contogiocatore.ammontare);
                         // raddoppia = realloc(raddoppia, (i) * sizeof(bool));
                         cartegiocatori[i][j] = daicarte(carte, &dimensionedelmazzo, true);
                         stampacarta(cartegiocatori[i][j], true);
@@ -364,36 +370,51 @@ int gioca(){
     }
     if (contatoreperse == righecartegiocatore){
         Sleep(1000);
-        printf(ANSI_COLOR_RED "\n\nHai sballato con tutti i mazzi" ANSI_COLOR_RESET);
+        printf(ANSI_COLOR_RED "\n\nHai sballato con tutti i mazzi\nHai perso %d euro" ANSI_COLOR_RESET, (soldiiniziali - contogiocatore.ammontare));
         return 1;
     }
     if(somme[0] > 21){
         Sleep(1000);
-        printf(ANSI_COLOR_GREEN"\n\nIl banco ha sballato, hai vinto!" ANSI_COLOR_RESET);
         for(int i = 1; i <= righecartegiocatore; i++){
             if(raddoppia[i - 1]) aggiornaammontare(&contogiocatore, (puntata * 4));
             else aggiornaammontare(&contogiocatore, (puntata * 2)); 
-        }
+        }        
+        printf(ANSI_COLOR_GREEN"\n\nIl banco ha sballato, hai vinto %d euro" ANSI_COLOR_RESET, (contogiocatore.ammontare - soldiiniziali));
         return 1;
     }  
+    int puntatatemp = 0; 
     printf(ANSI_COLOR_MAGENTA "\n\nIl banco si ferma" ANSI_COLOR_RESET);
     Sleep(1000);
     for(int i = 1; i <= righecartegiocatore; i++){
         if(somme[0] < somme[i] && somme[i] <= 21){
             Sleep(1000);
-            printf(ANSI_COLOR_GREEN "\n\nMazzo %d ha vinto!" ANSI_COLOR_RESET, i);
-            if(raddoppia[i - 1]) aggiornaammontare(&contogiocatore, (puntata * 4)); 
-            else aggiornaammontare(&contogiocatore, (puntata * 2));
+            if(raddoppia[i - 1]){
+                puntatatemp = puntata * 4;
+                aggiornaammontare(&contogiocatore, puntatatemp);
+            }  
+            else{
+                puntatatemp = puntata * 2;
+                aggiornaammontare(&contogiocatore, puntatatemp);
+            }             
+            printf(ANSI_COLOR_GREEN "\n\nMazzo %d ha vinto %d euro" ANSI_COLOR_RESET, i, puntatatemp);
             return 1;
         } else if(somme[0] > somme[i] || somme[i] > 21){
             Sleep(1000);
-            printf(ANSI_COLOR_RED "\n\nMazzo %d ha perso" ANSI_COLOR_RESET, i);
+            if(raddoppia[i - 1]) puntatatemp = puntata * 2;
+            else puntatatemp = puntata;
+            printf(ANSI_COLOR_RED "\n\nMazzo %d ha perso %d euro" ANSI_COLOR_RESET, i, puntatatemp);
             return 1;
         } else if(somme[0] == somme[i]){
             Sleep(1000);
-            printf(ANSI_COLOR_YELLOW "\n\nMazzo %d ha pareggiato" ANSI_COLOR_RESET, i);
-            if(raddoppia[i - 1]) aggiornaammontare(&contogiocatore, (puntata * 2)); 
-            else aggiornaammontare(&contogiocatore, puntata);
+            if(raddoppia[i - 1]){
+                puntatatemp = puntata * 2;
+                aggiornaammontare(&contogiocatore, puntatatemp);
+            }  
+            else{
+                puntatatemp = puntata;
+                aggiornaammontare(&contogiocatore, puntatatemp);
+            }            
+            printf(ANSI_COLOR_YELLOW "\n\nMazzo %d ha pareggiato. Ti vengono restituiti %d euro" ANSI_COLOR_RESET, i, puntatatemp); 
             return 1;
         }
     }
