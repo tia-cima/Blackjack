@@ -6,7 +6,7 @@ Il programma consiste nella versione di blackjack giocata negli Stati Uniti, nei
 
 - **Il banco ha inizialmente due carte, di cui una nascosta**
 - **Si può splittare in totale 3 volte, avendo un limite di 4 mazzi**
-- **Even money e assicurazioni consentite**
+- **Pagamento alla pari e assicurazioni consentite**
 - **Blackjack solo con asso + 10 e paga 3 a 2**
 
 Il gioco comprende tutti questi aspetti in aggiunta alle fondamentali strutture che compongono il gioco:
