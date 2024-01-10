@@ -118,8 +118,8 @@ int gioca(){
     Sleep(1000);
     cartegiocatori[0][0] = daicarte(carte, &dimensionedelmazzo, false); 
     cartegiocatori[0][1] = daicarte(carte, &dimensionedelmazzo, false);
-    // cartegiocatori[0][0].valore = 1;
-    // cartegiocatori[0][1].valore = 10;
+    cartegiocatori[0][0].valore = 1;
+    cartegiocatori[0][1].valore = 10;
     stampacarta(cartegiocatori[0][0], false);
     if(cartegiocatori[0][0].valore == 1 && ((cartegiocatori[1][0].valore == 1 && cartegiocatori[1][1].valore == 10) || (cartegiocatori[1][0].valore == 10 && cartegiocatori[1][1].valore == 1)))    {
         printf(ANSI_COLOR_YELLOW "\n\nHai fatto blackjack, mentre il banco ha un asso. Hai la possibilita' di interrompere ora la partita vincendo l'importo della tua puntata. Vuoi farlo?\n1) Si\n2) No\n-" ANSI_COLOR_RESET);
@@ -138,12 +138,14 @@ int gioca(){
         int sceltassicurazione;
         scanf("%d", &sceltassicurazione);
         if(sceltassicurazione == 1){
-            aggiornaammontare(&contogiocatore, -(puntata / 2));
+            int puntatatemp = puntata / 2;
+            aggiornaammontare(&contogiocatore, -puntatatemp);
             if(cartegiocatori[0][1].valore == 10){
                 stampacarta(cartegiocatori[0][1], false);
                 printf(ANSI_COLOR_MAGENTA "Era la sua carta nascosta" ANSI_COLOR_RESET);
                 printf(ANSI_COLOR_MAGENTA "\nIl banco ha fatto blackjack. Complimenti per aver acquistato l'assicurazione" ANSI_COLOR_RESET);
-                aggiornaammontare(&contogiocatore, puntata);
+                Sleep(2000);
+                aggiornaammontare(&contogiocatore, (puntatatemp + puntata));
                 return 1;
             } else {
                 printf(ANSI_COLOR_YELLOW "\nIl banco non ha un 10, percio' non potra' fare blackjack. Perdi i soldi dell'assicurazione");
