@@ -34,39 +34,47 @@ int sceglipuntata(Conto* contopersona){
     else return puntatatemp;
 }
 
-int sceglivaloreassoutente(Carta* valore, int* counterassiutente, bool isfermato){
+int sceglivaloreassoutente(Carta* valore, int* counterassiutente, bool isfermato, int somma){
     if(isfermato){
-         printf(ANSI_COLOR_CYAN "\n\nVuoi scegliere di usarlo come 1 o come 11?\n1) 1\n2) 11\n-" ANSI_COLOR_RESET);
-        int sceltaasso = 0; 
-        scanf("%d", &sceltaasso);
-        switch (sceltaasso) {
-            case 1:
-                return 1;
-            case 2:{
-                valore->valore = 11;
-                return 11;
-            }
-            default:
-                return 1;
-        }      
+        if(somma + 11 > 21){
+            return 1;
+        } else {
+            printf(ANSI_COLOR_CYAN "\nVuoi scegliere di usarlo come 1 o come 11?\n1) 1\n2) 11\n-" ANSI_COLOR_RESET);
+            int sceltaasso = 0; 
+            scanf("%d", &sceltaasso);
+            switch (sceltaasso) {
+                case 1:
+                    return 1;
+                case 2:{
+                    valore->valore = 11;
+                    return 11;
+                }
+                default:
+                    return 1;
+            }                 
+        }
     } else {
-        printf(ANSI_COLOR_CYAN "\n\nE' uscito un asso. Vuoi scegliere di usarlo come 1, come 11 o decidere dopo?\n1) 1\n2) 11\n3) Decidi dopo (il valore 1 è aggiunto a prescindere)\n-" ANSI_COLOR_RESET);
-        int sceltaasso = 0; 
-        scanf("%d", &sceltaasso);
-        switch (sceltaasso) {
-            case 1:
-                return 1;
-            case 2:{
-                valore->valore = 11;
-                return 11;
-            }      
-            case 3: {
-                (*counterassiutente)++;
-                return 1;
-            }
-            default:
-                return 1;
-        }         
+        if(somma + 11 > 21){
+            return 1;
+        } else {
+            printf(ANSI_COLOR_CYAN "\nE' uscito un asso. Vuoi scegliere di usarlo come 1, come 11 o decidere dopo?\n1) 1\n2) 11\n3) Decidi dopo (il valore 1 è aggiunto a prescindere)\n-" ANSI_COLOR_RESET);
+            int sceltaasso = 0; 
+            scanf("%d", &sceltaasso);
+            switch (sceltaasso) {
+                case 1:
+                    return 1;
+                case 2:{
+                    valore->valore = 11;
+                    return 11;
+                }      
+                case 3: {
+                    (*counterassiutente)++;
+                    return 1;
+                }
+                default:
+                    return 1;
+            }  
+        }
     }
 }
 
