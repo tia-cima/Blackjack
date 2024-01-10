@@ -1,6 +1,7 @@
 #include "Conto.h"
 #include <stdio.h>
 #include <stdlib.h>
+#define MAX_UTENTI 20
 #define ANSI_COLOR_RED     "\x1b[31m" // sconfitta
 #define ANSI_COLOR_GREEN   "\x1b[32m" // vittoria
 #define ANSI_COLOR_YELLOW  "\x1b[33m" // info
@@ -16,7 +17,7 @@ void impostaconto(Conto* contopersona){
     scanf("%d", &valore);
     contopersona->ammontare = valore;
     contopersona->id = creaidgiocatore();
-    char nomefile[20]; //20 utenti
+    char nomefile[MAX_UTENTI];
     sprintf(nomefile, "data/%d.txt", contopersona->id);
     FILE *file = fopen(nomefile, "w");
     fprintf(file, "%d", contopersona->ammontare);
@@ -24,11 +25,11 @@ void impostaconto(Conto* contopersona){
 }
 
 void recuperaconto(Conto* contopersona){
-    // printf(ANSI_COLOR_YELLOW "\nInserisci l'ID\n-" ANSI_COLOR_RESET);
+    printf(ANSI_COLOR_YELLOW "\nInserisci l'ID\n-" ANSI_COLOR_RESET);
     int recuperaid = 1;
-    // scanf("%d", &recuperaid);
+    scanf("%d", &recuperaid);
     contopersona->id = recuperaid;
-    char nomefile[20];
+    char nomefile[MAX_UTENTI];
     sprintf(nomefile, "data/%d.txt", contopersona->id);
     FILE *file = fopen(nomefile, "r");
     fscanf(file, "%d", &contopersona->ammontare);
@@ -36,7 +37,7 @@ void recuperaconto(Conto* contopersona){
 }
 
 void aggiornaammontare(Conto* contopersona, int nuovovalore){
-    char nomefile[20]; //20 utenti
+    char nomefile[MAX_UTENTI]; //20 utenti
     int ammontarevecchio;
     sprintf(nomefile, "data/%d.txt", contopersona->id);
     FILE *fileleggi = fopen(nomefile, "r");

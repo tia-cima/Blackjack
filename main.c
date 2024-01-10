@@ -90,7 +90,7 @@ int gioca(){
     cartegiocatori = (Carta **)malloc((righecartegiocatore + 1) * sizeof(Carta *));
     for (int i = 0; i < (righecartegiocatore + 1); i++) cartegiocatori[i] = (Carta *)malloc(ARRAY_DIMENSION * sizeof(Carta));    
     Sleep(2000);
-    printf(ANSI_COLOR_YELLOW "\n\n#########################\nComincio una nuova partita\nCrediti rimasti: %d\n#########################\n" ANSI_COLOR_RESET, contogiocatore.ammontare);
+    printf(ANSI_COLOR_YELLOW "\n\n#########################\nComincio una nuova partita\nSaldo attuale: %d euro\n#########################\n" ANSI_COLOR_RESET, contogiocatore.ammontare);
     if(contogiocatore.ammontare <= 0) {
         printf(ANSI_COLOR_YELLOW "\nHai terminato i crediti. Aggiorna il tuo conto.\nQuanto vuoi caricare?\n-" ANSI_COLOR_RESET);
         int valorefinito;
@@ -108,6 +108,9 @@ int gioca(){
         printf(ANSI_COLOR_RED "\nScelta non valida. \nHai selezionato un valore non valido oppure hai finito i crediti" ANSI_COLOR_RESET);
         return 1;
     }
+    printf(ANSI_COLOR_YELLOW "\n#########################\nSaldo aggiornato: %d euro" ANSI_COLOR_RESET, contogiocatore.ammontare);
+    printf(ANSI_COLOR_GREEN "\nPotenziali vincite:\nNormale: %d euro\nRaddoppio: %d euro\nSplit e vincita normale: %d euro\nSplit con un raddoppio: %d euro\nSplit con due raddoppi: %d euro" ANSI_COLOR_RESET, puntata * 2, puntata * 4, puntata * 4, puntata * 6, puntata * 8);
+    printf(ANSI_COLOR_YELLOW "\n#########################\n" ANSI_COLOR_RESET);
     // secondo pezzo --> distribuzione delle carte
     cartegiocatori[1][0] = daicarte(carte, &dimensionedelmazzo, true); 
     cartegiocatori[1][1] = daicarte(carte, &dimensionedelmazzo, true);
