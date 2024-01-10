@@ -284,7 +284,7 @@ int gioca(){
                 case 3: {
                     if(contogiocatore.ammontare >= puntata){
                         aggiornaammontare(&contogiocatore, -puntata);
-                        raddoppia = realloc(raddoppia, (i) * sizeof(bool));
+                        // raddoppia = realloc(raddoppia, (i) * sizeof(bool));
                         cartegiocatori[i][j] = daicarte(carte, &dimensionedelmazzo, true);
                         stampacarta(cartegiocatori[i][j], true);
                         if (cartegiocatori[i][j].valore == 1) somme[i] += sceglivaloreassoutente(&cartegiocatori[i][j], &assi[i], false);
@@ -354,11 +354,6 @@ int gioca(){
         }
         if (somme[0] >= 21 || !continua) break;
     }    
-    // DEBUG
-    somme[0] = 27;
-    somme[1] = 18;
-    somme[2] = 17;
-    //
     // sesto pezzo --> tirare le somme e vedere chi ha vinto
     int contatoreperse = 0;
     for(int i = 1; i <= righecartegiocatore; i++){
@@ -369,11 +364,6 @@ int gioca(){
         printf(ANSI_COLOR_RED "\n\nHai sballato con tutti i mazzi" ANSI_COLOR_RESET);
         return 1;
     }
-    printf("righecarte %d\n", righecartegiocatore);
-    printf("raddoppio 1 %d\n", raddoppia[0]);
-    printf("raddoppio 2 %d\n", raddoppia[1]);
-    printf("raddoppio 3 %d\n", raddoppia[2]);
-    printf("raddoppio 4 %d\n", raddoppia[3]);
     if(somme[0] > 21){
         Sleep(1000);
         printf(ANSI_COLOR_GREEN"\n\nIl banco ha sballato, hai vinto!" ANSI_COLOR_RESET);
