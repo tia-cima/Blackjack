@@ -122,15 +122,15 @@ int gioca(){
     cartegiocatori[0][1].valore = 10;
     stampacarta(cartegiocatori[0][0], false);
     if(cartegiocatori[0][0].valore == 1 && ((cartegiocatori[1][0].valore == 1 && cartegiocatori[1][1].valore == 10) || (cartegiocatori[1][0].valore == 10 && cartegiocatori[1][1].valore == 1)))    {
-        printf(ANSI_COLOR_YELLOW "\n\nHai fatto blackjack, mentre il banco ha un asso. Hai la possibilita' di interrompere ora la partita vincendo l'importo della tua puntata. Vuoi farlo?\n1) Si\n2) No\n-" ANSI_COLOR_RESET);
+        printf(ANSI_COLOR_YELLOW "\n\nHai fatto blackjack, mentre il banco ha un asso. Il banco ti offre di interrompere ora la partita vincendo l'importo della tua puntata. Vuoi farlo?\n1) Si\n2) No\n-" ANSI_COLOR_RESET);
         int sceltaeven;
         scanf("%d", &sceltaeven);
         if(sceltaeven == 1){
             stampacarta(cartegiocatori[0][1], false);
             printf(ANSI_COLOR_MAGENTA "Era la sua carta nascosta" ANSI_COLOR_RESET);
             aggiornaammontare(&contogiocatore, (puntata * 2));
-            if(cartegiocatori[0][1].valore == 10) printf(ANSI_COLOR_GREEN "\nIl banco ha fatto blackjack, ma hai deciso di scegliere l'opzione even money. Hai vinto l'ammontare di una vincita normale" ANSI_COLOR_RESET);
-            else printf(ANSI_COLOR_GREEN "\nIl banco non ha fatto blackjack, ma hai deciso di scegliere l'opzione even money. Hai vinto l'ammontare di una vincita normale" ANSI_COLOR_RESET);
+            if(cartegiocatori[0][1].valore == 10) printf(ANSI_COLOR_GREEN "\nIl banco ha fatto blackjack, ma fortunatamente hai accettato la sua proposta. Hai vinto l'ammontare di una vincita normale" ANSI_COLOR_RESET);
+            else printf(ANSI_COLOR_GREEN "\nIl banco non ha fatto blackjack, ma accettando la sua proposta hai vinto l'ammontare di una vincita normale" ANSI_COLOR_RESET);
             return 1;
         }
     } else if(cartegiocatori[0][0].valore == 1){
