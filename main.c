@@ -1,5 +1,4 @@
 //TODO split finire di testare
-//TODO il banco in caso di split non deve tirare per vincere contro tutti e due i mazzi
 
 #include <stdio.h>
 #include <stdlib.h>
