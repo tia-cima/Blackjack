@@ -1,4 +1,5 @@
 //TODO split finire di testare
+//TODO soft 17
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -123,8 +124,8 @@ int gioca(){
     Sleep(1000);
     cartegiocatori[0][0] = daicarte(carte, &dimensionedelmazzo, false); 
     cartegiocatori[0][1] = daicarte(carte, &dimensionedelmazzo, false);
-    // cartegiocatori[0][0].valore = 1;
-    // cartegiocatori[0][1].valore = 10;
+    cartegiocatori[0][0].valore = 6;
+    cartegiocatori[0][1].valore = 1;
     stampacarta(cartegiocatori[0][0], false);
     if(cartegiocatori[0][0].valore == 1 && ((cartegiocatori[1][0].valore == 1 && cartegiocatori[1][1].valore == 10) || (cartegiocatori[1][0].valore == 10 && cartegiocatori[1][1].valore == 1)))    {
         printf(ANSI_COLOR_YELLOW "\n\nHai fatto blackjack, mentre il banco ha un asso. Il banco ti offre di interrompere ora la partita vincendo l'importo della tua puntata. Vuoi farlo?\n1) Si\n2) No\n-" ANSI_COLOR_RESET);
@@ -325,8 +326,9 @@ int gioca(){
     // quinto pezzo --> chiedi carte banco
     Sleep(1000);
     stampacarta(cartegiocatori[0][1], false);
+    // if((cartegiocatori[0][0].valore == 1 && cartegiocatori[0][1].valore == 6) || (cartegiocatori[0][0].valore == 6 && cartegiocatori[0][1].valore == 1)) somme[0] = 7; // soft 17
     printf(ANSI_COLOR_MAGENTA "Era la sua carta nascosta" ANSI_COLOR_RESET);
-    printf(ANSI_COLOR_MAGENTA "\nLa somma delle sue carte e' %d" ANSI_COLOR_RESET, somme[0]);
+    printf(ANSI_COLOR_MAGENTA "\nLa somma delle sue carte e' %d" ANSI_COLOR_RESET, somme[0]); 
     int i;
     for (i = 0; somme[0] < 17; i++) {
         Sleep(1000);
@@ -337,23 +339,6 @@ int gioca(){
         printf(ANSI_COLOR_MAGENTA "\nLa somma delle sue carte e' %d" ANSI_COLOR_RESET, somme[0]);
     } 
     Sleep(1000);
-    int minsomme = 0;;
-    for (int i = 1; i <= righecartegiocatore; i++) {
-        if (somme[i] <= 21 && somme[i] < minsomme) {
-            minsomme = somme[i];
-        }
-    }
-    while(continua){
-        if(somme[0] < minsomme){
-            Sleep(1000);
-            cartegiocatori[0][i] = daicarte(carte, &dimensionedelmazzo, false);
-            stampacarta(cartegiocatori[0][i], false);
-            if (cartegiocatori[0][i].valore == 1) somme[0] += sceglivaloreassobanco(somme[0]);
-            else somme[0] += cartegiocatori[0][i].valore;    
-            printf(ANSI_COLOR_MAGENTA "\nLa somma delle sue carte e' %d" ANSI_COLOR_RESET, somme[0]);
-        } else if (somme[0] >= 21 || !continua) break;
-        else break;
-    }    
     printf(ANSI_COLOR_MAGENTA "\n\nIl banco si ferma" ANSI_COLOR_RESET);
     // sesto pezzo --> tirare le somme e vedere chi ha vinto
     int contatoreperse = 0;
