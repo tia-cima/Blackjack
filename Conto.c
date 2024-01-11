@@ -37,7 +37,7 @@ void recuperaconto(Conto* contopersona){
 }
 
 void aggiornaammontare(Conto* contopersona, int nuovovalore){
-    char nomefile[MAX_UTENTI]; //20 utenti
+    char nomefile[MAX_UTENTI];
     int ammontarevecchio;
     sprintf(nomefile, "data/%d.txt", contopersona->id);
     FILE *fileleggi = fopen(nomefile, "r");

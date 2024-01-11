@@ -1,5 +1,4 @@
 //TODO split finire di testare
-//TODO scelta asso se 11 sballerebbe non farlo selezionare
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -112,7 +111,7 @@ int gioca(){
         return 1;
     }
     printf(ANSI_COLOR_YELLOW "\n#########################\nSaldo aggiornato: %d euro" ANSI_COLOR_RESET, contogiocatore.ammontare);
-    printf(ANSI_COLOR_GREEN "\nPotenziali vincite:\nNormale: %d euro\nRaddoppio: %d euro\nSplit e vincita normale: %d euro\nSplit e vincita di un solo mazzo: %d euro\nSplit con un raddoppio: %d euro\nSplit con due raddoppi: %d euro" ANSI_COLOR_RESET, puntata * 2, puntata * 4, puntata * 4, ((puntata * 2) + puntata), puntata * 6, puntata * 8);
+    printf(ANSI_COLOR_GREEN "\nPotenziali vincite:\nNormale: %d euro\nRaddoppio: %d euro\nSplit e vincita di un solo mazzo: %d euro\nSplit con vincita di entrambi i mazzi: %d euro\nSplit con un raddoppio: %d euro\nSplit con due raddoppi: %d euro" ANSI_COLOR_RESET, puntata * 2, puntata * 4, ((puntata * 2) + puntata), puntata * 4, puntata * 6, puntata * 8);
     printf(ANSI_COLOR_YELLOW "\n#########################\n" ANSI_COLOR_RESET);
     // secondo pezzo --> distribuzione delle carte
     cartegiocatori[1][0] = daicarte(carte, &dimensionedelmazzo, true); 
@@ -245,7 +244,6 @@ int gioca(){
             switch (scelta) {
                 case 1: {
                     cartegiocatori[i][j] = daicarte(carte, &dimensionedelmazzo, true);
-                    cartegiocatori[i][j].valore = 1;
                     stampacarta(cartegiocatori[i][j], true);
                     if (cartegiocatori[i][j].valore == 1) somme[i] += sceglivaloreassoutente(&cartegiocatori[i][j], &assi[i], false, somme[i]);
                     else somme[i] += cartegiocatori[i][j].valore;  
@@ -384,7 +382,7 @@ int gioca(){
             if(raddoppia[i]) aggiornaammontare(&contogiocatore, (puntata * 4));
             else aggiornaammontare(&contogiocatore, (puntata * 2)); 
         }        
-        printf(ANSI_COLOR_GREEN"\n\nIl banco ha sballato, hai vinto %d euro" ANSI_COLOR_RESET, (contogiocatore.ammontare - soldiiniziali));
+        printf(ANSI_COLOR_GREEN"\n\nIl banco ha sballato, hai vinto %d euro" ANSI_COLOR_RESET, ((contogiocatore.ammontare - soldiiniziali) * 2));
         return 1;
     }  
     int puntatatemp = 0; 
