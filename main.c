@@ -28,6 +28,7 @@ int assisplit = 0;
 int soldiiniziali = 0; 
 bool continua = true;
 bool* raddoppia; 
+bool issplit = false;
 Carta carte[52];
 Carta** cartegiocatori;
 Conto contogiocatore;
@@ -196,6 +197,7 @@ int gioca(){
             scanf("%d", &sceltasplit);
             if(sceltasplit == 1){
                 // printf("\n");
+                issplit = true;
                 aggiornaammontare(&contogiocatore, -puntata);
                 printf(ANSI_COLOR_YELLOW "\nSaldo aggiornato: %d euro\n" ANSI_COLOR_RESET, contogiocatore.ammontare);
                 righecartegiocatore++;               
@@ -234,6 +236,21 @@ int gioca(){
         } 
     // }      
     // quarto step-->chiedi carte
+    if(issplit){ // split terza volta
+        if(cartegiocatori[1][0].valore == cartegiocatori[1][1].valore){
+            cartegiocatori = realloc(cartegiocatori, (4) * sizeof(Carta *));
+            cartegiocatori[3] = malloc(ARRAY_DIMENSION * sizeof(Carta));
+            somme = realloc(somme, (4) * sizeof(int));
+            assi = realloc(assi, (4) * sizeof(int));
+            righecartegiocatore++;
+        } else if (cartegiocatori[2][0].valore == cartegiocatori[2][1].valore){
+            cartegiocatori = realloc(cartegiocatori, (4) * sizeof(Carta *));
+            cartegiocatori[3] = malloc(ARRAY_DIMENSION * sizeof(Carta));
+            somme = realloc(somme, (4) * sizeof(int));
+            assi = realloc(assi, (4) * sizeof(int));
+            righecartegiocatore++;
+        }
+    }
     for (int i = 1; i <= righecartegiocatore && assisplit < 1; i++){
         continua = true; 
         if(somme[i] == 21) continua = false;
