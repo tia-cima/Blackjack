@@ -116,7 +116,7 @@ int gioca(){
     // secondo pezzo --> distribuzione delle carte
     cartegiocatori[1][0] = daicarte(carte, &dimensionedelmazzo, true); 
     cartegiocatori[1][1] = daicarte(carte, &dimensionedelmazzo, true);
-    // cartegiocatori[1][0].valore = 10;
+    // cartegiocatori[1][0].valore = 1;
     // cartegiocatori[1][1].valore = 10;
     stampacarta(cartegiocatori[1][0], true);
     stampacarta(cartegiocatori[1][1], true);    
@@ -133,9 +133,10 @@ int gioca(){
         if(sceltaeven == 1){
             stampacarta(cartegiocatori[0][1], false);
             printf(ANSI_COLOR_MAGENTA "Era la sua carta nascosta" ANSI_COLOR_RESET);
-            aggiornaammontare(&contogiocatore, (puntata * 2));
-            if(cartegiocatori[0][1].valore == 10) printf(ANSI_COLOR_GREEN "\nIl banco ha fatto blackjack, ma fortunatamente hai accettato la sua proposta. Hai vinto l'ammontare di una vincita normale" ANSI_COLOR_RESET);
-            else printf(ANSI_COLOR_GREEN "\nIl banco non ha fatto blackjack, ma accettando la sua proposta hai vinto l'ammontare di una vincita normale" ANSI_COLOR_RESET);
+            int puntatatemp = puntata * 2;
+            aggiornaammontare(&contogiocatore, puntatatemp);
+            if(cartegiocatori[0][1].valore == 10) printf(ANSI_COLOR_GREEN "\nIl banco ha fatto blackjack, ma fortunatamente hai accettato la sua proposta. Hai vinto %d euro" ANSI_COLOR_RESET, puntatatemp);
+            else printf(ANSI_COLOR_GREEN "\nIl banco non ha fatto blackjack, ma accettando la sua proposta hai vinto %d euro" ANSI_COLOR_RESET, puntatatemp);
             return 1;
         }
     } else if(cartegiocatori[0][0].valore == 1){
@@ -149,12 +150,12 @@ int gioca(){
             if(cartegiocatori[0][1].valore == 10){
                 stampacarta(cartegiocatori[0][1], false);
                 printf(ANSI_COLOR_MAGENTA "Era la sua carta nascosta" ANSI_COLOR_RESET);
-                printf(ANSI_COLOR_MAGENTA "\nIl banco ha fatto blackjack. Complimenti per aver acquistato l'assicurazione" ANSI_COLOR_RESET);
+                printf(ANSI_COLOR_MAGENTA "\nIl banco ha fatto blackjack. Complimenti per aver acquistato l'assicurazione, ti vengono restituiti %d euro" ANSI_COLOR_RESET, (puntatatemp + puntata));
                 Sleep(2000);
                 aggiornaammontare(&contogiocatore, (puntatatemp + puntata));
                 return 1;
             } else {
-                printf(ANSI_COLOR_YELLOW "\nIl banco non ha un 10, percio' non potra' fare blackjack. Perdi i soldi dell'assicurazione");
+                printf(ANSI_COLOR_YELLOW "\nIl banco non ha un 10, percio' non potra' fare blackjack. Perdi %d euro" ANSI_COLOR_RESET, puntatatemp);
             }
         }
     }
@@ -162,7 +163,7 @@ int gioca(){
         Sleep(1000);
         stampacarta(cartegiocatori[0][1], false);
         printf(ANSI_COLOR_MAGENTA "Era la sua carta nascosta" ANSI_COLOR_RESET);
-        printf(ANSI_COLOR_YELLOW "\n\nAvete entrambi fatto blackjack, la partita finisce qui" ANSI_COLOR_RESET);
+        printf(ANSI_COLOR_YELLOW "\n\nAvete entrambi fatto blackjack, ti vengono restituiti %d euro" ANSI_COLOR_RESET, puntata);
         aggiornaammontare(&contogiocatore, puntata);
         return 1;
     }
@@ -170,15 +171,16 @@ int gioca(){
         Sleep(1000);
         stampacarta(cartegiocatori[0][1], false);
         printf(ANSI_COLOR_MAGENTA "Era la sua carta nascosta" ANSI_COLOR_RESET);
-        printf(ANSI_COLOR_RED "\n\nIl banco ha fatto blackjack, la partita finisce qui" ANSI_COLOR_RESET);
+        printf(ANSI_COLOR_RED "\n\nIl banco ha fatto blackjack, hai perso %d euro" ANSI_COLOR_RESET, puntata);
         return 1;
     } 
     if ((cartegiocatori[1][0].valore == 1 && cartegiocatori[1][1].valore == 10) || (cartegiocatori[1][0].valore == 10 && cartegiocatori[1][1].valore == 1)) {
         Sleep(1000);
         stampacarta(cartegiocatori[0][1], false);
+        int puntatatemp = (puntata + (puntata * 1.5));
         printf(ANSI_COLOR_MAGENTA "Era la sua carta nascosta" ANSI_COLOR_RESET);
-        printf(ANSI_COLOR_GREEN "\n\nHai fatto blackjack, la partita finisce qui" ANSI_COLOR_RESET);
-        aggiornaammontare(&contogiocatore, (puntata + (puntata * 1.5)));   
+        printf(ANSI_COLOR_GREEN "\n\nHai fatto blackjack, hai vinto %d euro" ANSI_COLOR_RESET, puntatatemp);
+        aggiornaammontare(&contogiocatore, puntatatemp);   
         return 1;    
     } 
     printf(ANSI_COLOR_MAGENTA "\nL'altra carta rimane nascosta." ANSI_COLOR_RESET);
