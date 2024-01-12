@@ -341,8 +341,8 @@ int gioca(){
         else somme[0] += cartegiocatori[0][i].valore;    
         if(cartegiocatori[0][i].valore <= 4 && soft17) {
             soft17 = false;
-            somme[0] += 10
-        };
+            somme[0] += 10;
+        }
         printf(ANSI_COLOR_MAGENTA "\nLa somma delle sue carte e' %d" ANSI_COLOR_RESET, somme[0]);
     } 
     Sleep(1000);
