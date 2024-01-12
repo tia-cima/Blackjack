@@ -123,8 +123,8 @@ int gioca(){
     Sleep(1000);
     cartegiocatori[0][0] = daicarte(carte, &dimensionedelmazzo, false); 
     cartegiocatori[0][1] = daicarte(carte, &dimensionedelmazzo, false);
-    // cartegiocatori[0][0].valore = 10;
-    // cartegiocatori[0][1].valore = 7;
+    // cartegiocatori[0][0].valore = 1;
+    // cartegiocatori[0][1].valore = 6;
     stampacarta(cartegiocatori[0][0], false);
     if(cartegiocatori[0][0].valore == 1 && ((cartegiocatori[1][0].valore == 1 && cartegiocatori[1][1].valore == 10) || (cartegiocatori[1][0].valore == 10 && cartegiocatori[1][1].valore == 1)))    {
         printf(ANSI_COLOR_YELLOW "\n\nHai fatto blackjack, mentre il banco ha un asso. Il banco ti offre di interrompere ora la partita vincendo l'importo della tua puntata. Vuoi farlo?\n1) Si\n2) No\n-" ANSI_COLOR_RESET);
@@ -327,7 +327,9 @@ int gioca(){
     Sleep(1000);
     stampacarta(cartegiocatori[0][1], false);    
     printf(ANSI_COLOR_MAGENTA "Era la sua carta nascosta" ANSI_COLOR_RESET);
+    bool soft17 = false;
     if((cartegiocatori[0][0].valore == 1 && cartegiocatori[0][1].valore == 6) || (cartegiocatori[0][0].valore == 6 && cartegiocatori[0][1].valore == 1)){
+            soft17 = true;
             somme[0] = 7;
             printf(ANSI_COLOR_MAGENTA "\nLa somma delle sue carte e' un soft 17, quindi o 7 o 17" ANSI_COLOR_RESET); 
     } else printf(ANSI_COLOR_MAGENTA "\nLa somma delle sue carte e' %d" ANSI_COLOR_RESET, somme[0]); 
@@ -337,7 +339,10 @@ int gioca(){
         stampacarta(cartegiocatori[0][i], false);        
         if (cartegiocatori[0][i].valore == 1) somme[0] += sceglivaloreassobanco(somme[0]);
         else somme[0] += cartegiocatori[0][i].valore;    
-        if(cartegiocatori[0][i].valore <= 4) somme[0] += 10;
+        if(cartegiocatori[0][i].valore <= 4 && soft17) {
+            soft17 = false;
+            somme[0] += 10
+        };
         printf(ANSI_COLOR_MAGENTA "\nLa somma delle sue carte e' %d" ANSI_COLOR_RESET, somme[0]);
     } 
     Sleep(1000);
