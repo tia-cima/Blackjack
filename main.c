@@ -210,6 +210,11 @@ int gioca(){
 
                 printf(ANSI_COLOR_YELLOW "\nMazzo numero 1" ANSI_COLOR_RESET);
                 cartegiocatori[1][1] = daicarte(carte, &dimensionedelmazzo, true);    
+
+                // cartegiocatori[1][0].valore = 10;
+                // cartegiocatori[1][1].valore = 10;
+
+
                 stampacarta(cartegiocatori[1][0], true);
                 stampacarta(cartegiocatori[1][1], true);
                 somme[1] = cartegiocatori[1][0].valore == 1 ? sceglivaloreassoutente(&cartegiocatori[1][0], &assi[1], false, somme[1]) : cartegiocatori[1][0].valore;
@@ -218,8 +223,10 @@ int gioca(){
 
                 printf(ANSI_COLOR_YELLOW "\nMazzo numero 2" ANSI_COLOR_RESET);
                 cartegiocatori[2][1] = daicarte(carte, &dimensionedelmazzo, true);
-                                cartegiocatori[2][0].valore = 10;
-                cartegiocatori[2][1].valore = 10;
+                
+                
+                // cartegiocatori[2][0].valore = 8;
+                // cartegiocatori[2][1].valore = 8;
 
 
                 stampacarta(cartegiocatori[2][0], true);
@@ -242,7 +249,52 @@ int gioca(){
     // }  
     // quarto step-->chiedi carte
     if(issplit){ // split terza volta
-        if((cartegiocatori[1][0].valore == cartegiocatori[1][1].valore) || (cartegiocatori[2][0].valore == cartegiocatori[2][1].valore)){
+        if ((cartegiocatori[1][0].valore == cartegiocatori[1][1].valore) && (cartegiocatori[2][0].valore == cartegiocatori[2][1].valore)){
+            printf(ANSI_COLOR_YELLOW "\n\nHai la possibilita' di splittare. Vuoi splittare le tue carte? Dovrai puntare la stessa puntata iniziale.\n1) Si\n2) No\n-" ANSI_COLOR_RESET);
+            scanf("%d", &sceltasplit);
+            if(sceltasplit == 1){
+                cartegiocatori = realloc(cartegiocatori, (4) * sizeof(Carta *));
+                cartegiocatori[3] = malloc(ARRAY_DIMENSION * sizeof(Carta));
+                somme = realloc(somme, (4) * sizeof(int));
+                assi = realloc(assi, (4) * sizeof(int));
+                raddoppia = realloc(assi, (3) * sizeof(bool));
+                aggiornaammontare(&contogiocatore, -puntata);
+                printf(ANSI_COLOR_YELLOW "\nSaldo aggiornato: %d euro\n" ANSI_COLOR_RESET, contogiocatore.ammontare);
+                righecartegiocatore++;
+
+                printf(ANSI_COLOR_YELLOW "\nQuale mazzo vuoi splittare?\n1) 1\n2) 2\n-" ANSI_COLOR_RESET);
+                int sceltamazzosplit;
+                scanf("%d", &sceltamazzosplit);
+                if(sceltamazzosplit == 1){
+                    printf(ANSI_COLOR_YELLOW "\nMazzo numero 1" ANSI_COLOR_RESET);
+                    cartegiocatori[3][0] = cartegiocatori[1][1];
+                    cartegiocatori[1][1] = daicarte(carte, &dimensionedelmazzo, true);
+                    stampacarta(cartegiocatori[1][0], true);
+                    stampacarta(cartegiocatori[1][1], true);
+                    somme[1] = cartegiocatori[1][0].valore == 1 ? sceglivaloreassoutente(&cartegiocatori[1][0], &assi[1], false, somme[1]) : cartegiocatori[1][0].valore;
+                    somme[1] += cartegiocatori[1][1].valore == 1 ? sceglivaloreassoutente(&cartegiocatori[1][1], &assi[1], false, somme[1]) : cartegiocatori[1][1].valore;
+                    printf(ANSI_COLOR_YELLOW "\nSomma mazzo 1: %d\n" ANSI_COLOR_RESET, somme[1]);
+                } else {
+                    printf(ANSI_COLOR_YELLOW "\nMazzo numero 2" ANSI_COLOR_RESET);
+                    cartegiocatori[3][0] = cartegiocatori[2][1];
+                    cartegiocatori[2][1] = daicarte(carte, &dimensionedelmazzo, true);
+                    stampacarta(cartegiocatori[2][0], true);
+                    stampacarta(cartegiocatori[2][1], true);
+                    somme[2] = cartegiocatori[2][0].valore == 1 ? sceglivaloreassoutente(&cartegiocatori[2][0], &assi[2], false, somme[2]) : cartegiocatori[2][0].valore;
+                    somme[2] += cartegiocatori[2][1].valore == 1 ? sceglivaloreassoutente(&cartegiocatori[2][1], &assi[2], false, somme[2]) : cartegiocatori[2][1].valore;
+                    printf(ANSI_COLOR_YELLOW "\nSomma mazzo 2: %d\n" ANSI_COLOR_RESET, somme[2]);                
+                }
+                printf(ANSI_COLOR_YELLOW "\nMazzo numero 3" ANSI_COLOR_RESET);
+                cartegiocatori[3][1] = daicarte(carte, &dimensionedelmazzo, true);
+                stampacarta(cartegiocatori[3][0], true);
+                stampacarta(cartegiocatori[3][1], true);                
+                somme[3] = cartegiocatori[3][0].valore == 1 ? sceglivaloreassoutente(&cartegiocatori[3][0], &assi[3], false, somme[3]) : cartegiocatori[3][0].valore;
+                somme[3] += cartegiocatori[3][1].valore == 1 ? sceglivaloreassoutente(&cartegiocatori[3][1], &assi[3], false, somme[3]) : cartegiocatori[3][1].valore;
+                printf(ANSI_COLOR_YELLOW "\nSomma mazzo 3: %d\n" ANSI_COLOR_RESET, somme[3]);                
+            }
+         
+        }
+        else if((cartegiocatori[1][0].valore == cartegiocatori[1][1].valore) || (cartegiocatori[2][0].valore == cartegiocatori[2][1].valore)){
             printf(ANSI_COLOR_YELLOW "\n\nHai la possibilita' di splittare. Vuoi splittare le tue carte? Dovrai puntare la stessa puntata iniziale.\n1) Si\n2) No\n-" ANSI_COLOR_RESET);
             scanf("%d", &sceltasplit);
             if(sceltasplit == 1){
@@ -346,7 +398,6 @@ int gioca(){
                     if(contogiocatore.ammontare >= puntata){
                         aggiornaammontare(&contogiocatore, -puntata);
                         printf(ANSI_COLOR_YELLOW "\nSaldo aggiornato: %d euro\n" ANSI_COLOR_RESET, contogiocatore.ammontare);
-                        // raddoppia = realloc(raddoppia, (i) * sizeof(bool));
                         cartegiocatori[i][j] = daicarte(carte, &dimensionedelmazzo, true);
                         stampacarta(cartegiocatori[i][j], true);
                         if (cartegiocatori[i][j].valore == 1) somme[i] += sceglivaloreassoutente(&cartegiocatori[i][j], &assi[i], false, somme[i]);
@@ -374,6 +425,7 @@ int gioca(){
             }               
         }
     }
+    Sleep(1000);
     printf(ANSI_COLOR_CYAN "\n\nI tuoi mazzi:" ANSI_COLOR_RESET);
     for (int i = 1; i <= righecartegiocatore; i++) printf(ANSI_COLOR_CYAN "\n-Numero %d: %d" ANSI_COLOR_RESET, i, somme[i]);
     // quinto pezzo --> chiedi carte banco
