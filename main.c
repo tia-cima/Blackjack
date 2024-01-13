@@ -7,12 +7,12 @@
 #include "Conto.h"
 #include "Blackjack.h"
 #define ARRAY_DIMENSION 11
-#define ANSI_COLOR_RED     "\x1b[31m" // sconfitta
-#define ANSI_COLOR_GREEN   "\x1b[32m" // vittoria
-#define ANSI_COLOR_YELLOW  "\x1b[33m" // info
-#define ANSI_COLOR_MAGENTA "\x1b[35m" // banco
-#define ANSI_COLOR_CYAN    "\x1b[36m" // utente
-#define ANSI_COLOR_RESET   "\x1b[0m" // reset
+#define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_GREEN   "\x1b[32m"
+#define ANSI_COLOR_YELLOW  "\x1b[33m"
+#define ANSI_COLOR_MAGENTA "\x1b[35m"
+#define ANSI_COLOR_CYAN    "\x1b[36m"
+#define ANSI_COLOR_RESET   "\x1b[0m"
 
 int gioca();
 int* somme;
