@@ -45,29 +45,29 @@ Con l'obiettivo di rendere la UX il più realistica possibile, ho dovuto creare 
 - Ha 4 funzioni principali:
 
   - `popolamazzo()`, che come dice il nome popola il mazzo con le 52 carte. Aggiunge per ogni carta valore, radice ed eventuale figura. Viene usata all'inizio del gioco e ogni volta che il mazzo termina le sue carte.
-  -`stampamazzo()`, usata poco, stampa tutto il mazzo.
-  -`stampacarta()`, ogni volta che viene erogata una carta questa funzione viene chiamata e ne stampa le relative proprietà.
-  -`daicarte()`, la principale, consente di erogare una carta e allo stesso tempo sottrarre quella carta dal mazzo e controllare che esso non sia vuoto. In caso, chiama `popolamazzo()`. Per erogare una carta si estrae un numero casuale da 0 a `dimensionedelmazzo`, variabile intera che tiene traccia di quante carte rimangono nel mazzo.
+  - `stampamazzo()`, usata poco, stampa tutto il mazzo.
+  - `stampacarta()`, ogni volta che viene erogata una carta questa funzione viene chiamata e ne stampa le relative proprietà.
+  - `daicarte()`, la principale, consente di erogare una carta e allo stesso tempo sottrarre quella carta dal mazzo e controllare che esso non sia vuoto. In caso, chiama `popolamazzo()`. Per erogare una carta si estrae un numero casuale da 0 a `dimensionedelmazzo`, variabile intera che tiene traccia di quante carte rimangono nel mazzo.
 
 #### Libreria Conto
 
 - Si occupa di gestire i soldi dell'utente.
 - Ha 6 funzioni, di cui 5 principali e una che non viene portata all'interno del main:
 
-  -`impostaconto()`, usata per chi iscrive la prima volta alla piattaforma, crea l'id del giocatore tramite la funzione `creaidgiocatore()`, l'unica non pubblicata in `Conto.h`, e ne aggiorna l'ammontare in base a ciò che riceve in input. Restituisce i dettagli poi nella variabile `contopersona`.
-  -`recuperaconto()`, restituisce il conto del giocatore in base all'id.
-  -`aggiornaammontare()`, la principale, aggiorna l'ammontare del giocatore in base ad id e soldi da modificare.
-  -`ottieniid()`, non usata, restituisce l'id del giocatore in base alla variabile `contopersona`.
-  -`ottieniammontare()`, anch'essa non usata, restituisce l'ammontare in base a `contopersona`.
-  -`creaidgiocatore()`, controlla a quale utente si è arrivati nel file `id.txt` e in base a quello stabilisce l'id del nuovo utente, creando il suo file e aggiungendo la relativa entry nel file `id.txt`.
+  - `impostaconto()`, usata per chi iscrive la prima volta alla piattaforma, crea l'id del giocatore tramite la funzione `creaidgiocatore()`, l'unica non pubblicata in `Conto.h`, e ne aggiorna l'ammontare in base a ciò che riceve in input. Restituisce i dettagli poi nella variabile `contopersona`.
+  - `recuperaconto()`, restituisce il conto del giocatore in base all'id.
+  - `aggiornaammontare()`, la principale, aggiorna l'ammontare del giocatore in base ad id e soldi da modificare.
+  - `ottieniid()`, non usata, restituisce l'id del giocatore in base alla variabile `contopersona`.
+  - `ottieniammontare()`, anch'essa non usata, restituisce l'ammontare in base a `contopersona`.
+  - `creaidgiocatore()`, controlla a quale utente si è arrivati nel file `id.txt` e in base a quello stabilisce l'id del nuovo utente, creando il suo file e aggiungendo la relativa entry nel file `id.txt`.
 
 #### Libreria Blackjack
 
 - Fornisce aiuto al programma principale immagazzinando funzioni che aiutano la riusabilità e il mantenimento del codice.
 - Ha 3 funzioni principali:
-  -`sceglipuntata()`, che permette all'utente di scegliere quanto giocarsi. Ogni puntata è conservata nel vettore `puntate` aggiornabile con nuove puntate semplicemente aggiungendo il valore desiderato nel vettore. Infatti, è tutto gestito dinamicamente e non ci sarà bisogno di modificare cicli o altre porzioni di codice per gestire una nuova puntata.
-  -`sceglivaloreassoutente()`, che sceglie quale valore dell'asso far uscire. Può farlo automaticamente o in base alla scelta dell'utente. Infatti, se determina che un eventuale 11 farebbe sballare il mazzo allora restituisce 1, altrimenti può far scegliere all'utente quanto farlo valere. Può anche gestire un eventuale scelta in seguito del valore dell'asso, aggiornando `assi` tramite un counter di interi che viene poi assegnato alla cella di questo vettore. 
-  -`sceglivaloreassobanco()`, stessa cosa di prima ma per il banco, che decide senza bisogno di scelta manuale da parte dell'utente. 
+  - `sceglipuntata()`, che permette all'utente di scegliere quanto giocarsi. Ogni puntata è conservata nel vettore `puntate` aggiornabile con nuove puntate semplicemente aggiungendo il valore desiderato nel vettore. Infatti, è tutto gestito dinamicamente e non ci sarà bisogno di modificare cicli o altre porzioni di codice per gestire una nuova puntata.
+  - `sceglivaloreassoutente()`, che sceglie quale valore dell'asso far uscire. Può farlo automaticamente o in base alla scelta dell'utente. Infatti, se determina che un eventuale 11 farebbe sballare il mazzo allora restituisce 1, altrimenti può far scegliere all'utente quanto farlo valere. Può anche gestire un eventuale scelta in seguito del valore dell'asso, aggiornando `assi` tramite un counter di interi che viene poi assegnato alla cella di questo vettore. 
+  - `sceglivaloreassobanco()`, stessa cosa di prima ma per il banco, che decide senza bisogno di scelta manuale da parte dell'utente. 
 
 ### Programma principale
 
