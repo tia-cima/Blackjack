@@ -14,11 +14,11 @@ void popolamazzo(Carta* array) {
     int index = 0;
     for (int i = 0; i < 4; i++) { 
         for (int j = 1; j <= 13; j++) { 
-            array[index].valore = (j > 10) ? 10 : j; // if c > 0 assegna 10, senno 10
+            array[index].valore = (j > 10) ? 10 : j;
             array[index].tipo = tipi[i];
             array[index].isJack = (j == 11);
             array[index].isRegina = (j == 12);
-            array[index].isRe = (j == 13); // vero se j = 13
+            array[index].isRe = (j == 13);
             index++;
         }
     }
