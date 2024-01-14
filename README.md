@@ -117,13 +117,23 @@ Dopodiché, si procede con la logica pari passo del blackjack:
 
 ### Aspetti Logici
 
-- Il controllo sui valori delle somme delle carte sono una serie di `if` annidati. Si diramano principalmente in condizioni se l'utente/banco ha sballato, ha fatto blackjack o se la somma di uno è più grande dell'altra.
+- Le librerie sono gestite basandosi sul tipo di astrazione ADT, che vuole ricordare gli oggetti nella OOP. Le ho strutturate in modo tale da poterle utilizzare anche al di fuori di questo programma, per creare altri giochi da casinò come il poker.
 
-- Il banco non è ne intelligenza artificiale ne un'altra persona. Segue semplicemente la regola base che il banco deve chiedere carta minimo fino a 17, e se il totale delle sue carte è inferiore a quello dell'utente, chiede ancora carte, altrimenti si ferma.
+- Ogni vettore e matrice all'interno di questo programma è gestito dinamicamente, nessuno di loro ha una dimensione fissata all'inizio tranne per l'array `carte`, che ovviamente deve essere di 52 entità.
+
+- Lo split viene gestito tramite `if` annidati, dato che le scelte di split sono limitate per un massimo di 3 volte. Lo split è supportato fino a 4 mazzi. Ad ogni mazzo corrisponde una riga nella matrice `cartegiocatore`, allocata dinamicamente nel momento in cui c'è bisogno di un nuovo mazzo.
+
+- La procedura di erogazione delle carte si basa sul valore di `righecartegiocatore`. Un ciclo viene iterato ogni volta prima di raggiungere il suo valore, consentendo cosi una gestione individuale di ogni mano in base alle scelte dell'utente, quindi se chiedere carta, fermarsi o raddoppiare.
+
+- Anche il controllo sui valori delle somme delle carte è un ciclo che itera fino a raggiungere il valore di `righecartegiocatore`. Ad ogni iterazione, viene confrontato il valore della cella in quell'istante temporale del vettore `somme` con la cella 0 dello stesso vettore (riservata alle carte del banco). In base al confronto, viene deciso il vincitore di quella mano e dopo il verdetto si procede con iterare la prossima riga di `cartegiocatore`.
+
+- I vettori `assi`, `raddoppia` e `somme` sono strutturati in modo tale che le celle 0 di `somme` e `assi` siano riservate al banco, mentre dalle celle in poi ad ogni mano del giocatore. `raddoppia` segue la stessa logica ma dato che il banco non può raddoppiare, il suo counter parte dalla cella 0.
+
+- Il banco non è ne intelligenza artificiale ne un'altra persona. Segue semplicemente la regola base che il banco deve chiedere carta minimo fino a 17.
 
 - Il conto funziona attraverso i file. Su di essi, chiamati come l'id del giocatore che inserisce in fase di creazione, verrà immagazzinato l'ammontare di euro caricati dal giocatore. Per tener traccia dell'id da usare per il prossimo account da creare, esiste un file `id.txt` che contiene una serie di caratteri *1*. Questi caratteri servono per contare il numero di id, e quindi di account, creati fin ora. Ogni volta che creo un utente, un carattere *1* viene aggiunto al file e l'utente prende l'id calcolato come quantità di *1* + 1.
 
-- L'asso del banco è determinato in base alle carte dell'utente. In base alla situazione, viene deciso qual è il valore corretto da assegnare.
+- Il valore dell'asso del banco è determinato in base alle carte dell'utente. In base alla situazione, viene deciso qual è il valore corretto da assegnare.
 
 - Le puntate sono gestite dinamicamente. E' possibile aggiungere nuove entries senza modificare il codice, basta solo aggiungere il valore da immettere nella dichiarazione dell'array `puntate`.
 
@@ -147,9 +157,15 @@ Dopodiché, si procede con la logica pari passo del blackjack:
 ### Aspetti Tecnici
 
 - Il codice sfrutta librerie standard come `<stdio.h>`, `<stdbool.h>` `<stdlib.h>` per task comuni come l'utilizzo di funzioni I/O, booleane e puntatori, e librerie più specifiche come `<time.h>` e `<windows.h>` per le funzioni random e sleep.
-- Le librerie custom create da me `Carte.h` e `Conto.h` sono implementate sottoforma di ADT. Vogliono infatti ricordare un oggetto, perciò il loro codice sorgente è strutturato come se fosse un oggetto vero e proprio, con attributi definiti attraverso `struct` e metodi che non sono altro che normali funzioni protette grazie ai file `.h`, che ne mostrano solo gli attributi e il prototipo.
+
+- Le librerie custom create da me `Carte.h` e `Conto.h` sono implementate sottoforma di ADT, con attributi definiti attraverso `struct` e metodi che non sono altro che normali funzioni protette grazie ai file `.h`, che ne mostrano solo gli attributi e il prototipo.
+
 - Vengono usati puntatori per dialogare attraverso le varie funzioni dei tipi di dato **Carta** e **Conto**. Per esempio, `dimensionedelmazzo` è sempre passata come riferimento poiché ho bisogno di accedere continuamente al suo valore originale e non ad una sua copia. Stesso discorso per la carta estratta in quel momento, che va passata alle varie funzioni di stampa e controllo. Il passaggio per valore è usato raramente.
+
 - I file vengono gestiti in read/write e append.
+
+- Le allocazioni in memoria dei vettori sono prima gestite tramite `malloc` per la prima allocazione, dopodiché ogni volta che c'è bisogno di aggiungere una riga o una cella viene usata la funzione `realloc`, che prende lo spazio in memoria della variabile e lo allarga, in questo caso, di 1 ogni volta che c'è bisogno.
+
 - L'eseguibile è compatibile solo con il sistema operativo windows, in quanto usa la libreria `<windows.h>` per le funzioni `sleep()`.
 
 ## Considerazioni Finali
@@ -160,4 +176,6 @@ Uno dei tanti obiettivi di questo software, oltre che per l'esame orale di progr
 
 Infatti, ogni elemento del codice è pensato proprio per essere tradotto in elementi più specifici, ad esempio la stampa della carta, che avviene per ora solo come scritta, sarà usata per determinare quale foto della carta emettere a video piuttosto che una scritta poco chiara, oppure il conto utente sarà trasformato da file in database con relativo supporto alle microtransazioni che consentiranno a chi usa l'applicazione di caricare soldi veri.
 
-Tornando al codice C, ho cercato di usare ogni argomento affrontato nel programma di studi in modo tale non solo da far risultare questo software il più completo e standard possibile ma anche per permettermi di ripassare argomenti già visti nei precedenti anni di studio.
+Tornando al codice C, ho cercato di usare ogni argomento affrontato nel programma di studi in modo tale non solo da far risultare questo software il più completo e standard possibile ma anche per permettermi di ripassare argomenti già visti nei precedenti anni di studio. Il programma segue ogni regola del blackjack nel dettaglio, cosa che è stata possibile anche ad alcuni costrutti del linguaggio C che mi hanno aiutato a realizzarle, come il `malloc` e `realloc` che mi hanno consentito di allocare nuove celle dinamicamente.
+
+Sono molto soddisfatto del lavoro, specialmente per aver coperto ogni singolo aspetto del gioco. Miglioreri l'ottimizzazione, che essendo scritto in C il programma risulta comunque molto veloce, ma con altri linguaggi, soprattutto interpretati, potrebbe risultare un po' più lento.
