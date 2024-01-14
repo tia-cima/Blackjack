@@ -76,6 +76,8 @@ int gioca(){
     free(cartegiocatori);
     free(somme);
     free(assi);
+    free(raddoppia);
+    issplit = false;
     righecartegiocatore = 1;    
     puntata = 0;
     assisplit = 0;
