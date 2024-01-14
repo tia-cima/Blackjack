@@ -25,13 +25,16 @@ void impostaconto(Conto* contopersona){
 }
 
 void recuperaconto(Conto* contopersona){
-    printf(ANSI_COLOR_YELLOW "\nInserisci l'ID\n-" ANSI_COLOR_RESET);
-    int recuperaid = 1;
-    scanf("%d", &recuperaid);
-    contopersona->id = recuperaid;
-    char nomefile[MAX_UTENTI];
-    sprintf(nomefile, "data/%d.txt", contopersona->id);
-    FILE *file = fopen(nomefile, "r");
+    FILE *file = NULL;
+    do{
+        printf(ANSI_COLOR_YELLOW "\nInserisci l'ID\n-" ANSI_COLOR_RESET);
+        int recuperaid = 1;
+        scanf("%d", &recuperaid);
+        contopersona->id = recuperaid;
+        char nomefile[MAX_UTENTI];
+        sprintf(nomefile, "data/%d.txt", contopersona->id);
+        file = fopen(nomefile, "r");
+    } while (file == NULL);
     fscanf(file, "%d", &contopersona->ammontare);
     fclose(file);
 }

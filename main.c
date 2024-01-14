@@ -50,23 +50,28 @@ int main() {
             scanf("%d", &procedi);
             switch (procedi)
             {
-            case 1:{
-                printf(ANSI_COLOR_YELLOW "\nQuanto vuoi caricare sul tuo conto? Solo cifre intere\n-" ANSI_COLOR_RESET);
-                int valore;
-                scanf("%d", &valore);
-                aggiornaammontare(&contogiocatore, valore);
-                printf(ANSI_COLOR_YELLOW "\nRicarica effettuata con successo, nuovo ammontare pari a %d euro. Buona fortuna!" ANSI_COLOR_RESET, contogiocatore.ammontare);
-            }            
-                break;
-            case 2:{
-                printf(ANSI_COLOR_YELLOW "\nBuona fortuna!" ANSI_COLOR_RESET);
-            }
-            default:
-                break;
+                case 1:{
+                    printf(ANSI_COLOR_YELLOW "\nQuanto vuoi caricare sul tuo conto? Solo cifre intere\n-" ANSI_COLOR_RESET);
+                    int valore;
+                    scanf("%d", &valore);
+                    aggiornaammontare(&contogiocatore, valore);
+                    printf(ANSI_COLOR_YELLOW "\nRicarica effettuata con successo, nuovo ammontare pari a %d euro. Buona fortuna!" ANSI_COLOR_RESET, contogiocatore.ammontare);
+                }            
+                    break;
+                case 2:{
+                    printf(ANSI_COLOR_YELLOW "\nBuona fortuna!" ANSI_COLOR_RESET);
+                } 
+                    break;
+                default:{
+                    printf(ANSI_COLOR_YELLOW "\nBuona fortuna!" ANSI_COLOR_RESET);
+                }
+                    break;
             }
         } break;
-        default:
-            break;
+        default:{
+            impostaconto(&contogiocatore); 
+            printf(ANSI_COLOR_YELLOW "\nBenvenuto giocatore %d, hai caricato %d euro. Buona fortuna!" ANSI_COLOR_RESET, contogiocatore.id, contogiocatore.ammontare);
+        } break;
     }            
     while(1) gioca();   
     return 0;
@@ -301,7 +306,10 @@ int gioca(){
                     somme[4] += cartegiocatori[4][1].valore == 1 ? sceglivaloreassoutente(&cartegiocatori[4][1], &assi[4], false, somme[4]) : cartegiocatori[4][1].valore;
                     printf(ANSI_COLOR_YELLOW "\nSomma mazzo 4: %d\n" ANSI_COLOR_RESET, somme[4]);                
                 }
-                default:
+                default: {
+                    mano1 = true;
+                    mano3 = true;
+                }
                     break;
                 }
             }           
@@ -358,11 +366,18 @@ int gioca(){
         continua = true; 
         if(somme[i] == 21) continua = false;
         for (int j = 0; j < ARRAY_DIMENSION && continua; j++){
+            bool isnotpuntata = false;
             printf(ANSI_COLOR_YELLOW "\n\nMazzo numero %d - somma: %d" ANSI_COLOR_RESET, i, somme[i]);
             Sleep(1000);
             if(contogiocatore.ammontare >= puntata) printf(ANSI_COLOR_CYAN "\nCosa vuoi fare?\n1) Chiedi carta\n2) Fermati\n3) Raddoppia\n-" ANSI_COLOR_RESET);
-            else printf(ANSI_COLOR_CYAN "\nCosa vuoi fare?\n1) Chiedi carta\n2) Fermati\n-" ANSI_COLOR_RESET);
+            else {
+                printf(ANSI_COLOR_CYAN "\nCosa vuoi fare?\n1) Chiedi carta\n2) Fermati\n-" ANSI_COLOR_RESET);
+                isnotpuntata = true;
+            }
             scanf("%d", &scelta);
+            if(isnotpuntata){
+                if(scelta == 3) scelta = 1;
+            }
             switch (scelta) {
                 case 1: {
                     cartegiocatori[i][j] = daicarte(carte, &dimensionedelmazzo, true);
@@ -437,7 +452,27 @@ int gioca(){
                     } else printf(ANSI_COLOR_YELLOW "\nNon hai abbastanza soldi per raddoppiare" ANSI_COLOR_RESET);
                 }
                 break;
-                default:
+                default:{
+                    cartegiocatori[i][j] = daicarte(carte, &dimensionedelmazzo, true);
+                    stampacarta(cartegiocatori[i][j], true);
+                    if (cartegiocatori[i][j].valore == 1) somme[i] += sceglivaloreassoutente(&cartegiocatori[i][j], &assi[i], false, somme[i]);
+                    else somme[i] += cartegiocatori[i][j].valore;  
+                    if(somme[i] > 21){                      
+                        for(int k = 0; k < righecartegiocatore; k++){
+                            if(cartegiocatori[i][k].valore == 11){
+                                cartegiocatori[i][k].valore = 1;
+                                somme[i] -= 10;
+                            }
+                        }
+                    }
+                    printf(ANSI_COLOR_CYAN "\nLa somma delle tue carte e' %d" ANSI_COLOR_RESET, somme[i]);
+                    if(somme[i] == 21) continua = false;
+                    else if(somme[i] > 21){
+                        Sleep(1000);
+                        printf(ANSI_COLOR_RED "\n\nQuesto mazzo ha sballato" ANSI_COLOR_RESET);
+                        continua = false;
+                    }
+                }
                 break;
             }               
         }

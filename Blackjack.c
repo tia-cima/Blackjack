@@ -29,7 +29,7 @@ int sceglipuntata(Conto* contopersona){
             puntatatemp = puntate[i];
         }
     }
-    if (puntatatemp < 0) return -1;
+    if (puntatatemp < 0 && puntatatemp > sizeof(puntate)) return -1;
     else if(puntatatemp > contopersona->ammontare) return -1;
     else return puntatatemp;
 }
