@@ -29,9 +29,9 @@ Il gioco è banco vs utente. Non ci sono altri giocatori, quindi sarà una parti
 
 ## Come eseguire il programma
 
-Il programma potrebbe non funzionare correttamente se questi step non sono seguiti. Ci sono due modalità di esecuzione: 
+Il programma potrebbe non funzionare correttamente se questi step non sono correttamente eseguiti. Ci sono due modalità di esecuzione: 
 
-### Dalla release
+### Dalle releases
 
 1. Scaricare l'eseguibile `Blackjack.exe` dalle releases.
 2. Creare nella stessa cartella dove si salva il file `.exe` una cartella di nome `data`.
