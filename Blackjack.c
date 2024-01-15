@@ -57,7 +57,7 @@ int sceglivaloreassoutente(Carta* valore, int* counterassiutente, bool isfermato
         if(somma + 11 > 21){
             return 1;
         } else {
-            printf(ANSI_COLOR_CYAN "\nE' uscito un asso. Vuoi scegliere di usarlo come 1, come 11 o decidere dopo?\n1) 1\n2) 11\n3) Decidi dopo (il valore 1 è aggiunto a prescindere)\n-" ANSI_COLOR_RESET);
+            printf(ANSI_COLOR_CYAN "\n\nE' uscito un asso. Vuoi scegliere di usarlo come 1, come 11 o decidere dopo?\n1) 1\n2) 11\n3) Decidi dopo (il valore 1 è aggiunto a prescindere)\n-" ANSI_COLOR_RESET);
             int sceltaasso = 0; 
             scanf("%d", &sceltaasso);
             switch (sceltaasso) {
