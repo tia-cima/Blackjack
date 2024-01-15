@@ -27,6 +27,17 @@ Il gioco è banco vs utente. Non ci sono altri giocatori, quindi sarà una parti
 - **Gestione del conto**: Gli utenti possono creare un nuovo conto o accedere a un conto esistente. Su questo conto, l'utente potrà caricare la quantità di denaro da usare in una sessione e salvare il proprio conto per accedervi in un secondo momento.
 - **Strutture specifiche del gioco**: Sono supportati split fino a 3 volte, assicurazioni, pagamento alla pari, raddoppi di puntata e molto altro.
 
+## Come eseguire il programma
+
+### Dalla release
+1. Scaricare l'eseguibile `Blackjack.exe` dalla release
+2. Creare nella stessa cartella dove si salva il file `.exe` una cartella di nome `data`
+
+### Clonando il repository
+1. Eseguire terminale il comando `git clone https://github.com/tia-cima/Blackjack.git`
+2. Spostarsi nella cartella del repository `cd Blackjack`
+3. Lanciare il programma `Blackjack.exe`
+
 ## Componenti del programma
 
 ### Tipi personalizzati
