@@ -29,16 +29,18 @@ Il gioco è banco vs utente. Non ci sono altri giocatori, quindi sarà una parti
 
 ## Come eseguire il programma
 
+Il programma potrebbe non funzionare correttamente se questi step non sono seguiti. Ci sono due modalità di esecuzione: 
+
 ### Dalla release
 
-1. Scaricare l'eseguibile `Blackjack.exe` dalla release
-2. Creare nella stessa cartella dove si salva il file `.exe` una cartella di nome `data`
+1. Scaricare l'eseguibile `Blackjack.exe` dalle releases.
+2. Creare nella stessa cartella dove si salva il file `.exe` una cartella di nome `data`.
 
 ### Clonando il repository
 
-1. Eseguire terminale il comando `git clone https://github.com/tia-cima/Blackjack.git`
-2. Spostarsi nella cartella del repository `cd Blackjack`
-3. Lanciare il programma `Blackjack.exe`
+1. Eseguire da terminale il comando `git clone https://github.com/tia-cima/Blackjack.git`.
+2. Spostarsi nella cartella del repository `cd Blackjack`.
+3. Lanciare il programma `Blackjack.exe`.
 
 ## Componenti del programma
 
